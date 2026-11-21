@@ -1,0 +1,384 @@
+{
+  "case_type": "ni138",
+  "name": "Cheque dishonour complaint (NI Act s.138)",
+  "version": "0.1",
+  "status": "DRAFT - written from general knowledge; every rule must be validated by a practising advocate before real use",
+  "inputs": [
+    {
+      "name": "cheque_date",
+      "label": "Date on the cheque"
+    },
+    {
+      "name": "bank_information_received_date",
+      "label": "Date the complainant received the bank's dishonour information"
+    },
+    {
+      "name": "notice_received_date",
+      "label": "Date the drawer received the demand notice"
+    }
+  ],
+  "derived_dates": [
+    {
+      "name": "payment_window_end",
+      "from": "notice_received_date",
+      "add": {
+        "days": 15
+      }
+    },
+    {
+      "name": "cause_of_action_date",
+      "from": "payment_window_end",
+      "add": {
+        "days": 1
+      }
+    }
+  ],
+  "deadline_rules": [
+    {
+      "rule_id": "ni138_presentation_validity",
+      "label": "Last day to present the cheque (3 months; also check the cheque's own validity)",
+      "authority": "NI Act s.138 proviso (a)",
+      "starts_from": "cheque_date",
+      "add": {
+        "months": 3
+      },
+      "alert_days_before": [
+        10,
+        3,
+        1
+      ],
+      "met_at_stage": "dishonour",
+      "court_act": false
+    },
+    {
+      "rule_id": "ni138_notice_window",
+      "label": "Last day to send the demand notice (30 days from the bank's information)",
+      "authority": "NI Act s.138 proviso (b)",
+      "starts_from": "bank_information_received_date",
+      "add": {
+        "days": 30
+      },
+      "alert_days_before": [
+        10,
+        3,
+        1
+      ],
+      "met_at_stage": "payment_window",
+      "court_act": false
+    },
+    {
+      "rule_id": "ni138_payment_window",
+      "label": "Drawer's 15-day payment period ends",
+      "authority": "NI Act s.138 proviso (c)",
+      "starts_from": "notice_received_date",
+      "add": {
+        "days": 15
+      },
+      "alert_days_before": [
+        3,
+        1
+      ],
+      "met_at_stage": "complaint",
+      "court_act": false
+    },
+    {
+      "rule_id": "ni138_complaint_window",
+      "label": "Last day to file the complaint (one month after cause of action; delay can be condoned for sufficient cause)",
+      "authority": "NI Act s.142(1)(b)",
+      "starts_from": "cause_of_action_date",
+      "add": {
+        "months": 1
+      },
+      "alert_days_before": [
+        10,
+        3,
+        1
+      ],
+      "met_at_stage": "complaint",
+      "court_act": true
+    }
+  ],
+  "deadline_note": "Day-counting convention and court holidays are NOT applied. The advocate must confirm every date before relying on it.",
+  "stages": [
+    {
+      "id": "dishonour",
+      "name": "Cheque dishonoured",
+      "keywords": [
+        "cheque returned",
+        "cheque dishonoured",
+        "cheque dishonored",
+        "return memo",
+        "insufficient funds",
+        "funds insufficient",
+        "payment stopped"
+      ],
+      "actions": [
+        "Collect the cheque, bank return memo, agreement and ledger",
+        "Confirm the cheque was presented within its validity period",
+        "Record the date the bank's information was received"
+      ],
+      "drafts": []
+    },
+    {
+      "id": "demand_notice",
+      "name": "Demand notice",
+      "keywords": [
+        "demand notice",
+        "legal notice",
+        "notice of demand",
+        "statutory notice"
+      ],
+      "actions": [
+        "Send the legal notice by trackable means within 30 days of the bank's information",
+        "Keep the postal receipt and tracking proof",
+        "Record the date the drawer received the notice"
+      ],
+      "drafts": [
+        "Legal notice"
+      ]
+    },
+    {
+      "id": "payment_window",
+      "name": "Waiting period for payment",
+      "keywords": [
+        "fifteen days",
+        "15 days",
+        "payment period",
+        "notice served",
+        "notice delivered",
+        "notice received"
+      ],
+      "actions": [
+        "Track delivery proof of the notice",
+        "Diarise the end of the 15-day payment period",
+        "Prepare the complaint documents in advance"
+      ],
+      "drafts": []
+    },
+    {
+      "id": "complaint",
+      "name": "Complaint filed",
+      "keywords": [
+        "complaint filed",
+        "complaint under section 138",
+        "verification of complaint",
+        "pre-summoning",
+        "presummoning",
+        "complaint registered"
+      ],
+      "actions": [
+        "File the complaint with affidavit and documents within one month after the payment period ends",
+        "Prepare the list of documents and witnesses"
+      ],
+      "drafts": [
+        "Complaint",
+        "Affidavit of complainant"
+      ]
+    },
+    {
+      "id": "summons",
+      "name": "Cognizance and summons",
+      "keywords": [
+        "summons",
+        "process issued",
+        "issue process",
+        "cognizance",
+        "cognisance",
+        "summoned"
+      ],
+      "actions": [
+        "Make sure summons is served on the accused",
+        "Track the date fixed for the accused's appearance"
+      ],
+      "drafts": []
+    },
+    {
+      "id": "accused_appears",
+      "name": "Accused appears",
+      "keywords": [
+        "accused appeared",
+        "accused present",
+        "bail bond",
+        "surety",
+        "bail granted",
+        "enlarged on bail",
+        "appearance of accused"
+      ],
+      "actions": [
+        "Check the bail conditions",
+        "Consider an application for interim compensation (s.143A)",
+        "Supply copies of documents to the accused"
+      ],
+      "drafts": [
+        "Application for interim compensation"
+      ]
+    },
+    {
+      "id": "plea_evidence",
+      "name": "Plea and complainant's evidence",
+      "keywords": [
+        "notice of accusation",
+        "plea recorded",
+        "plea of the accused",
+        "section 251",
+        "evidence affidavit",
+        "affidavit of evidence",
+        "examination-in-chief",
+        "examination in chief",
+        "cross-examination",
+        "cross examination",
+        "complainant evidence",
+        "pw-1",
+        "pw1"
+      ],
+      "actions": [
+        "File the evidence affidavit (s.145) with original documents",
+        "Prepare for cross-examination",
+        "Mark and exhibit the documents"
+      ],
+      "drafts": [
+        "Evidence affidavit"
+      ]
+    },
+    {
+      "id": "accused_statement",
+      "name": "Accused's statement and defence",
+      "keywords": [
+        "section 313",
+        "313 crpc",
+        "statement of the accused",
+        "statement of accused",
+        "defence evidence",
+        "defense evidence",
+        "dw-1",
+        "dw1"
+      ],
+      "actions": [
+        "Review the accused's statement and defence",
+        "Prepare the rebuttal and questions for defence witnesses"
+      ],
+      "drafts": []
+    },
+    {
+      "id": "arguments",
+      "name": "Final arguments",
+      "keywords": [
+        "final arguments",
+        "for arguments",
+        "written arguments",
+        "arguments heard",
+        "arguments concluded",
+        "judgment reserved"
+      ],
+      "actions": [
+        "Prepare written arguments with verified citations",
+        "Prepare a chronology and list of exhibits"
+      ],
+      "drafts": [
+        "Written arguments"
+      ]
+    },
+    {
+      "id": "judgment",
+      "name": "Judgment, compounding or appeal",
+      "keywords": [
+        "judgment pronounced",
+        "pronounced the judgment",
+        "convicted",
+        "acquitted",
+        "compounded",
+        "compounding",
+        "disposed of",
+        "sentenced"
+      ],
+      "actions": [
+        "Read the judgment and note the appeal and compliance periods",
+        "Consider appeal, execution or compounding papers (s.147, s.148)",
+        "Tell the client the outcome and next steps"
+      ],
+      "drafts": [
+        "Appeal",
+        "Execution petition",
+        "Compounding application"
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "id": "notice_then_complaint",
+      "name": "Demand notice, then criminal complaint under s.138",
+      "summary": "The statutory route: send the demand notice in time, wait out the 15-day payment period, then file the complaint within one month of the cause of action.",
+      "deadline_rules": [
+        "ni138_presentation_validity",
+        "ni138_notice_window",
+        "ni138_payment_window",
+        "ni138_complaint_window"
+      ],
+      "what_if": [
+        "notice_received_date"
+      ],
+      "steps": [
+        "Present the cheque within its validity (three months) and keep the bank's return memo",
+        "Send the written demand notice within 30 days of the bank's information",
+        "Wait for the drawer's 15-day payment period after the notice is received",
+        "If unpaid, file the complaint within one month of the cause of action"
+      ],
+      "consider": [
+        "Interim compensation of up to 20% of the cheque amount can be sought (s.143A)",
+        "The offence carries imprisonment up to two years, a fine up to twice the cheque amount, or both (s.138)",
+        "Where the drawer is a company, the persons in charge can be joined (s.141)"
+      ],
+      "risks": [
+        "A notice sent after the 30-day window defeats the complaint",
+        "Delay in filing can be condoned only for sufficient cause (s.142(1)(b))"
+      ],
+      "authority": "NI Act ss.138, 142, 143A"
+    },
+    {
+      "id": "settle_with_notice",
+      "name": "Settlement by payment during the notice period",
+      "summary": "The demand notice itself is the lever: if the drawer pays within 15 days of receiving it, the cause of action does not arise. Keep the complaint dates alive in case the payment does not come.",
+      "deadline_rules": [
+        "ni138_notice_window",
+        "ni138_payment_window",
+        "ni138_complaint_window"
+      ],
+      "what_if": [
+        "notice_received_date"
+      ],
+      "steps": [
+        "Send the demand notice in time and record how and when it was received",
+        "Record any part payment or settlement offer in writing",
+        "Do not let the complaint deadline pass while talks continue"
+      ],
+      "consider": [
+        "Once a complaint is pending, the offence can still be compounded (s.147)",
+        "Get any settlement terms signed by the client before they are communicated"
+      ],
+      "risks": [
+        "Talks do not extend the statutory periods"
+      ],
+      "authority": "NI Act ss.138 proviso (c), 147"
+    },
+    {
+      "id": "civil_recovery",
+      "name": "Civil recovery suit alongside or instead of the criminal complaint",
+      "summary": "A suit for recovery on the cheque or the underlying debt (for example a summary suit under Order XXXVII CPC) can be pursued alongside the complaint. The playbook has no fixed-rule deadline for this route.",
+      "deadline_rules": [],
+      "what_if": [],
+      "steps": [
+        "Check the limitation period for the suit separately",
+        "Decide whether the cheque or the underlying transaction is the cause of action",
+        "Confirm the court's pecuniary and territorial jurisdiction"
+      ],
+      "consider": [
+        "Civil and criminal proceedings can run together",
+        "Court fee is payable on the claim"
+      ],
+      "risks": [
+        "Limitation for the suit is not computed by this product. Check it before relying on this route"
+      ],
+      "authority": "CPC Order XXXVII (verify applicability to the instrument)"
+    }
+  ]
+}

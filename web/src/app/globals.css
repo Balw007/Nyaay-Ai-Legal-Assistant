@@ -1,0 +1,251 @@
+@import "tailwindcss";
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-sans-devanagari/400.css";
+@import "@fontsource/ibm-plex-sans-devanagari/500.css";
+@import "@fontsource-variable/literata/opsz.css";
+@import "@fontsource-variable/literata/opsz-italic.css";
+
+@import "@fontsource-variable/sora";
+
+@custom-variant light (&:where(.light, .light *));
+
+/* ------------------------------------------------------------------ tokens
+   Dark-first "night court": midnight glass, gold light for what is verified,
+   cyan for the AI, red tape only for deadlines and negative treatment.
+   paper   the page          surface  glass panels       vellum  subtle fills
+   ink     the sidebar       brass    verified / primary  tape    deadlines
+   leaf    approved / done   cyan     AI                  amber   caution        */
+:root {
+  --ink: #080d19;
+  --ink-2: rgba(255, 255, 255, 0.05);
+  --ink-3: rgba(227, 184, 101, 0.13);
+  --on-ink: #e6eaf2;
+  --on-ink-muted: #8c96ab;
+  --paper: #060a13;
+  --surface: rgba(16, 23, 38, 0.66);
+  --surface-solid: #0f1626;
+  --vellum: rgba(255, 255, 255, 0.04);
+  --rule: rgba(148, 163, 184, 0.14);
+  --rule-strong: rgba(148, 163, 184, 0.28);
+  --text: #e6eaf2;
+  --muted: #9aa4b8;
+  --faint: #6b7489;
+  --brass: #e3b865;
+  --brass-soft: rgba(227, 184, 101, 0.12);
+  --tape: #ff7a6b;
+  --tape-soft: rgba(255, 122, 107, 0.12);
+  --leaf: #5fd3a0;
+  --leaf-soft: rgba(95, 211, 160, 0.12);
+  --amber: #f2c45a;
+  --amber-soft: rgba(242, 196, 90, 0.12);
+  --cyan: #79d7f0;
+  --cyan-soft: rgba(121, 215, 240, 0.12);
+  --mark: rgba(227, 184, 101, 0.3);
+  --grid: rgba(148, 163, 184, 0.05);
+  --glow-a: rgba(121, 215, 240, 0.09);
+  --glow-b: rgba(227, 184, 101, 0.07);
+  --shadow: 0 16px 40px -18px rgba(0, 0, 0, 0.7);
+  color-scheme: dark;
+}
+
+.light {
+  --ink: #0b1222;
+  --ink-2: rgba(255, 255, 255, 0.06);
+  --ink-3: rgba(227, 184, 101, 0.16);
+  --on-ink: #e6eaf2;
+  --on-ink-muted: #8c96ab;
+  --paper: #f3f5f9;
+  --surface: rgba(255, 255, 255, 0.78);
+  --surface-solid: #ffffff;
+  --vellum: rgba(15, 23, 42, 0.04);
+  --rule: rgba(15, 23, 42, 0.1);
+  --rule-strong: rgba(15, 23, 42, 0.2);
+  --text: #0d1324;
+  --muted: #536079;
+  --faint: #7c879c;
+  --brass: #a8781f;
+  --brass-soft: rgba(168, 120, 31, 0.1);
+  --tape: #c23a2c;
+  --tape-soft: rgba(194, 58, 44, 0.09);
+  --leaf: #1f8456;
+  --leaf-soft: rgba(31, 132, 86, 0.1);
+  --amber: #a26b00;
+  --amber-soft: rgba(162, 107, 0, 0.1);
+  --cyan: #157e9e;
+  --cyan-soft: rgba(21, 126, 158, 0.1);
+  --mark: rgba(168, 120, 31, 0.22);
+  --grid: rgba(15, 23, 42, 0.045);
+  --glow-a: rgba(21, 126, 158, 0.07);
+  --glow-b: rgba(168, 120, 31, 0.06);
+  --shadow: 0 16px 40px -22px rgba(15, 23, 42, 0.35);
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-on-ink: var(--on-ink);
+  --color-on-ink-muted: var(--on-ink-muted);
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-vellum: var(--vellum);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-brass: var(--brass);
+  --color-brass-soft: var(--brass-soft);
+  --color-tape: var(--tape);
+  --color-tape-soft: var(--tape-soft);
+  --color-leaf: var(--leaf);
+  --color-leaf-soft: var(--leaf-soft);
+  --color-amber: var(--amber);
+  --color-amber-soft: var(--amber-soft);
+  --color-cyan: var(--cyan);
+  --color-cyan-soft: var(--cyan-soft);
+  --color-surface-solid: var(--surface-solid);
+  --font-display: "Sora Variable", "IBM Plex Sans", system-ui, sans-serif;
+
+  --font-sans: "IBM Plex Sans", "IBM Plex Sans Devanagari", system-ui, sans-serif;
+  --font-serif: "Literata Variable", "Noto Serif Devanagari", Georgia, serif;
+
+  /* type scale (1.2 minor third from 14px) */
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.1rem;
+  --text-sm: 0.8125rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 0.875rem;
+  --text-base--line-height: 1.45rem;
+  --text-md: 1rem;
+  --text-md--line-height: 1.6rem;
+  --text-lg: 1.2rem;
+  --text-lg--line-height: 1.7rem;
+  --text-xl: 1.5rem;
+  --text-xl--line-height: 2rem;
+  --text-2xl: 1.875rem;
+  --text-2xl--line-height: 2.35rem;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+}
+
+html,
+body {
+  background-color: var(--paper);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-image:
+    radial-gradient(1100px 560px at 85% -12%, var(--glow-a), transparent 62%),
+    radial-gradient(900px 520px at -10% 110%, var(--glow-b), transparent 60%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* A faint drafting grid behind everything, fading out toward the edges. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 30%, transparent 85%);
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+.glass {
+  background: var(--surface);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid var(--rule);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), var(--shadow);
+}
+
+.glow-brass {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--brass) 45%, transparent), 0 0 22px -6px var(--brass);
+}
+
+.glow-tape {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--tape) 45%, transparent), 0 0 18px -6px var(--tape);
+}
+
+.text-gradient-brass {
+  background: linear-gradient(120deg, var(--brass), color-mix(in srgb, var(--brass) 55%, white));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 55%, transparent); }
+  100% { box-shadow: 0 0 0 8px transparent; }
+}
+.pulse-dot {
+  animation: pulse-ring 1.8s ease-out infinite;
+}
+
+@keyframes scan {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
+
+::selection {
+  background: var(--mark);
+}
+
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+mark {
+  background: var(--mark);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+/* Judgment text: the one place the serif speaks. */
+.prose-judgment {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  line-height: 1.75;
+  hyphens: auto;
+  text-wrap: pretty;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule-strong) transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

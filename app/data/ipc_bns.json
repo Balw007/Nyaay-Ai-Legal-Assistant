@@ -1,0 +1,3145 @@
+{
+ "meta": {
+  "version": "1.0",
+  "updated": "2026-11-21",
+  "notice": "Reference table only. Verify every mapping against the text of the Act in the Gazette of India or on India Code before relying on it in a pleading. Where a clause was split, merged or reworded, the provisions can differ even when the numbers line up.",
+  "sources": {
+   "ipc-bns": "Ministry of Home Affairs, comparison summary BNS 2023 to IPC 1860 (official table)",
+   "crpc-bnss": "Ministry of Home Affairs, comparison summary BNSS 2023 to CrPC 1973 (official table)",
+   "iea-bsa": "Ministry of Home Affairs, comparison summary BSA 2023 to Indian Evidence Act 1872 (official table)"
+  }
+ },
+ "acts": {
+  "IPC": {
+   "name": "Indian Penal Code, 1860",
+   "status": "repealed",
+   "replaced_by": "BNS"
+  },
+  "BNS": {
+   "name": "Bharatiya Nyaya Sanhita, 2023",
+   "status": "in force",
+   "replaces": "IPC"
+  },
+  "CRPC": {
+   "name": "Code of Criminal Procedure, 1973",
+   "status": "repealed",
+   "replaced_by": "BNSS"
+  },
+  "BNSS": {
+   "name": "Bharatiya Nagarik Suraksha Sanhita, 2023",
+   "status": "in force",
+   "replaces": "CRPC"
+  },
+  "IEA": {
+   "name": "Indian Evidence Act, 1872",
+   "status": "repealed",
+   "replaced_by": "BSA"
+  },
+  "BSA": {
+   "name": "Bharatiya Sakshya Adhiniyam, 2023",
+   "status": "in force",
+   "replaces": "IEA"
+  },
+  "NI": {
+   "name": "Negotiable Instruments Act, 1881",
+   "status": "unchanged"
+  }
+ },
+ "mappings": [
+  {
+   "old_act": "IPC",
+   "old": "34",
+   "new_act": "BNS",
+   "new": "3(5)",
+   "title": "Common intention",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "53",
+   "new_act": "BNS",
+   "new": "4",
+   "title": "Punishments",
+   "note": "BNS adds community service as a punishment (s.4(f)).",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "76",
+   "new_act": "BNS",
+   "new": "14",
+   "title": "Act done by a person bound by law",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "79",
+   "new_act": "BNS",
+   "new": "17",
+   "title": "Act done by a person justified by law",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "84",
+   "new_act": "BNS",
+   "new": "22",
+   "title": "Act of a person of unsound mind",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "96",
+   "new_act": "BNS",
+   "new": "34",
+   "title": "Things done in private defence",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "97",
+   "new_act": "BNS",
+   "new": "35",
+   "title": "Right of private defence of body and property",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "99",
+   "new_act": "BNS",
+   "new": "37",
+   "title": "Acts against which there is no right of private defence",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "100",
+   "new_act": "BNS",
+   "new": "38",
+   "title": "Private defence of the body extending to causing death",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "101",
+   "new_act": "BNS",
+   "new": "39",
+   "title": "When the right extends to causing harm other than death",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "102",
+   "new_act": "BNS",
+   "new": "40",
+   "title": "Commencement and continuance of the right of private defence of the body",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "103",
+   "new_act": "BNS",
+   "new": "41",
+   "title": "Private defence of property extending to causing death",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "104",
+   "new_act": "BNS",
+   "new": "42",
+   "title": "Private defence of property extending to harm other than death",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "105",
+   "new_act": "BNS",
+   "new": "43",
+   "title": "Commencement and continuance of the right of private defence of property",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "106",
+   "new_act": "BNS",
+   "new": "44",
+   "title": "Private defence against deadly assault when there is risk of harm to an innocent person",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "107",
+   "new_act": "BNS",
+   "new": "45",
+   "title": "Abetment of a thing",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "109",
+   "new_act": "BNS",
+   "new": "49",
+   "title": "Punishment of abetment when the act abetted is committed",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "114",
+   "new_act": "BNS",
+   "new": "54",
+   "title": "Abettor present when the offence is committed",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "120A",
+   "new_act": "BNS",
+   "new": "61(1)",
+   "title": "Criminal conspiracy: definition",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "120B",
+   "new_act": "BNS",
+   "new": "61(2)",
+   "title": "Criminal conspiracy: punishment",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "121",
+   "new_act": "BNS",
+   "new": "147",
+   "title": "Waging war against the Government of India",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "141",
+   "new_act": "BNS",
+   "new": "189(1)",
+   "title": "Unlawful assembly",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "144",
+   "new_act": "BNS",
+   "new": "189(4)",
+   "title": "Joining an unlawful assembly armed with a deadly weapon",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "147",
+   "new_act": "BNS",
+   "new": "191(2)",
+   "title": "Rioting: punishment",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "148",
+   "new_act": "BNS",
+   "new": "191(3)",
+   "title": "Rioting armed with a deadly weapon",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "149",
+   "new_act": "BNS",
+   "new": "190",
+   "title": "Every member of an unlawful assembly guilty of the offence of the common object",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "153A",
+   "new_act": "BNS",
+   "new": "196",
+   "title": "Promoting enmity between groups",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "182",
+   "new_act": "BNS",
+   "new": "217",
+   "title": "False information to a public servant to make him use his power to another's injury",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "186",
+   "new_act": "BNS",
+   "new": "221",
+   "title": "Obstructing a public servant in discharge of public functions",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "188",
+   "new_act": "BNS",
+   "new": "223",
+   "title": "Disobedience to an order promulgated by a public servant",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "191",
+   "new_act": "BNS",
+   "new": "227",
+   "title": "Giving false evidence",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "193",
+   "new_act": "BNS",
+   "new": "229",
+   "title": "Punishment for false evidence",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "201",
+   "new_act": "BNS",
+   "new": "238",
+   "title": "Causing disappearance of evidence of an offence",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "203",
+   "new_act": "BNS",
+   "new": "240",
+   "title": "Giving false information respecting an offence",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "211",
+   "new_act": "BNS",
+   "new": "248",
+   "title": "False charge of an offence made with intent to injure",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "268",
+   "new_act": "BNS",
+   "new": "270",
+   "title": "Public nuisance",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "269",
+   "new_act": "BNS",
+   "new": "271",
+   "title": "Negligent act likely to spread infection of a dangerous disease",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "279",
+   "new_act": "BNS",
+   "new": "281",
+   "title": "Rash driving or riding on a public way",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "292",
+   "new_act": "BNS",
+   "new": "294",
+   "title": "Sale of obscene books and objects",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "295A",
+   "new_act": "BNS",
+   "new": "299",
+   "title": "Deliberate and malicious acts intended to outrage religious feelings",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "298",
+   "new_act": "BNS",
+   "new": "302",
+   "title": "Uttering words to wound religious feelings",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "299",
+   "new_act": "BNS",
+   "new": "100",
+   "title": "Culpable homicide",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "300",
+   "new_act": "BNS",
+   "new": "101",
+   "title": "Murder",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "302",
+   "new_act": "BNS",
+   "new": "103(1)",
+   "title": "Punishment for murder",
+   "note": "BNS s.103(2) is new: murder by a group of five or more persons on grounds such as race, caste or community.",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "304",
+   "new_act": "BNS",
+   "new": "105",
+   "title": "Punishment for culpable homicide not amounting to murder",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "304A",
+   "new_act": "BNS",
+   "new": "106(1)",
+   "title": "Causing death by negligence",
+   "note": "BNS s.106(2) adds a higher punishment for a driver who flees without reporting.",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "304B",
+   "new_act": "BNS",
+   "new": "80",
+   "title": "Dowry death",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "305",
+   "new_act": "BNS",
+   "new": "107",
+   "title": "Abetment of suicide of a child or person of unsound mind",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "306",
+   "new_act": "BNS",
+   "new": "108",
+   "title": "Abetment of suicide",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "307",
+   "new_act": "BNS",
+   "new": "109(1)",
+   "title": "Attempt to murder",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "308",
+   "new_act": "BNS",
+   "new": "110",
+   "title": "Attempt to commit culpable homicide",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "312",
+   "new_act": "BNS",
+   "new": "88",
+   "title": "Causing miscarriage",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "313",
+   "new_act": "BNS",
+   "new": "89",
+   "title": "Causing miscarriage without the woman's consent",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "319",
+   "new_act": "BNS",
+   "new": "114",
+   "title": "Hurt",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "320",
+   "new_act": "BNS",
+   "new": "116",
+   "title": "Grievous hurt",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "323",
+   "new_act": "BNS",
+   "new": "115(2)",
+   "title": "Punishment for voluntarily causing hurt",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "324",
+   "new_act": "BNS",
+   "new": "118(1)",
+   "title": "Voluntarily causing hurt by dangerous weapons or means",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "325",
+   "new_act": "BNS",
+   "new": "117(2)",
+   "title": "Punishment for voluntarily causing grievous hurt",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "326",
+   "new_act": "BNS",
+   "new": "118(2)",
+   "title": "Voluntarily causing grievous hurt by dangerous weapons or means",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "326A",
+   "new_act": "BNS",
+   "new": "124(1)",
+   "title": "Voluntarily causing grievous hurt by use of acid",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "326B",
+   "new_act": "BNS",
+   "new": "124(2)",
+   "title": "Voluntarily throwing or attempting to throw acid",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "337",
+   "new_act": "BNS",
+   "new": "125(a)",
+   "title": "Causing hurt by an act endangering life or personal safety of others",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "338",
+   "new_act": "BNS",
+   "new": "125(b)",
+   "title": "Causing grievous hurt by an act endangering life or personal safety of others",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "340",
+   "new_act": "BNS",
+   "new": "127(1)",
+   "title": "Wrongful confinement",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "341",
+   "new_act": "BNS",
+   "new": "126(2)",
+   "title": "Punishment for wrongful restraint",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "342",
+   "new_act": "BNS",
+   "new": "127(2)",
+   "title": "Punishment for wrongful confinement",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "343",
+   "new_act": "BNS",
+   "new": "127(3)",
+   "title": "Wrongful confinement for three or more days",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "344",
+   "new_act": "BNS",
+   "new": "127(4)",
+   "title": "Wrongful confinement for ten or more days",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "351",
+   "new_act": "BNS",
+   "new": "130",
+   "title": "Assault",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "353",
+   "new_act": "BNS",
+   "new": "132",
+   "title": "Assault or criminal force to deter a public servant from discharge of duty",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "354",
+   "new_act": "BNS",
+   "new": "74",
+   "title": "Assault or criminal force to a woman with intent to outrage her modesty",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "354A",
+   "new_act": "BNS",
+   "new": "75",
+   "title": "Sexual harassment",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "354B",
+   "new_act": "BNS",
+   "new": "76",
+   "title": "Assault or criminal force to a woman with intent to disrobe",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "354C",
+   "new_act": "BNS",
+   "new": "77",
+   "title": "Voyeurism",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "354D",
+   "new_act": "BNS",
+   "new": "78",
+   "title": "Stalking",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "363",
+   "new_act": "BNS",
+   "new": "137(2)",
+   "title": "Punishment for kidnapping",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "364",
+   "new_act": "BNS",
+   "new": "140(1)",
+   "title": "Kidnapping or abducting in order to murder",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "364A",
+   "new_act": "BNS",
+   "new": "140(2)",
+   "title": "Kidnapping for ransom",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "365",
+   "new_act": "BNS",
+   "new": "140(3)",
+   "title": "Kidnapping or abducting with intent to secretly and wrongfully confine a person",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "366",
+   "new_act": "BNS",
+   "new": "87",
+   "title": "Kidnapping, abducting or inducing a woman to compel her marriage",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "370",
+   "new_act": "BNS",
+   "new": "143",
+   "title": "Trafficking of a person",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "372",
+   "new_act": "BNS",
+   "new": "98",
+   "title": "Selling a minor for purposes of prostitution",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "373",
+   "new_act": "BNS",
+   "new": "99",
+   "title": "Buying a minor for purposes of prostitution",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "375",
+   "new_act": "BNS",
+   "new": "63",
+   "title": "Rape: definition",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "376",
+   "new_act": "BNS",
+   "new": "64",
+   "title": "Punishment for rape",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "376A",
+   "new_act": "BNS",
+   "new": "66",
+   "title": "Punishment for causing death or a persistent vegetative state of the victim",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "376D",
+   "new_act": "BNS",
+   "new": "70(1)",
+   "title": "Gang rape",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "378",
+   "new_act": "BNS",
+   "new": "303(1)",
+   "title": "Theft: definition",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "379",
+   "new_act": "BNS",
+   "new": "303(2)",
+   "title": "Punishment for theft",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "380",
+   "new_act": "BNS",
+   "new": "305",
+   "title": "Theft in a dwelling house, or means of transportation or place of worship",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "381",
+   "new_act": "BNS",
+   "new": "306",
+   "title": "Theft by a clerk or servant of property in possession of the master",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "382",
+   "new_act": "BNS",
+   "new": "307",
+   "title": "Theft after preparation made for causing death, hurt or restraint",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "383",
+   "new_act": "BNS",
+   "new": "308(1)",
+   "title": "Extortion: definition",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "384",
+   "new_act": "BNS",
+   "new": "308(2)",
+   "title": "Punishment for extortion",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "390",
+   "new_act": "BNS",
+   "new": "309(1)-(3)",
+   "title": "Robbery: definition",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "391",
+   "new_act": "BNS",
+   "new": "310(1)",
+   "title": "Dacoity: definition",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "392",
+   "new_act": "BNS",
+   "new": "309(4)",
+   "title": "Punishment for robbery",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "394",
+   "new_act": "BNS",
+   "new": "309(6)",
+   "title": "Voluntarily causing hurt in committing robbery",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "395",
+   "new_act": "BNS",
+   "new": "310(2)",
+   "title": "Punishment for dacoity",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "396",
+   "new_act": "BNS",
+   "new": "310(3)",
+   "title": "Dacoity with murder",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "397",
+   "new_act": "BNS",
+   "new": "311",
+   "title": "Robbery or dacoity with attempt to cause death or grievous hurt",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "403",
+   "new_act": "BNS",
+   "new": "314",
+   "title": "Dishonest misappropriation of property",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "405",
+   "new_act": "BNS",
+   "new": "316(1)",
+   "title": "Criminal breach of trust: definition",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "406",
+   "new_act": "BNS",
+   "new": "316(2)",
+   "title": "Punishment for criminal breach of trust",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "409",
+   "new_act": "BNS",
+   "new": "316(5)",
+   "title": "Criminal breach of trust by a public servant, banker, merchant or agent",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "410",
+   "new_act": "BNS",
+   "new": "317(1)",
+   "title": "Stolen property",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "411",
+   "new_act": "BNS",
+   "new": "317(2)",
+   "title": "Dishonestly receiving stolen property",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "415",
+   "new_act": "BNS",
+   "new": "318(1)",
+   "title": "Cheating: definition",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "417",
+   "new_act": "BNS",
+   "new": "318(2)",
+   "title": "Punishment for cheating",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "418",
+   "new_act": "BNS",
+   "new": "318(3)",
+   "title": "Cheating with knowledge that wrongful loss may be caused to a person whose interest the offender is bound to protect",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "419",
+   "new_act": "BNS",
+   "new": "319(2)",
+   "title": "Punishment for cheating by personation",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "420",
+   "new_act": "BNS",
+   "new": "318(4)",
+   "title": "Cheating and dishonestly inducing delivery of property",
+   "note": "Often pleaded together with a cheque matter.",
+   "tags": [
+    "ni138"
+   ],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "424",
+   "new_act": "BNS",
+   "new": "323",
+   "title": "Dishonest or fraudulent removal or concealment of property",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "425",
+   "new_act": "BNS",
+   "new": "324(1)",
+   "title": "Mischief",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "426",
+   "new_act": "BNS",
+   "new": "324(2)",
+   "title": "Punishment for mischief",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "427",
+   "new_act": "BNS",
+   "new": "324(4)",
+   "title": "Mischief causing damage of fifty rupees or more",
+   "note": "The damage thresholds differ from IPC s.427; read BNS s.324(4).",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "441",
+   "new_act": "BNS",
+   "new": "329(1)",
+   "title": "Criminal trespass",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "442",
+   "new_act": "BNS",
+   "new": "329(2)",
+   "title": "House-trespass",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "447",
+   "new_act": "BNS",
+   "new": "329(3)",
+   "title": "Punishment for criminal trespass",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "448",
+   "new_act": "BNS",
+   "new": "329(4)",
+   "title": "Punishment for house-trespass",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "452",
+   "new_act": "BNS",
+   "new": "333",
+   "title": "House-trespass after preparation for hurt, assault or wrongful restraint",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "463",
+   "new_act": "BNS",
+   "new": "336(1)",
+   "title": "Forgery: definition",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "464",
+   "new_act": "BNS",
+   "new": "335",
+   "title": "Making a false document",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "465",
+   "new_act": "BNS",
+   "new": "336(2)",
+   "title": "Punishment for forgery",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "467",
+   "new_act": "BNS",
+   "new": "338",
+   "title": "Forgery of a valuable security, will, etc.",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "468",
+   "new_act": "BNS",
+   "new": "336(3)",
+   "title": "Forgery for the purpose of cheating",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "469",
+   "new_act": "BNS",
+   "new": "336(4)",
+   "title": "Forgery for the purpose of harming reputation",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "470",
+   "new_act": "BNS",
+   "new": "340(1)",
+   "title": "Forged document or electronic record",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "471",
+   "new_act": "BNS",
+   "new": "340(2)",
+   "title": "Using as genuine a forged document or electronic record",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "477A",
+   "new_act": "BNS",
+   "new": "344",
+   "title": "Falsification of accounts",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "489A",
+   "new_act": "BNS",
+   "new": "178",
+   "title": "Counterfeiting currency notes or bank notes",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "489B",
+   "new_act": "BNS",
+   "new": "179",
+   "title": "Using as genuine forged or counterfeit currency notes or bank notes",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "494",
+   "new_act": "BNS",
+   "new": "82(1)",
+   "title": "Marrying again during the lifetime of a husband or wife",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "495",
+   "new_act": "BNS",
+   "new": "82(2)",
+   "title": "Same offence with concealment of the former marriage",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "496",
+   "new_act": "BNS",
+   "new": "83",
+   "title": "Marriage ceremony fraudulently gone through without lawful marriage",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "498A",
+   "new_act": "BNS",
+   "new": "85",
+   "title": "Husband or relative of husband of a woman subjecting her to cruelty",
+   "note": "BNS s.86 defines 'cruelty'; s.85 carries the punishment.",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "499",
+   "new_act": "BNS",
+   "new": "356(1)",
+   "title": "Defamation",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "500",
+   "new_act": "BNS",
+   "new": "356(2)",
+   "title": "Punishment for defamation",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "503",
+   "new_act": "BNS",
+   "new": "351(1)",
+   "title": "Criminal intimidation",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "504",
+   "new_act": "BNS",
+   "new": "352",
+   "title": "Intentional insult with intent to provoke breach of the peace",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "505",
+   "new_act": "BNS",
+   "new": "353",
+   "title": "Statements conducing to public mischief",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "506",
+   "new_act": "BNS",
+   "new": "351(2)-(3)",
+   "title": "Punishment for criminal intimidation",
+   "note": "s.351(2) is the general punishment; s.351(3) covers threats of death or grievous hurt.",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "507",
+   "new_act": "BNS",
+   "new": "351(4)",
+   "title": "Criminal intimidation by an anonymous communication",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "509",
+   "new_act": "BNS",
+   "new": "79",
+   "title": "Word, gesture or act intended to insult the modesty of a woman",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "511",
+   "new_act": "BNS",
+   "new": "62",
+   "title": "Attempt to commit offences punishable with imprisonment for life or other imprisonment",
+   "note": "",
+   "tags": [],
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "2",
+   "new_act": "BNSS",
+   "new": "2",
+   "title": "Definitions",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "41",
+   "new_act": "BNSS",
+   "new": "35",
+   "title": "Arrest by a police officer without a warrant",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "41A",
+   "new_act": "BNSS",
+   "new": "35",
+   "title": "Notice of appearance before a police officer",
+   "note": "The notice-of-appearance provisions now sit inside BNSS s.35.",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "41B",
+   "new_act": "BNSS",
+   "new": "36",
+   "title": "Procedure of arrest and duties of the arresting officer",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "46",
+   "new_act": "BNSS",
+   "new": "43",
+   "title": "How an arrest is made",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "50",
+   "new_act": "BNSS",
+   "new": "47",
+   "title": "Person arrested to be informed of the grounds of arrest and of the right to bail",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "51",
+   "new_act": "BNSS",
+   "new": "49",
+   "title": "Search of an arrested person",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "53",
+   "new_act": "BNSS",
+   "new": "51",
+   "title": "Examination of the accused by a medical practitioner at the request of police",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "57",
+   "new_act": "BNSS",
+   "new": "58",
+   "title": "Person arrested not to be detained for more than twenty-four hours",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "61",
+   "new_act": "BNSS",
+   "new": "63",
+   "title": "Form of summons",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "70",
+   "new_act": "BNSS",
+   "new": "72",
+   "title": "Form of warrant of arrest and its duration",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "82",
+   "new_act": "BNSS",
+   "new": "84",
+   "title": "Proclamation for a person absconding",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "83",
+   "new_act": "BNSS",
+   "new": "85",
+   "title": "Attachment of property of a person absconding",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "91",
+   "new_act": "BNSS",
+   "new": "94",
+   "title": "Summons to produce a document or other thing",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "93",
+   "new_act": "BNSS",
+   "new": "96",
+   "title": "When a search warrant may be issued",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "100",
+   "new_act": "BNSS",
+   "new": "103",
+   "title": "Persons in charge of a closed place to allow search",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "102",
+   "new_act": "BNSS",
+   "new": "106",
+   "title": "Power of police officer to seize certain property",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "125",
+   "new_act": "BNSS",
+   "new": "144",
+   "title": "Order for maintenance of wives, children and parents",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "133",
+   "new_act": "BNSS",
+   "new": "152",
+   "title": "Conditional order for removal of a nuisance",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "144",
+   "new_act": "BNSS",
+   "new": "163",
+   "title": "Power to issue an order in urgent cases of nuisance or apprehended danger",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "145",
+   "new_act": "BNSS",
+   "new": "164",
+   "title": "Procedure where a dispute concerning land or water is likely to cause a breach of the peace",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "154",
+   "new_act": "BNSS",
+   "new": "173",
+   "title": "Information in cognizable cases (FIR)",
+   "note": "BNSS s.173 also allows e-FIR and a preliminary enquiry for offences punishable with 3 to 7 years; read the text.",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "155",
+   "new_act": "BNSS",
+   "new": "174",
+   "title": "Information as to non-cognizable cases",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "156",
+   "new_act": "BNSS",
+   "new": "175",
+   "title": "Police officer's power to investigate cognizable cases",
+   "note": "Complaint to the Magistrate under CrPC 156(3) is BNSS 175(3).",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "157",
+   "new_act": "BNSS",
+   "new": "176",
+   "title": "Procedure for investigation",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "160",
+   "new_act": "BNSS",
+   "new": "179",
+   "title": "Police officer's power to require attendance of witnesses",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "161",
+   "new_act": "BNSS",
+   "new": "180",
+   "title": "Examination of witnesses by police",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "162",
+   "new_act": "BNSS",
+   "new": "181",
+   "title": "Statements to police not to be signed; use of statements in evidence",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "164",
+   "new_act": "BNSS",
+   "new": "183",
+   "title": "Recording of confessions and statements",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "164A",
+   "new_act": "BNSS",
+   "new": "184",
+   "title": "Medical examination of the victim of rape",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "165",
+   "new_act": "BNSS",
+   "new": "185",
+   "title": "Search by a police officer",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "167",
+   "new_act": "BNSS",
+   "new": "187",
+   "title": "Procedure when investigation cannot be completed in twenty-four hours",
+   "note": "Detention periods under BNSS s.187 differ from CrPC s.167; read the text.",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "169",
+   "new_act": "BNSS",
+   "new": "189",
+   "title": "Release of accused when evidence is deficient",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "170",
+   "new_act": "BNSS",
+   "new": "190",
+   "title": "Cases to be sent to the Magistrate when evidence is sufficient",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "173",
+   "new_act": "BNSS",
+   "new": "193",
+   "title": "Report of the police officer on completion of investigation",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "190",
+   "new_act": "BNSS",
+   "new": "210",
+   "title": "Cognizance of offences by Magistrates",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "195",
+   "new_act": "BNSS",
+   "new": "215",
+   "title": "Prosecution for contempt of lawful authority of public servants and for offences against public justice",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "197",
+   "new_act": "BNSS",
+   "new": "218",
+   "title": "Prosecution of judges and public servants",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "200",
+   "new_act": "BNSS",
+   "new": "223",
+   "title": "Examination of the complainant",
+   "note": "BNSS s.223 adds a hearing for the accused before cognizance in a complaint case.",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "202",
+   "new_act": "BNSS",
+   "new": "225",
+   "title": "Postponement of issue of process",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "203",
+   "new_act": "BNSS",
+   "new": "226",
+   "title": "Dismissal of complaint",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "204",
+   "new_act": "BNSS",
+   "new": "227",
+   "title": "Issue of process",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "207",
+   "new_act": "BNSS",
+   "new": "230",
+   "title": "Supply of copy of police report and other documents to the accused",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "209",
+   "new_act": "BNSS",
+   "new": "232",
+   "title": "Commitment of case to the Court of Session",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "227",
+   "new_act": "BNSS",
+   "new": "250",
+   "title": "Discharge",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "228",
+   "new_act": "BNSS",
+   "new": "251",
+   "title": "Framing of charge",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "239",
+   "new_act": "BNSS",
+   "new": "262",
+   "title": "When the accused shall be discharged (warrant cases on a police report)",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "240",
+   "new_act": "BNSS",
+   "new": "263",
+   "title": "Framing of charge (warrant cases on a police report)",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "251",
+   "new_act": "BNSS",
+   "new": "274",
+   "title": "Substance of the accusation to be stated (summons cases)",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "256",
+   "new_act": "BNSS",
+   "new": "279",
+   "title": "Non-appearance or death of the complainant",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "257",
+   "new_act": "BNSS",
+   "new": "280",
+   "title": "Withdrawal of complaint",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "258",
+   "new_act": "BNSS",
+   "new": "281",
+   "title": "Power to stop proceedings in certain cases",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "260",
+   "new_act": "BNSS",
+   "new": "283",
+   "title": "Power to try summarily",
+   "note": "NI Act s.143 directs summary trial of s.138 cases.",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "311",
+   "new_act": "BNSS",
+   "new": "348",
+   "title": "Power to summon a material witness or examine a person present",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "313",
+   "new_act": "BNSS",
+   "new": "351",
+   "title": "Power to examine the accused",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "319",
+   "new_act": "BNSS",
+   "new": "358",
+   "title": "Power to proceed against other persons appearing to be guilty of the offence",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "320",
+   "new_act": "BNSS",
+   "new": "359",
+   "title": "Compounding of offences",
+   "note": "NI Act s.147 makes s.138 offences compoundable.",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "321",
+   "new_act": "BNSS",
+   "new": "360",
+   "title": "Withdrawal from prosecution",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "340",
+   "new_act": "BNSS",
+   "new": "379",
+   "title": "Procedure in cases mentioned in section 195 (now BNSS 215)",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "357",
+   "new_act": "BNSS",
+   "new": "395",
+   "title": "Order to pay compensation",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "357A",
+   "new_act": "BNSS",
+   "new": "396",
+   "title": "Victim compensation scheme",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "372",
+   "new_act": "BNSS",
+   "new": "413",
+   "title": "No appeal unless otherwise provided",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "374",
+   "new_act": "BNSS",
+   "new": "415",
+   "title": "Appeals from convictions",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "377",
+   "new_act": "BNSS",
+   "new": "418",
+   "title": "Appeal by the State Government against sentence",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "378",
+   "new_act": "BNSS",
+   "new": "419",
+   "title": "Appeal in case of acquittal",
+   "note": "Special leave to appeal by a complainant against an acquittal is dealt with in this section.",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "389",
+   "new_act": "BNSS",
+   "new": "430",
+   "title": "Suspension of sentence pending the appeal; release of the appellant on bail",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "397",
+   "new_act": "BNSS",
+   "new": "438",
+   "title": "Calling for records to exercise powers of revision",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "401",
+   "new_act": "BNSS",
+   "new": "442",
+   "title": "High Court's powers of revision",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "428",
+   "new_act": "BNSS",
+   "new": "468",
+   "title": "Period of detention undergone by the accused to be set off against the sentence",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "436",
+   "new_act": "BNSS",
+   "new": "478",
+   "title": "In what cases bail is to be taken",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "437",
+   "new_act": "BNSS",
+   "new": "480",
+   "title": "When bail may be taken in a case of a non-bailable offence",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "437A",
+   "new_act": "BNSS",
+   "new": "481",
+   "title": "Bail to require the accused to appear before the higher court",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "438",
+   "new_act": "BNSS",
+   "new": "482",
+   "title": "Direction for grant of bail to a person apprehending arrest (anticipatory bail)",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "439",
+   "new_act": "BNSS",
+   "new": "483",
+   "title": "Special powers of the High Court or Court of Session regarding bail",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "451",
+   "new_act": "BNSS",
+   "new": "497",
+   "title": "Order for custody and disposal of property pending trial",
+   "note": "",
+   "tags": [],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "468",
+   "new_act": "BNSS",
+   "new": "514",
+   "title": "Bar to taking cognizance after the lapse of the period of limitation",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "CRPC",
+   "old": "482",
+   "new_act": "BNSS",
+   "new": "528",
+   "title": "Saving of the inherent powers of the High Court",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "crpc-bnss"
+  },
+  {
+   "old_act": "IEA",
+   "old": "3",
+   "new_act": "BSA",
+   "new": "2",
+   "title": "Interpretation clause (definitions of evidence, document, etc.)",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "5",
+   "new_act": "BSA",
+   "new": "3",
+   "title": "Evidence may be given of facts in issue and relevant facts",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "6",
+   "new_act": "BSA",
+   "new": "4",
+   "title": "Relevancy of facts forming part of the same transaction",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "8",
+   "new_act": "BSA",
+   "new": "6",
+   "title": "Motive, preparation and previous or subsequent conduct",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "9",
+   "new_act": "BSA",
+   "new": "7",
+   "title": "Facts necessary to explain or introduce relevant facts",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "10",
+   "new_act": "BSA",
+   "new": "8",
+   "title": "Things said or done by a conspirator in reference to the common design",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "17",
+   "new_act": "BSA",
+   "new": "15",
+   "title": "Admission defined",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "18",
+   "new_act": "BSA",
+   "new": "16",
+   "title": "Admission by a party to the proceeding or his agent",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "21",
+   "new_act": "BSA",
+   "new": "19",
+   "title": "Proof of admissions against persons making them",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "24",
+   "new_act": "BSA",
+   "new": "22(1)",
+   "title": "Confession caused by inducement, threat or promise is irrelevant",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "25",
+   "new_act": "BSA",
+   "new": "23(1)",
+   "title": "Confession to a police officer not to be proved",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "26",
+   "new_act": "BSA",
+   "new": "23(2)",
+   "title": "Confession by the accused while in police custody not to be proved against him",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "27",
+   "new_act": "BSA",
+   "new": "23 (proviso)",
+   "title": "How much of the information received from the accused may be proved",
+   "note": "The IEA s.27 rule now sits in the proviso to BSA s.23.",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "30",
+   "new_act": "BSA",
+   "new": "24",
+   "title": "Consideration of a proved confession affecting the person making it and others jointly tried",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "32",
+   "new_act": "BSA",
+   "new": "26",
+   "title": "Cases in which a statement of a relevant fact by a person who is dead or cannot be found is relevant",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "45",
+   "new_act": "BSA",
+   "new": "39(1)",
+   "title": "Opinions of experts",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "47",
+   "new_act": "BSA",
+   "new": "41(1)",
+   "title": "Opinion as to handwriting",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "59",
+   "new_act": "BSA",
+   "new": "54",
+   "title": "Proof of facts by oral evidence",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "60",
+   "new_act": "BSA",
+   "new": "55",
+   "title": "Oral evidence must be direct",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "61",
+   "new_act": "BSA",
+   "new": "56",
+   "title": "Proof of contents of documents",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "62",
+   "new_act": "BSA",
+   "new": "57",
+   "title": "Primary evidence",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "63",
+   "new_act": "BSA",
+   "new": "58",
+   "title": "Secondary evidence",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "64",
+   "new_act": "BSA",
+   "new": "59",
+   "title": "Proof of documents by primary evidence",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "65",
+   "new_act": "BSA",
+   "new": "60",
+   "title": "Cases in which secondary evidence relating to documents may be given",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "65A",
+   "new_act": "BSA",
+   "new": "62",
+   "title": "Special provisions as to evidence relating to electronic records",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "65B",
+   "new_act": "BSA",
+   "new": "63",
+   "title": "Admissibility of electronic records",
+   "note": "BSA s.63 carries a certificate in the prescribed form (see the Schedule to the Adhiniyam).",
+   "tags": [
+    "ni138"
+   ],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "66",
+   "new_act": "BSA",
+   "new": "64",
+   "title": "Rules as to notice to produce",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "67",
+   "new_act": "BSA",
+   "new": "65",
+   "title": "Proof of signature and handwriting of a person alleged to have signed or written a document",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "68",
+   "new_act": "BSA",
+   "new": "67",
+   "title": "Proof of execution of a document required by law to be attested",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "73",
+   "new_act": "BSA",
+   "new": "72",
+   "title": "Comparison of signatures, writing or seal with others admitted or proved",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "101",
+   "new_act": "BSA",
+   "new": "104",
+   "title": "Burden of proof",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "102",
+   "new_act": "BSA",
+   "new": "105",
+   "title": "On whom the burden of proof lies",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "103",
+   "new_act": "BSA",
+   "new": "106",
+   "title": "Burden of proof as to a particular fact",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "104",
+   "new_act": "BSA",
+   "new": "107",
+   "title": "Burden of proving a fact to be proved to make evidence admissible",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "105",
+   "new_act": "BSA",
+   "new": "108",
+   "title": "Burden of proving that the case of the accused comes within an exception",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "106",
+   "new_act": "BSA",
+   "new": "109",
+   "title": "Burden of proving a fact especially within the knowledge of a person",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "107",
+   "new_act": "BSA",
+   "new": "110",
+   "title": "Burden of proving death of a person known to have been alive within thirty years",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "108",
+   "new_act": "BSA",
+   "new": "111",
+   "title": "Burden of proving that a person is alive who has not been heard of for seven years",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "112",
+   "new_act": "BSA",
+   "new": "116",
+   "title": "Birth during marriage as conclusive proof of legitimacy",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "113A",
+   "new_act": "BSA",
+   "new": "117",
+   "title": "Presumption as to abetment of suicide by a married woman",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "113B",
+   "new_act": "BSA",
+   "new": "118",
+   "title": "Presumption as to dowry death",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "114",
+   "new_act": "BSA",
+   "new": "119",
+   "title": "Court may presume the existence of certain facts",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "115",
+   "new_act": "BSA",
+   "new": "121",
+   "title": "Estoppel",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "116",
+   "new_act": "BSA",
+   "new": "122",
+   "title": "Estoppel of tenant; estoppel of licensee of a person in possession",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "118",
+   "new_act": "BSA",
+   "new": "124",
+   "title": "Who may testify",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "120",
+   "new_act": "BSA",
+   "new": "126",
+   "title": "Competency of husband and wife as witnesses in civil and criminal proceedings",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "122",
+   "new_act": "BSA",
+   "new": "128",
+   "title": "Communications during marriage",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "124",
+   "new_act": "BSA",
+   "new": "130",
+   "title": "Official communications",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "126",
+   "new_act": "BSA",
+   "new": "132",
+   "title": "Professional communications",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "132",
+   "new_act": "BSA",
+   "new": "137",
+   "title": "Witness not excused from answering on the ground that the answer will criminate him",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "133",
+   "new_act": "BSA",
+   "new": "138",
+   "title": "Accomplice",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "134",
+   "new_act": "BSA",
+   "new": "139",
+   "title": "Number of witnesses",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "135",
+   "new_act": "BSA",
+   "new": "140",
+   "title": "Order of production and examination of witnesses",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "137",
+   "new_act": "BSA",
+   "new": "142",
+   "title": "Examination-in-chief, cross-examination and re-examination",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "138",
+   "new_act": "BSA",
+   "new": "143",
+   "title": "Order of examinations and direction of re-examination",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "139",
+   "new_act": "BSA",
+   "new": "144",
+   "title": "Cross-examination of a person called to produce a document",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "141",
+   "new_act": "BSA",
+   "new": "146(1)",
+   "title": "Leading questions",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "142",
+   "new_act": "BSA",
+   "new": "146(2)-(3)",
+   "title": "When leading questions must not be asked; when they may be allowed",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "145",
+   "new_act": "BSA",
+   "new": "148",
+   "title": "Cross-examination as to previous statements in writing",
+   "note": "",
+   "tags": [
+    "ni138"
+   ],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "146",
+   "new_act": "BSA",
+   "new": "149",
+   "title": "Questions lawful in cross-examination",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "148",
+   "new_act": "BSA",
+   "new": "151",
+   "title": "Court to decide when a question shall be asked and when the witness compelled to answer",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "151",
+   "new_act": "BSA",
+   "new": "154",
+   "title": "Indecent and scandalous questions",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "153",
+   "new_act": "BSA",
+   "new": "156",
+   "title": "Exclusion of evidence to contradict answers to questions testing veracity",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "154",
+   "new_act": "BSA",
+   "new": "157",
+   "title": "Question by a party to his own witness",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "155",
+   "new_act": "BSA",
+   "new": "158",
+   "title": "Impeaching the credit of a witness",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "157",
+   "new_act": "BSA",
+   "new": "160",
+   "title": "Former statements of a witness may be proved to corroborate later testimony",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "158",
+   "new_act": "BSA",
+   "new": "161",
+   "title": "What matters may be proved in connection with a proved statement",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "159",
+   "new_act": "BSA",
+   "new": "162",
+   "title": "Refreshing memory",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "161",
+   "new_act": "BSA",
+   "new": "164",
+   "title": "Right of an adverse party as to a writing used to refresh memory",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "162",
+   "new_act": "BSA",
+   "new": "165",
+   "title": "Production of documents",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "165",
+   "new_act": "BSA",
+   "new": "168",
+   "title": "Judge's power to put questions or order production",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  },
+  {
+   "old_act": "IEA",
+   "old": "167",
+   "new_act": "BSA",
+   "new": "169",
+   "title": "No new trial for improper admission or rejection of evidence",
+   "note": "",
+   "tags": [],
+   "source": "iea-bsa"
+  }
+ ],
+ "omitted": [
+  {
+   "old_act": "IPC",
+   "old": "124A",
+   "title": "Sedition",
+   "note": "Not carried into the BNS. BNS s.152 (acts endangering sovereignty, unity and integrity of India) is a new, differently worded offence. Read both texts before treating them as the same.",
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "309",
+   "title": "Attempt to commit suicide",
+   "note": "Not carried over as a general offence. BNS s.226 is a narrower, related offence; check its text.",
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "377",
+   "title": "Unnatural offences",
+   "note": "Not carried into the BNS.",
+   "source": "ipc-bns"
+  },
+  {
+   "old_act": "IPC",
+   "old": "497",
+   "title": "Adultery",
+   "note": "Struck down by the Supreme Court in Joseph Shine v. Union of India (2018) and not carried into the BNS.",
+   "source": "ipc-bns"
+  }
+ ],
+ "new": [
+  {
+   "new_act": "BNS",
+   "new": "103(2)",
+   "title": "Murder by a group of five or more persons on grounds of race, caste, community, sex, place of birth, language or personal belief",
+   "note": "New provision (commonly called mob lynching). No IPC counterpart.",
+   "source": "ipc-bns"
+  },
+  {
+   "new_act": "BNS",
+   "new": "111",
+   "title": "Organised crime",
+   "note": "New provision. No IPC counterpart.",
+   "source": "ipc-bns"
+  },
+  {
+   "new_act": "BNS",
+   "new": "112",
+   "title": "Petty organised crime",
+   "note": "New provision. No IPC counterpart.",
+   "source": "ipc-bns"
+  },
+  {
+   "new_act": "BNS",
+   "new": "113",
+   "title": "Terrorist act",
+   "note": "New provision. No IPC counterpart (earlier covered by special law).",
+   "source": "ipc-bns"
+  },
+  {
+   "new_act": "BNS",
+   "new": "152",
+   "title": "Act endangering sovereignty, unity and integrity of India",
+   "note": "New provision. Not a re-enactment of IPC s.124A; read the text.",
+   "source": "ipc-bns"
+  },
+  {
+   "new_act": "BNS",
+   "new": "304",
+   "title": "Snatching",
+   "note": "New provision. No IPC counterpart.",
+   "source": "ipc-bns"
+  }
+ ],
+ "unchanged": [
+  {
+   "act": "NI",
+   "name": "Negotiable Instruments Act, 1881",
+   "note": "The Negotiable Instruments Act, 1881 was not repealed or renumbered by the 2023 codes. Sections 138, 139, 141, 142, 143, 143A, 145, 147 and 148 keep their numbers. What changed is the procedure the Act borrows from the criminal procedure code: summons, evidence, compounding and appeals now follow the BNSS. Rows tagged for NI Act cases show those equivalents."
+  }
+ ]
+}

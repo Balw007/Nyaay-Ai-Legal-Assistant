@@ -1,0 +1,67 @@
+# Nyaay on a server. Plain steps are in DEPLOY.md.
+#   cp .env.example .env     (fill in the SERVER section)
+#   docker compose up -d --build
+# Add local AI on the same machine:   docker compose --profile local-ai up -d
+# Host in an Indian region (for example Mumbai) to keep client data in India.
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: nyaai
+      POSTGRES_USER: nyaai
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck: {test: ["CMD-SHELL", "pg_isready -U nyaai"], interval: 10s, retries: 5}
+
+  app:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment: &appenv
+      NYAAI_DATABASE_URL: postgresql+psycopg://nyaai:${POSTGRES_PASSWORD}@db:5432/nyaai
+      NYAAI_COOKIE_SECURE: "1"
+      NYAAI_PUBLIC_URL: https://${NYAAY_DOMAIN:?set NYAAY_DOMAIN in .env}
+      NYAAY_WEB_URL: https://${NYAAY_DOMAIN}
+      OLLAMA_URL: ${OLLAMA_SERVER_URL:-http://ollama:11434}
+    volumes: [corpus:/data]
+    depends_on: {db: {condition: service_healthy}}
+    expose: ["8000"]            # not published: only the web app and the jobs service reach it
+
+  web:
+    build:
+      context: ./web
+      args: {NYAAI_API: "http://app:8000"}
+    restart: unless-stopped
+    depends_on: [app]
+    expose: ["3000"]
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    environment: {NYAAY_DOMAIN: "${NYAAY_DOMAIN}"}
+    ports: ["80:80", "443:443"]
+    volumes: ["./deploy/Caddyfile:/etc/caddy/Caddyfile:ro", "caddy_data:/data", "caddy_config:/config"]
+    depends_on: [web]
+
+  jobs:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      <<: *appenv
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes: [corpus:/data]
+    depends_on: {db: {condition: service_healthy}}
+    command: ["sh", "/srv/deploy/jobs.sh"]
+
+  # Optional: local AI on this server. Needs a lot of RAM, and a GPU to be fast. See DEPLOY.md.
+  ollama:
+    profiles: ["local-ai"]
+    image: ollama/ollama
+    restart: unless-stopped
+    volumes: [ollama:/root/.ollama]
+    # For an NVIDIA GPU, uncomment:
+    # deploy: {resources: {reservations: {devices: [{driver: nvidia, count: all, capabilities: [gpu]}]}}}
+
+volumes: {pgdata: {}, corpus: {}, caddy_data: {}, caddy_config: {}, ollama: {}}

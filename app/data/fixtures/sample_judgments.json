@@ -1,0 +1,43 @@
+{
+  "_note": "FICTIONAL TEST DATA. These are not real judgments. Citations use the year 2099 and a fictional court so they cannot be confused with real authorities.",
+  "judgments": [
+    {
+      "id": "fx-001",
+      "title": "Sample Finance Ltd v. Demo Traders",
+      "court": "Fictional High Court",
+      "date": "2099-01-15",
+      "citations": ["2099 INSC 1", "(2099) 1 SCC 100"],
+      "source": "fixture",
+      "paragraphs": [
+        {"no": 1, "text": "This appeal concerns a cheque issued in discharge of a legally enforceable debt which was returned unpaid for insufficient funds."},
+        {"no": 7, "text": "Where the drawer fails to pay the amount within fifteen days of receiving the demand notice, the cause of action for a complaint arises upon the expiry of that fifteen day period."},
+        {"no": 8, "text": "The complaint must be filed within one month of the date on which the cause of action arises, but the court may take cognizance after that period if the complainant shows sufficient cause for the delay."},
+        {"no": 12, "text": "The demand notice must be issued within thirty days of the receipt of information from the bank regarding the return of the cheque."}
+      ]
+    },
+    {
+      "id": "fx-002",
+      "title": "Example Bank v. Test Borrower",
+      "court": "Fictional High Court",
+      "date": "2099-03-02",
+      "citations": ["AIR 2099 TEST 55"],
+      "source": "fixture",
+      "paragraphs": [
+        {"no": 3, "text": "The offence is compoundable and the parties may settle the matter at any stage with the permission of the court."},
+        {"no": 5, "text": "Where the parties settle, the court may record the compounding and close the proceedings against the accused."}
+      ]
+    },
+    {
+      "id": "fx-003",
+      "title": "Illustrative Co v. Placeholder Enterprises",
+      "court": "Fictional District Bench",
+      "date": "2099-05-20",
+      "citations": ["2099 SCC OnLine FICT 12"],
+      "source": "fixture",
+      "paragraphs": [
+        {"no": 2, "text": "Evidence of the complainant may be given on affidavit and the accused may apply for the complainant to be examined as to the facts contained in it."},
+        {"no": 4, "text": "The trial of such complaints is to be conducted in a summary manner as far as practicable."}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+.git
+.venv
+logs
+backups
+*.db
+__pycache__
+.pytest_cache
+web/node_modules
+web/.next
+tests
+docs
