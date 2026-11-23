@@ -1,0 +1,53 @@
+Nyaay Proprietary Licence
+Copyright (c) 2026 Balwinder Singh Labana. All rights reserved.
+
+1. Ownership
+Nyaay, including its source code, object code, database design, user interface, visual design, animations,
+the न्याय logo and intro film, playbooks, deadline rules, draft templates, the legal review pack, documentation,
+and the name "Nyaay" (together, the "Software"), is the exclusive property of Balwinder Singh Labana (the "Owner").
+
+2. No licence granted
+This file is not an open-source licence. Making the Software visible, sending it, or letting anyone download or
+view it does not grant any licence or right. Any use requires the Owner's prior written permission naming the
+person or firm, the purpose, the number of users and the period ("Written Permission").
+
+3. What is not allowed without Written Permission
+You may not, in whole or in part:
+  (a) install, run or use the Software, or let anyone else use it;
+  (b) copy, fork, clone, mirror, download for reuse, modify, translate, adapt or create works based on it;
+  (c) reverse-engineer, decompile or disassemble it, or extract its rules, prompts, templates or designs;
+  (d) share, sell, rent, lease, sub-license, publish, host, or offer it as a service;
+  (e) use it, or any part of it, to train, fine-tune or evaluate any machine-learning model;
+  (f) use the name "Nyaay", the न्याय logo or any confusingly similar mark;
+  (g) remove or change this notice or any copyright, ownership or trade marks.
+
+4. Pilots and evaluations
+Anyone given access for a pilot, demonstration or evaluation receives it in confidence, only for the purpose and
+period stated in the Written Permission, and must return or delete every copy when asked or when that period ends.
+The Owner may use any feedback or suggestions freely and without obligation.
+
+5. Contributions
+Code, designs or text contributed to the Software by collaborators become the property of the Owner unless a
+separate written agreement says otherwise.
+
+6. Patents and trade marks
+The Owner may seek patent, design and trade mark protection for the Software. Access to the Software grants no
+right under any patent, patent application, design or trade mark.
+
+7. Third-party components
+Open-source libraries and open data used by the Software (for example the Supreme Court and High Court judgment
+datasets, CC-BY-4.0) remain under their own licences. This licence covers only the Owner's work.
+
+8. No warranty; not legal advice
+The Software is a tool for advocates. It does not give legal advice, and every output must be checked by a
+qualified advocate before it is relied on. It is provided "as is", without warranty of any kind. To the extent
+the law allows, the Owner is not liable for any loss arising from its use.
+
+9. Termination
+Any permission ends automatically if its terms are broken. On termination, all use must stop and all copies must
+be deleted.
+
+10. Governing law
+This licence is governed by the laws of India.
+
+Permission and licensing enquiries: Balwinder Singh Labana, labanabalwindersingh16@gmail.com

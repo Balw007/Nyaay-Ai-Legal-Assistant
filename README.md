@@ -1,11 +1,39 @@
 # Nyaay
 
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="web/public/brand/logo-full-dark.png">
+    <img src="web/public/brand/logo-full-light.png" alt="Nyaay" width="420">
+  </picture>
+</p>
+
+<p align="center"><b>The legal workspace for Indian advocates.</b><br>
+Research to the paragraph, check every citation, and never miss a statutory deadline. Runs privately on your own computer.</p>
+
 > **Proprietary and confidential.** Copyright © 2026 Balwinder Singh Labana. All rights reserved.
 > Nyaay is not open source. No one may use, copy, install, run, modify, distribute, sell, host or show this
 > software or its documentation, in whole or in part, without the prior written permission of the owner.
-> See **Ownership and permitted use** at the end of this file.
+> See [`LICENSE`](LICENSE) and **Ownership and permitted use** at the end of this file.
 
-Legal workspace for Indian advocates: research with paragraph-level citations, citation checker, matters with stage and deadline tracking, order reading, drafting, approvals.
+## What Nyaay does
+
+| Area | What it does |
+|---|---|
+| **Research** | Searches Supreme Court and High Court judgments down to the paragraph, with filters by court, year, Act and section. Ask a question and the Research Agent answers with the paragraphs it relied on. |
+| **Judgment reader** | The full judgment, numbered by paragraph, with a navigator, citations, who cites it, and an AI headnote you can check. |
+| **Citation check** | Matches every citation in a draft to a judgment and paragraph. Nothing is marked Verified until the AI or an advocate confirms it. |
+| **Matters** | Every case with its stage, next hearing, orders, tasks, drafts, notes and saved authorities, and one timeline of every date. |
+| **Statutory deadlines** | Worked out by fixed rules (for example NI Act s.138 and s.142) from the dates you confirm, moved past court holidays. Never by AI. |
+| **Approvals** | Everything Nyaay proposes waits for an advocate. Every decision is recorded with the name of the person who made it. |
+| **AI Agents** | Research, Judgment Analysis, Citation Verification and Drafting agents run in the background and show every step they take. |
+| **Bare Acts and IPC to BNS** | Sections of the Acts you cite, linked to the judgments that discuss them, and conversion between the old and new criminal laws. |
+| **Authority map** | How the judgments in your library cite each other and how later courts treated them. |
+| **Library and Gold set** | Loads official open data, scores data quality, and keeps headnotes verified by your own advocates. |
+
+Every feature has an **(i)** next to its name in the app that explains what it is and how to use it.
+
+**Principles:** AI proposes, an advocate decides. Deadlines come from fixed rules. Nothing an AI agent writes is applied
+until a person acts on it. Client data stays on the machine running Nyaay.
 
 ## Run on Windows (first time)
 1. Install Python 3.9+, Node.js 20+, and Ollama (ollama.com). Open Ollama.
@@ -49,14 +77,39 @@ draft template, with tick boxes and a sign-off page. Give it to an advocate. You
 See `DEPLOY.md`.
 
 ## Notes
-- AI proposes, an advocate approves. Deadlines come from fixed rules, not AI.
 - Playbooks stay DRAFT until an advocate signs off in Settings > Legal review.
 - Tests: `python -m pytest -q`
+- Security problems: see [`SECURITY.md`](SECURITY.md). Please do not report them in public issues.
+
+## Updating to the latest version
+In the `nyaay` folder (VS Code terminal, PowerShell):
+```
+git pull
+.\start-nyaay.bat
+```
+Nyaay rebuilds its screens by itself when files change, and updates the database automatically on start.
+
+## For the team: saving and uploading changes
+```
+git add -A
+git status          # check no .env, database, logs or backups are listed
+git commit -m "Describe what changed"
+git push
+```
+
+## Where things are
+| Folder | What is in it |
+|---|---|
+| `app/` | The server (Python, FastAPI): routes, services, AI agents, deadline rules, database migrations |
+| `web/` | The app people use (Next.js, React): screens in `web/src/app`, shared parts in `web/src/components`, logo and intro in `web/public/brand` |
+| `tests/` | Automated tests: `python -m pytest -q` |
+| `docs/` | Pilot and privacy notes, and `docs/redesign/` (design system, motion, architecture, test results, limitations) |
+| `deploy/` | Files for running Nyaay on a server (see `DEPLOY.md`) |
 
 ## Ownership and permitted use
 
-**Owner.** Nyaay, including its source code, design, user interface, playbooks, draft templates, review pack,
-documentation and the name "Nyaay", is the property of Balwinder Singh Labana.
+**Owner.** Nyaay, including its source code, design, user interface, the न्याय logo and intro film, playbooks, draft
+templates, review pack, documentation and the name "Nyaay", is the property of Balwinder Singh Labana.
 Copyright © 2026 Balwinder Singh Labana. All rights reserved.
 
 **No licence is granted** by receiving, downloading or viewing this software. Any use requires a written
@@ -66,6 +119,7 @@ Without it, you may not:
 - install, run or use Nyaay, or let anyone else use it;
 - copy, modify, translate, reverse-engineer, or create works based on it;
 - share, sell, rent, sub-license, publish or host it, or show it to third parties;
+- use it to train or evaluate any AI model, or use the name "Nyaay" or the न्याय logo;
 - remove or change this notice or any copyright or ownership marks.
 
 **Pilots and evaluations.** Anyone given access for a pilot, demo or evaluation receives it in confidence, only
