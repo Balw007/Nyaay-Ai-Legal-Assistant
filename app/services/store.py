@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Optional
 
 from ..config import CORPUS_DB, DATA_DIR
+from . import acts, sections
 from .citations import NAME_STOP, Judgment, extract_norms, name_match, normalize_any
 
 SCHEMA = """
@@ -31,8 +32,15 @@ CREATE INDEX IF NOT EXISTS cites_src ON cites(src);
 CREATE TABLE IF NOT EXISTS cite_pairs(a TEXT NOT NULL, b TEXT NOT NULL, src TEXT, PRIMARY KEY(a, b));
 CREATE TABLE IF NOT EXISTS para_vec(pid INTEGER PRIMARY KEY, vec BLOB NOT NULL);
 CREATE TABLE IF NOT EXISTS skipped(id TEXT PRIMARY KEY, reason TEXT NOT NULL, of_jid TEXT, at TEXT DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE IF NOT EXISTS section_refs(jid TEXT NOT NULL, para_no INTEGER, act TEXT NOT NULL, section TEXT NOT NULL,
+  inferred INTEGER DEFAULT 0);
+CREATE INDEX IF NOT EXISTS section_refs_sec ON section_refs(act, section);
+CREATE INDEX IF NOT EXISTS section_refs_jid ON section_refs(jid);
+CREATE TABLE IF NOT EXISTS quality(jid TEXT PRIMARY KEY, score INTEGER NOT NULL, issues TEXT NOT NULL, checked_at TEXT);
+CREATE INDEX IF NOT EXISTS quality_score ON quality(score);
 """
-SCHEMA_FTS = """
+SCHEMA += acts.SCHEMA
+SCHEMA_FTS = acts.SCHEMA_FTS + """
 CREATE VIRTUAL TABLE IF NOT EXISTS paras_fts USING fts5(text, content='paras', content_rowid='id',
   tokenize='porter unicode61');
 CREATE VIRTUAL TABLE IF NOT EXISTS titles_fts USING fts5(jid UNINDEXED, title, tokenize='porter unicode61');
@@ -145,6 +153,8 @@ class Store:
             jcols = {r[1] for r in c.execute("PRAGMA table_info(judgments)")}
             if "text_hash" not in jcols:  # libraries built before de-duplication
                 c.execute("ALTER TABLE judgments ADD COLUMN text_hash TEXT")
+            if "sections_tagged" not in jcols:  # libraries built before section tagging
+                c.execute("ALTER TABLE judgments ADD COLUMN sections_tagged INTEGER DEFAULT 0")
             c.execute("CREATE INDEX IF NOT EXISTS judgments_text_hash ON judgments(text_hash)")
             try:
                 c.executescript(SCHEMA_FTS)
@@ -170,6 +180,8 @@ class Store:
         c.execute("DELETE FROM titles_fts WHERE jid=?", (jid,))
         c.execute("DELETE FROM cite_index WHERE jid=?", (jid,))
         c.execute("DELETE FROM cites WHERE src=?", (jid,))
+        c.execute("DELETE FROM section_refs WHERE jid=?", (jid,))
+        c.execute("DELETE FROM quality WHERE jid=?", (jid,))
         c.execute("DELETE FROM para_vec WHERE pid IN (SELECT id FROM paras WHERE jid=?)", (jid,))
         c.execute("DELETE FROM judgments WHERE id=?", (jid,))
 
@@ -206,6 +218,7 @@ class Store:
                     cur = c.execute("INSERT INTO paras(jid,no,text) VALUES(?,?,?)", (rec["id"], p["no"], p["text"]))
                     c.execute("INSERT INTO paras_fts(rowid,text) VALUES(?,?)", (cur.lastrowid, p["text"]))
                 c.execute("INSERT INTO titles_fts(jid,title) VALUES(?,?)", (rec["id"], rec["title"]))
+                self._tag(c, rec["id"], rec["paragraphs"])
                 own = set(rec.get("own_norms", []))
                 for n in own:
                     c.execute("INSERT OR IGNORE INTO cite_index(norm,jid) VALUES(?,?)", (n, rec["id"]))
@@ -224,6 +237,73 @@ class Store:
             except Exception:
                 c.rollback()
                 raise
+
+    @staticmethod
+    def _tag(c: sqlite3.Connection, jid: str, paragraphs: list) -> int:
+        """Record which Acts and sections each paragraph of a judgment refers to (see services/sections.py)."""
+        c.execute("DELETE FROM section_refs WHERE jid=?", (jid,))
+        rows = sections.tag_paragraphs(paragraphs)
+        c.executemany("INSERT INTO section_refs(jid,para_no,act,section,inferred) VALUES(?,?,?,?,?)",
+                      [(jid, no, act, sec, inf) for no, act, sec, inf in rows])
+        c.execute("UPDATE judgments SET sections_tagged=1 WHERE id=?", (jid,))
+        return len(rows)
+
+    def retag(self, progress=None, everything: bool = False) -> dict:
+        """Tag judgments that were stored before tagging existed (or all of them, after the rules improve)."""
+        with closing(self.conn()) as c:
+            ids = [r["id"] for r in c.execute(
+                "SELECT id FROM judgments" + ("" if everything else " WHERE COALESCE(sections_tagged,0)=0"))]
+        done = refs = 0
+        for i in range(0, len(ids), 200):
+            with closing(self.conn()) as c:
+                for jid in ids[i:i + 200]:
+                    paras = [{"no": r["no"], "text": r["text"]} for r in
+                             c.execute("SELECT no, text FROM paras WHERE jid=? ORDER BY id", (jid,))]
+                    refs += self._tag(c, jid, paras)
+                    done += 1
+                c.commit()
+            if progress:
+                progress(f"Tagged {done}/{len(ids)} judgments with the Acts and sections they discuss")
+        return {"judgments": done, "refs": refs}
+
+    def judgment_sections(self, jid: str) -> list:
+        """[{act, section, paras[], inferred, heading}] for one judgment, most-mentioned first."""
+        with closing(self.conn()) as c:
+            rows = c.execute("SELECT act, section, para_no, inferred FROM section_refs WHERE jid=?", (jid,)).fetchall()
+            heads = {(r["act"], r["no"]): r["heading"] for r in c.execute(
+                "SELECT act, no, heading FROM sections WHERE act IN (SELECT DISTINCT act FROM section_refs WHERE jid=?)", (jid,))}
+        by: dict = {}
+        for r in rows:
+            g = by.setdefault((r["act"], r["section"]), {"act": r["act"], "act_name": sections.SHORT.get(r["act"], r["act"]),
+                                                         "section": r["section"], "paras": [], "inferred": True,
+                                                         "heading": heads.get((r["act"], r["section"]), "")})
+            if r["para_no"] is not None:
+                g["paras"].append(r["para_no"])
+            g["inferred"] = g["inferred"] and bool(r["inferred"])
+        out = list(by.values())
+        out.sort(key=lambda g: (-len(g["paras"]), g["act"], sections.sort_key(g["section"])))
+        return out
+
+    def section_facets(self, act: Optional[str] = None, limit: int = 40) -> list:
+        """The Acts (or, for one Act, the sections) the library talks about most, with judgment counts."""
+        with closing(self.conn()) as c:
+            if act:
+                rows = c.execute("SELECT act, section, COUNT(DISTINCT jid) n FROM section_refs WHERE act=? "
+                                 "GROUP BY section ORDER BY n DESC LIMIT ?", (act, limit)).fetchall()
+            else:
+                rows = c.execute("SELECT act, '' section, COUNT(DISTINCT jid) n FROM section_refs GROUP BY act "
+                                 "ORDER BY n DESC LIMIT ?", (limit,)).fetchall()
+        return [{"act": r["act"], "name": sections.SHORT.get(r["act"], r["act"]), "section": r["section"], "judgments": r["n"]}
+                for r in rows]
+
+    def jids_with_section(self, act: str, section: Optional[str] = None) -> set:
+        with closing(self.conn()) as c:
+            if section:
+                rows = c.execute("SELECT DISTINCT jid FROM section_refs WHERE act=? AND section=?",
+                                 (act, acts.clean_no(section)))
+            else:
+                rows = c.execute("SELECT DISTINCT jid FROM section_refs WHERE act=?", (act,))
+            return {r["jid"] for r in rows}
 
     @staticmethod
     def _duplicate_of(c: sqlite3.Connection, rec: dict, th: str) -> Optional[str]:
@@ -341,6 +421,57 @@ class Store:
             ids |= {r["id"] for r in c.execute("SELECT id FROM skipped WHERE id LIKE ?", (prefix + "%",))}
             return ids
 
+    EDITABLE = ("title", "court", "decision_date", "citations", "bench", "disposal")
+
+    def update_metadata(self, jid: str, fields: dict) -> dict:
+        """Correct a judgment's details by hand. Returns {field: (old, new)} for what changed. The year follows the
+        date, the title search index follows the title, and the citation lookup follows the citations."""
+        bad = set(fields) - set(self.EDITABLE)
+        if bad:
+            raise ValueError(f"cannot edit: {', '.join(sorted(bad))}")
+        with closing(self.conn()) as c:
+            j = c.execute("SELECT * FROM judgments WHERE id=?", (jid,)).fetchone()
+            if not j:
+                raise KeyError(jid)
+            changed, sets, args = {}, [], []
+            for k, v in fields.items():
+                if k == "citations":
+                    v = [str(x).strip() for x in v if str(x).strip()]
+                    old = json.loads(j["citations"] or "[]")
+                    val = json.dumps(v)
+                else:
+                    v = str(v).strip()
+                    old, val = j[k], v
+                if k == "title" and not v:
+                    raise ValueError("the title cannot be empty")
+                if k == "decision_date" and v:
+                    from .quality import _valid_date
+
+                    d = _valid_date(v)
+                    if not d:
+                        raise ValueError("the date must look like 2019-04-30 and be a real date")
+                if old != v:
+                    changed[k] = (old, v)
+                    sets.append(f"{k}=?")
+                    args.append(val)
+                    if k == "decision_date" and v:
+                        sets.append("year=?")
+                        args.append(int(v[:4]))
+            if not changed:
+                return {}
+            c.execute(f"UPDATE judgments SET {', '.join(sets)} WHERE id=?", args + [jid])
+            if "title" in changed:
+                c.execute("DELETE FROM titles_fts WHERE jid=?", (jid,))
+                c.execute("INSERT INTO titles_fts(jid,title) VALUES(?,?)", (jid, changed["title"][1]))
+            if "citations" in changed:
+                c.execute("DELETE FROM cite_index WHERE jid=?", (jid,))
+                for cit in changed["citations"][1]:
+                    for n in extract_norms(cit):
+                        c.execute("INSERT OR IGNORE INTO cite_index(norm,jid) VALUES(?,?)", (n, jid))
+            c.execute("DELETE FROM quality WHERE jid=?", (jid,))  # scored again on the next check
+            c.commit()
+        return changed
+
     def set_summary(self, jid: str, summary: str) -> None:
         with closing(self.conn()) as c:
             c.execute("UPDATE judgments SET summary=? WHERE id=?", (summary, jid))
@@ -358,8 +489,15 @@ class Store:
         return {"judgments": n, "real_judgments": real, "paragraphs": paras, "fixture_only": real == 0,
                 "year_min": yrs["a"], "year_max": yrs["b"], "courts": courts}
 
-    def _where(self, court, year_from, year_to, jid):
+    def _where(self, court, year_from, year_to, jid, act=None, section=None):
         sql, args = "", []
+        if act:
+            sql += " AND p.jid IN (SELECT jid FROM section_refs WHERE act = ?"
+            args.append(act)
+            if section:
+                sql += " AND section = ?"
+                args.append(acts.clean_no(section))
+            sql += ")"
         if court:
             sql += " AND j.court = ?"; args.append(court)
         if year_from:
@@ -371,11 +509,11 @@ class Store:
         return sql, args
 
     def search_paras(self, q: str, *, mode: str = "and", court=None, year_from=None, year_to=None, jid=None,
-                     limit: int = 300, snippet: bool = False, with_id: bool = False) -> list:
+                     limit: int = 300, snippet: bool = False, with_id: bool = False, act=None, section=None) -> list:
         fq = fts_query(q, mode)
         if not fq:
             return []
-        extra, args = self._where(court, year_from, year_to, jid)
+        extra, args = self._where(court, year_from, year_to, jid, act, section)
         snip = ", snippet(paras_fts, 0, '<mark>', '</mark>', ' ... ', 32) AS snip" if snippet else ""
         sql = (f"SELECT p.id AS pid, p.jid, p.no, p.text, bm25(paras_fts) AS score, j.title, j.court, j.decision_date, j.year, "
                f"j.citations{snip} FROM paras_fts JOIN paras p ON p.id = paras_fts.rowid "
@@ -393,24 +531,28 @@ class Store:
                 f"FROM paras p JOIN judgments j ON j.id=p.jid WHERE p.id IN ({q})", ids)}
         return [rows[i] for i in ids if i in rows]
 
-    def hybrid(self, q: str, *, court=None, year_from=None, year_to=None, jid=None, limit: int = 120) -> tuple:
+    def hybrid(self, q: str, *, court=None, year_from=None, year_to=None, jid=None, limit: int = 120,
+               act=None, section=None) -> tuple:
         """Keyword (BM25, with synonyms) + semantic ranking fused by reciprocal rank. Returns (rows, mode)."""
         from . import vectors
 
         kw, mode = [], "and"
         for mode in ("and", "or"):
             kw = self.search_paras(q, mode=mode, court=court, year_from=year_from, year_to=year_to, jid=jid,
-                                   limit=limit, snippet=True, with_id=True)
+                                   limit=limit, snippet=True, with_id=True, act=act, section=section)
             if kw:
                 break
         sem = vectors.search(self, q, k=400)
         if not sem:
             return kw, mode
         meta = {r["pid"]: r for r in self.paras_by_ids([pid for pid, _ in sem])}
+        allowed = self.jids_with_section(act, section) if act else None
         sem_rows = []
         for pid, score in sem:
             r = meta.get(pid)
             if not r or (court and r["court"] != court) or (jid and r["jid"] != jid):
+                continue
+            if allowed is not None and r["jid"] not in allowed:
                 continue
             if (year_from and (r["year"] or 0) < int(year_from)) or (year_to and (r["year"] or 9999) > int(year_to)):
                 continue
@@ -426,9 +568,10 @@ class Store:
         rows = [e["row"] for e in sorted(fused.values(), key=lambda e: -e["s"])][:limit]
         return rows, ("hybrid" if kw else "semantic")
 
-    def search(self, q: str, *, court=None, year_from=None, year_to=None, limit: int = 10, offset: int = 0) -> dict:
+    def search(self, q: str, *, court=None, year_from=None, year_to=None, limit: int = 10, offset: int = 0,
+               act=None, section=None) -> dict:
         """Judgment-level results with the best matching paragraphs as snippets."""
-        rows, used = self.hybrid(q, court=court, year_from=year_from, year_to=year_to, limit=300)
+        rows, used = self.hybrid(q, court=court, year_from=year_from, year_to=year_to, limit=300, act=act, section=section)
         grouped: dict = {}
         for r in rows:
             g = grouped.setdefault(r["jid"], {"id": r["jid"], "title": r["title"], "court": r["court"],

@@ -65,7 +65,7 @@ export default function CalendarPage() {
                   className={cn("min-h-[92px] border-b border-r border-rule p-1.5 text-left align-top transition-colors hover:bg-vellum [&:nth-child(7n)]:border-r-0",
                     !inMonth && "opacity-40", selected === k && "bg-brass-soft")}>
                   <span className={cn("inline-grid h-6 w-6 place-items-center rounded-full text-sm tabular-nums",
-                    k === today ? "bg-brass font-semibold text-[#0a0e18]" : "text-muted")}>{d.getDate()}</span>
+                    k === today ? "bg-brass font-semibold text-on-brass" : "text-muted")}>{d.getDate()}</span>
                   <div className="mt-1 space-y-0.5">
                     {ev.slice(0, 3).map((e, i) => (
                       <div key={i} className={cn("truncate rounded-sm px-1 text-[11px] leading-[18px]",

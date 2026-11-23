@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from .config import SCHEDULER, DEMO_SEED, ECOURTSINDIA_TOKEN, INDIANKANOON_TOKEN, MODEL, MODEL_FAST, WA_TOKEN
-from .db import Base, engine, migrate
+from .db import upgrade_db
 from .routes import (admin, auth, brief, calendar_ics, citations, features, integrations, library, matters, orders, research,
                      tasks, telegram, tools, whatsapp, workspace)
 from .services.llm import get_llm, llm_status
@@ -17,8 +17,7 @@ UNSAFE = {"POST", "PUT", "PATCH", "DELETE"}
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    Base.metadata.create_all(engine)
-    migrate()
+    upgrade_db()
     store = get_store()
     if DEMO_SEED and store.stats()["judgments"] == 0:
         seed_demo(store)
@@ -60,6 +59,13 @@ for r in (auth.router, admin.router, integrations.router, whatsapp.router, works
 from .routes import system as system_routes  # noqa: E402  (system check and legal review pack)
 
 app.include_router(system_routes.router)
+
+from .routes import data as data_routes  # noqa: E402  (Bare Acts, section tags, data quality, gold set)
+
+app.include_router(data_routes.router)
+from .routes import agents as agent_routes  # noqa: E402  (background AI agents with recorded steps)
+
+app.include_router(agent_routes.router)
 
 STATIC = Path(__file__).resolve().parent / "static"
 app.mount("/app", StaticFiles(directory=STATIC, html=True), name="ui")

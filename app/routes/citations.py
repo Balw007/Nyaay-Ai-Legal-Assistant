@@ -29,13 +29,13 @@ class Confirm(BaseModel):
     actor: str = "advocate"
 
 
-def _run(db: Session, firm_id: int, text: str, matter_id: Optional[int]) -> dict:
+def _run(db: Session, firm_id: int, text: str, matter_id: Optional[int], on_item=None) -> dict:
     if not text.strip():
         raise HTTPException(422, "Empty draft")
     if matter_id:
         get_matter_or_404(db, firm_id, matter_id)
     llm = firm_llm(db, firm_id, "support")
-    items = cit.check_text(text, cit.get_index(), llm)
+    items = cit.check_text(text, cit.get_index(), llm, on_item=on_item)
     row = CitationCheck(firm_id=firm_id, matter_id=matter_id, source_text=text, items=items,
                         method="llm" if llm.available else "rules")
     db.add(row)

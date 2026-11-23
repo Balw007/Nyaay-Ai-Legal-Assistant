@@ -14,11 +14,8 @@ once() {  # once <name> <from HHMM UTC> <until HHMM UTC> <command...>
   fi
 }
 
-pg_backup() {
+pg_backup() {  # pg_dump of the firm database + judgment library copy, 14 kept, then a test restore (see app/dbtool.py)
   python -m app.jobs backup
-  f=/data/backups/pg-$(date -u +%F).sql.gz
-  PGPASSWORD="$POSTGRES_PASSWORD" pg_dump -h db -U nyaai nyaai | gzip > "$f.tmp" && mv "$f.tmp" "$f"
-  find /data/backups -name 'pg-*.sql.gz' -mtime +14 -delete
 }
 
 while true; do

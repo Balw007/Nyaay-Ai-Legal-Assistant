@@ -123,7 +123,7 @@ export default function DraftPage({ params }: { params: Promise<{ id: string }> 
                 )}
                 {suggest.changes.length > 0 && <ul className="space-y-1">{suggest.changes.map((c) => <li key={c} className="flex gap-2 text-sm text-muted"><span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-cyan" />{c}</li>)}</ul>}
                 <details><summary className="cursor-pointer text-sm text-brass">Preview the suggested text</summary>
-                  <pre className="prose-judgment mt-2 max-h-64 overflow-y-auto scrollbar-thin whitespace-pre-wrap rounded-md bg-vellum p-3 text-sm">{suggest.body}</pre>
+                  <pre className="mt-2 border-l-2 border-cyan/40 font-sans leading-6 max-h-64 overflow-y-auto scrollbar-thin whitespace-pre-wrap rounded-md bg-vellum p-3 text-sm">{suggest.body}</pre>
                 </details>
                 <div className="flex gap-2">
                   <Button size="sm" variant="ghost" onClick={() => setSuggest(null)}>Discard</Button>

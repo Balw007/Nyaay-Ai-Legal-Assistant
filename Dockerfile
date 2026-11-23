@@ -6,8 +6,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /srv
 COPY requirements.txt .
-RUN pip install -r requirements.txt "psycopg[binary]>=3.1" fastembed gunicorn
+RUN pip install -r requirements.txt fastembed gunicorn
 COPY app ./app
+COPY alembic.ini .
 COPY deploy ./deploy
 RUN useradd -m nyaai && mkdir -p /data && chown -R nyaai /data
 USER nyaai

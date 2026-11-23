@@ -81,11 +81,11 @@ export default function ApprovalsPage() {
       ) : (
         <div className="space-y-5">
           <Panel className="flex flex-wrap items-center gap-3 p-4">
-            <p className="min-w-0 flex-1 text-base" aria-live="polite">{q.data.summary}</p>
+            <p className="min-w-0 basis-full text-base sm:basis-0 sm:flex-1" aria-live="polite">{q.data.summary}</p>
             {allowed && <>
-              <Button size="sm" variant="brass" disabled={!q.data.safe_ids.length} loading={batch.isPending} title="Only plain to-dos. Date changes, stage changes and client messages are never included."
-                onClick={() => run(q.data!.safe_ids, "approve", `all ${q.data!.safe_ids.length} plain to-dos (no date, stage or message changes)`)}>
-                <ShieldCheck className="h-3.5 w-3.5" /> Approve all safe ({q.data.safe_ids.length})
+              <Button size="sm" variant="brass" disabled={!q.data.safe_ids.length} loading={batch.isPending} title="Approves every proposal that changes no date and no stage. This can include reminders to send a client update; Nyaay itself never sends anything."
+                onClick={() => run(q.data!.safe_ids, "approve", `all ${q.data!.safe_ids.length} proposals that change no date or stage`)}>
+                <CheckCheck className="h-3.5 w-3.5" /> Approve all without date or stage changes ({q.data.safe_ids.length})
               </Button>
               <Button size="sm" variant="primary" disabled={!sel.size} loading={batch.isPending} onClick={() => run([...sel], "approve", `${sel.size} selected`)}><Check className="h-3.5 w-3.5" /> Approve selected ({sel.size})</Button>
               <Button size="sm" variant="ghost" disabled={!sel.size} loading={batch.isPending} onClick={() => run([...sel], "reject", `${sel.size} selected`)}><X className="h-3.5 w-3.5" /> Reject selected</Button>

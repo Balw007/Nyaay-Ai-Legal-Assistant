@@ -6,7 +6,17 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 _tmp = tempfile.mkdtemp()
-os.environ["NYAAI_DATABASE_URL"] = f"sqlite:///{_tmp}/test.db"
+# Tests run on SQLite by default. Set NYAAY_TEST_DATABASE_URL to a throw-away PostgreSQL database to run the same
+# suite on Postgres (its tables are dropped and rebuilt at the start of the run).
+_pg = os.environ.get("NYAAY_TEST_DATABASE_URL")
+os.environ["NYAAI_DATABASE_URL"] = _pg or f"sqlite:///{_tmp}/test.db"
+if _pg and not os.environ.get("_NYAAY_PG_RESET"):  # once per run, even if this file is imported twice
+    os.environ["_NYAAY_PG_RESET"] = "1"
+    from sqlalchemy import create_engine, text
+
+    with create_engine(_pg).begin() as _c:
+        _c.execute(text("DROP SCHEMA public CASCADE"))
+        _c.execute(text("CREATE SCHEMA public"))
 os.environ["NYAAI_CORPUS"] = f"{_tmp}/corpus.db"  # never touch the real judgment library
 os.environ.pop("ANTHROPIC_API_KEY", None)
 os.environ["NYAAI_LLM"] = "none"     # tests inject fake models; never call a real one

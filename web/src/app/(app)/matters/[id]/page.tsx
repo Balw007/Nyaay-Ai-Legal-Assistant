@@ -1,18 +1,21 @@
 "use client";
 import Link from "next/link";
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { ArrowLeft, Check, Pencil, RefreshCw, Target, X } from "lucide-react";
 import { api } from "@/lib/api";
 import type { MatterDetail } from "@/lib/types";
 import { fmtDate, timeAgo } from "@/lib/format";
-import { Badge, ErrorNote, Panel, Spinner, Tabs } from "@/components/ui/misc";
+import { Badge, ErrorNote, Panel, PanelHeader, Skeleton, Spinner, Tabs } from "@/components/ui/misc";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/field";
 import { StageRail } from "@/components/visuals/stage-rail";
+import { CaseTimeline } from "@/components/visuals/case-timeline";
+import { pushRecent } from "@/lib/recent";
 import { ClientUpdateButton, IcsDownload, RoutesTab } from "@/components/matters/tools";
 import { AuthoritiesTab, DraftsTab, EraseMatter, NotesTab, OrdersTab, OverviewTab, PartiesTab, TasksTab } from "@/components/matters/tabs";
+import { InfoTip } from "@/components/ui/info";
 
 type Playbook = { name: string; status: string; inputs: { name: string; label: string }[]; stages: { id: string; name: string }[] };
 type Tab = "overview" | "orders" | "tasks" | "drafts" | "notes" | "authorities" | "routes" | "parties";
@@ -64,7 +67,11 @@ export default function MatterPage({ params }: { params: Promise<{ id: string }>
     onError: (e) => toast.error((e as Error).message),
   });
 
-  if (q.isLoading) return <Spinner label="Opening matter" />;
+  useEffect(() => {
+    if (q.data) pushRecent({ kind: "matter", id: String(q.data.matter.id), title: q.data.matter.title, sub: q.data.matter.court ?? undefined });
+  }, [q.data]);
+
+  if (q.isLoading) return <div className="space-y-4" aria-busy="true"><Spinner label="Opening matter" /><Skeleton className="h-9 w-2/3" /><Skeleton className="h-4 w-1/3" /><Skeleton className="mt-6 h-40" /></div>;
   if (q.isError) return <ErrorNote error={q.error} />;
   const d = q.data!;
   const m = d.matter;
@@ -75,9 +82,9 @@ export default function MatterPage({ params }: { params: Promise<{ id: string }>
       <div>
         <Link href="/matters" className="mb-3 inline-flex items-center gap-1.5 text-sm text-muted hover:text-text"><ArrowLeft className="h-3.5 w-3.5" /> Matters</Link>
         <div className="flex flex-wrap items-start justify-between gap-4">
-          <div className="min-w-0">
-            <h1 className="font-display text-2xl font-semibold leading-tight">{m.title}</h1>
-            <p className="mt-1 text-base text-muted">{[m.client_name && `Client: ${m.client_name}`, m.court, m.case_number, m.cnr && `CNR ${m.cnr}`].filter(Boolean).join(" · ") || "Add court details in the overview below."}</p>
+          <div className="vt-hero min-w-0">
+            <h1 className="font-editorial text-[2rem] leading-[1.12] md:text-[2.35rem]">{m.title} <InfoTip k="Matter" title="This matter" className="h-6 w-6 -translate-y-1" /></h1>
+            <p className="mt-2 text-base text-muted">{[m.client_name && `Client: ${m.client_name}`, m.court, m.case_number, m.cnr && `CNR ${m.cnr}`].filter(Boolean).join(", ") || "Add court details in the overview below."}</p>
             <div className="mt-2 flex flex-wrap gap-1.5">
               {m.status !== "active" && <Badge>{m.status === "on_hold" ? "On hold" : "Closed"}</Badge>}
               {m.next_date && <Badge tone="cyan">Next hearing {fmtDate(m.next_date)}</Badge>}
@@ -97,26 +104,31 @@ export default function MatterPage({ params }: { params: Promise<{ id: string }>
         </div>
       </div>
 
-      <Panel className="p-5">
-        <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+      <Panel className="p-5" lit>
+        <div className="relative z-[3] mb-3 flex flex-wrap items-center justify-between gap-3">
           <GoalEditor id={m.id} goal={m.goal} />
-          <span className="text-sm text-faint">{Math.round(d.plan.progress * 100)}% of the way · {pb.data?.name ?? m.case_type}</span>
+          <span className="text-sm text-faint">{Math.round(d.plan.progress * 100)}% of the way through {pb.data?.name ?? m.case_type}</span>
         </div>
-        <StageRail stages={d.plan.stages} progress={d.plan.progress} />
-        <div className="mt-5 grid gap-4 md:grid-cols-2">
-          <div className="rounded-lg border border-cyan/25 bg-cyan-soft/50 p-4">
-            <p className="text-sm font-medium text-cyan">Do now · {d.plan.current_stage_name}</p>
+        <div className="relative z-[3]"><StageRail stages={d.plan.stages} progress={d.plan.progress} /></div>
+        <div className="relative z-[3] mt-5 grid gap-4 md:grid-cols-2">
+          <div className="rounded-xl border border-cyan/25 bg-cyan-soft p-4">
+            <p className="text-sm font-medium text-cyan">Do now: {d.plan.current_stage_name}</p>
             {d.plan.current_actions.length ? (
               <ul className="mt-2 space-y-1.5">{d.plan.current_actions.map((a) => <li key={a} className="flex gap-2 text-base"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan" />{a}</li>)}</ul>
             ) : <p className="mt-2 text-sm text-muted">Nothing pending at this stage.</p>}
           </div>
-          <div className="rounded-lg border border-rule p-4">
-            <p className="text-sm font-medium text-muted">Next{d.plan.next_stage ? ` · ${d.plan.next_stage}` : ""}</p>
+          <div className="rounded-xl border border-rule bg-vellum p-4">
+            <p className="text-sm font-medium text-muted">Next{d.plan.next_stage ? `: ${d.plan.next_stage}` : ""}</p>
             {d.plan.next_stage_actions.length ? (
               <ul className="mt-2 space-y-1.5">{d.plan.next_stage_actions.map((a) => <li key={a} className="flex gap-2 text-base text-muted"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-rule-strong" />{a}</li>)}</ul>
             ) : <p className="mt-2 text-sm text-muted">This is the last stage.</p>}
           </div>
         </div>
+      </Panel>
+
+      <Panel>
+        <PanelHeader title="Case timeline" sub="Dates you entered, deadlines calculated by fixed rules, and dates from the court, on one line" />
+        <div className="relative z-[3] p-4"><CaseTimeline d={d} inputs={pb.data?.inputs} /></div>
       </Panel>
 
       <Tabs value={tab} onChange={setTab} className="overflow-x-auto" items={[

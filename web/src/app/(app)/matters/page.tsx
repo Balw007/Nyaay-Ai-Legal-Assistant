@@ -1,4 +1,6 @@
 "use client";
+import { MorphLink, useNavigate } from "@/lib/transition";
+import type { MatterDetail } from "@/lib/types";
 import Link from "next/link";
 import { Suspense, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -54,6 +56,9 @@ function MattersInner() {
     return out;
   }, [cal.data]);
 
+  const navigate = useNavigate();
+  const qcx = useQueryClient();
+  const prefetchMatter = (id: number) => qcx.prefetchQuery({ queryKey: ["matter", id], queryFn: () => api.get<MatterDetail>(`/matters/${id}`) });
   const rows = (matters.data ?? []).filter((m) =>
     (!status || m.status === status) && (!stage || m.current_stage === stage) &&
     (!q || [m.title, m.client_name, m.court, m.case_number, m.cnr].some((x) => x?.toLowerCase().includes(q.toLowerCase()))));
@@ -108,9 +113,9 @@ function MattersInner() {
                     const dd = daysUntil(dl?.date);
                     const nd = daysUntil(m.next_date);
                     return (
-                      <tr key={m.id} className="group cursor-pointer transition-colors hover:bg-vellum" onClick={() => router.push(`/matters/${m.id}`)}>
+                      <tr key={m.id} data-morph className="group cursor-pointer transition-colors hover:bg-vellum" onMouseEnter={() => prefetchMatter(m.id)} onClick={(e) => navigate(`/matters/${m.id}`, { source: e.currentTarget, prepare: () => prefetchMatter(m.id) })}>
                         <td className="px-4 py-3 align-top">
-                          <Link href={`/matters/${m.id}`} className="font-medium group-hover:text-brass" onClick={(e) => e.stopPropagation()}>{m.title}</Link>
+                          <MorphLink href={`/matters/${m.id}`} prepare={() => prefetchMatter(m.id)} className="font-medium group-hover:text-brass" onClick={(e) => e.stopPropagation()}>{m.title}</MorphLink>
                           <p className="text-sm text-muted">{[m.client_name, m.court, m.case_number].filter(Boolean).join(" · ") || "No court details yet"}</p>
                           {m.status !== "active" && <Badge className="mt-1">{STATUS_LABEL[m.status] ?? m.status}</Badge>}
                         </td>

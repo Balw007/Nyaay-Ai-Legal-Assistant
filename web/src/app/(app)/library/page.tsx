@@ -10,6 +10,7 @@ import { isAdmin, useMe } from "@/lib/hooks";
 import { Button } from "@/components/ui/button";
 import { Field, Select } from "@/components/ui/field";
 import { Badge, ErrorNote, PageHeader, Panel, PanelHeader, Spinner, Tabs } from "@/components/ui/misc";
+import { QualityPanel } from "@/components/data/quality-panel";
 import { cn } from "@/lib/utils";
 
 type Source = "sc" | "hc" | "files";
@@ -235,19 +236,7 @@ export default function LibraryPage() {
         </Panel>
       </div>
 
-      {s.quality && (
-        <Panel>
-          <PanelHeader title="Data quality" sub="Checks run on every judgment as it is cleaned and stored" />
-          <dl className="grid grid-cols-2 gap-px bg-rule sm:grid-cols-3 lg:grid-cols-6">
-            {Object.entries(s.quality).map(([k, v]) => (
-              <div key={k} className="bg-surface-solid/60 px-4 py-3">
-                <dt className="text-xs text-muted">{k.replace(/_/g, " ").replace(/^./, (m) => m.toUpperCase())}</dt>
-                <dd className="font-display text-lg font-semibold tabular-nums">{typeof v === "number" ? v.toLocaleString("en-IN") : String(v)}</dd>
-              </div>
-            ))}
-          </dl>
-        </Panel>
-      )}
+      <QualityPanel admin={admin} running={!!running} onJob={refresh} />
     </div>
   );
 }

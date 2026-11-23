@@ -2,7 +2,7 @@
 import { forwardRef } from "react";
 import { cn } from "@/lib/utils";
 
-const base = "w-full rounded-md border border-rule-strong bg-vellum px-3 text-base text-text placeholder:text-faint " +
+const base = "w-full rounded-lg border border-rule-strong bg-vellum shadow-[inset_0_1px_2px_rgba(0,0,0,.12)] transition-[border-color,box-shadow] px-3 text-base text-text placeholder:text-faint " +
   "focus:outline-none focus:border-brass focus:ring-2 focus:ring-brass/25 disabled:opacity-60";
 
 export const Input = forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(

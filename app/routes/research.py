@@ -49,8 +49,10 @@ def stats(db: Session = Depends(get_db), firm_id: int = Depends(get_firm_id)):
 @router.get("/research/search")
 def search(q: str = Query(..., min_length=2), court: Optional[str] = None, year_from: Optional[int] = None,
            year_to: Optional[int] = None, limit: int = Query(10, ge=1, le=50), offset: int = Query(0, ge=0),
+           act: Optional[str] = None, section: Optional[str] = None,
            db: Session = Depends(get_db), user: User = Depends(get_user)):
-    out = get_store().search(q, court=court, year_from=year_from, year_to=year_to, limit=limit, offset=offset)
+    out = get_store().search(q, court=court, year_from=year_from, year_to=year_to, limit=limit, offset=offset,
+                             act=act or None, section=section or None)
     if offset == 0:
         _log(db, user.firm_id, q, "search", out["total"], user.id)
     return out

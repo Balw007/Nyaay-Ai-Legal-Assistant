@@ -27,7 +27,7 @@ export function Highlight({ text, term, activeIndex, offset = 0 }: { text: strin
       {parts.map((p, i) => {
         if (i % 2 === 1) {
           const idx = k++;
-          return <mark key={i} data-find={idx} className={idx === activeIndex ? "!bg-brass !text-[#0a0e18] outline outline-2 outline-brass/60" : undefined}>{p}</mark>;
+          return <mark key={i} data-find={idx} className={idx === activeIndex ? "!bg-brass !text-on-brass outline outline-2 outline-brass/60" : undefined}>{p}</mark>;
         }
         return <span key={i}>{p}</span>;
       })}

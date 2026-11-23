@@ -149,3 +149,35 @@ export interface RoutesResponse {
   inputs: { name: string; label: string; saved: string | null }[]; routes: RouteOption[];
 }
 export interface TelegramStatus { configured: boolean; source: string | null; token_hint: string | null; bot_username: string | null; chat_id: string | null; brief: boolean; error?: string }
+
+// ---- Bare Acts, section tags, data quality, gold set
+export interface ActSummary { code: string; name: string; short: string; loaded: boolean; n_sections: number; official: boolean; source: string; imported_at: string | null; expected: number | null; judgments: number }
+export interface ActSectionRow { no: string; heading: string; chapter: string; ord: number; judgments: number }
+export interface ActDetail { code: string; name: string; short: string; year: number | null; n_sections: number; official: number; source: string; source_url: string; imported_at: string; sections: ActSectionRow[] }
+export interface MapLink { old_act?: string; old_no?: string; new_act?: string; new_no?: string; status: string; note: string }
+export interface SectionCase { id: string; title: string; court: string; year: number | null; citation: string; mentions: number; paras: number[] }
+export interface SectionDetail {
+  act: string; act_name: string; no: string; heading: string; chapter: string; text: string; official: number; source: string;
+  prev: { no: string; heading: string } | null; next: { no: string; heading: string } | null;
+  old: MapLink[]; new: MapLink[]; deleted_in_new: { status: string; note: string } | null; judgments: number; cases: SectionCase[];
+}
+export interface SectionHit { act: string; short: string; no: string; heading: string; snippet: string; exact: boolean }
+export interface JudgmentSection { act: string; act_name: string; section: string; paras: number[]; inferred: boolean; heading: string }
+export interface SectionFacet { act: string; name: string; section: string; judgments: number }
+
+export interface QualityIssue { code: string; label: string; fix: string; count: number }
+export interface QualityReport {
+  judgments: number; scored: number; stale: number; average: number | null; share_trustworthy: number | null;
+  buckets: Record<string, number>; issues: QualityIssue[]; needs_ocr: number; scanned_skipped: number; duplicates_skipped: number;
+  duplicate_groups: number; section_tagging: { tagged: number; with_refs: number };
+}
+export interface QualityItem { id: string; title: string; court: string; decision_date: string; year: number | null; source: string; source_url: string; n_paras: number; score: number; issues: string[] }
+export interface DuplicateGroup { court: string; date: string; title: string; ids: string[]; sources: string[]; paras: number[] }
+
+export interface GoldEntry {
+  id: number; jid: string; title: string; citation: string; topic: string; status: "candidate" | "verified" | "rejected";
+  headnote: string; held: string; issues: string[]; key_paras: number[]; notes: string;
+  reviewer_name: string; reviewer_enrolment: string; verified_at: string | null; created_at: string; updated_at: string;
+}
+export interface GoldSuggestion { id: string; title: string; court: string; year: number | null; citation: string; mentions: number; cited_by: number }
+export interface GoldBenchmark { k: number; entries: number; found: number; first: number; recall: number | null; first_rate: number | null; rows: { topic: string; jid: string; title: string; rank: number | null }[] }

@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { AlertTriangle, ArrowRight, ExternalLink, Search } from "lucide-react";
 import { api, qs } from "@/lib/api";
@@ -44,7 +45,12 @@ function Row({ r }: { r: ConvertResult }) {
 }
 
 export default function ConvertPage() {
-  const [q, setQ] = useState("");
+  return <Suspense fallback={<Spinner />}><ConvertInner /></Suspense>;
+}
+
+function ConvertInner() {
+  const params = useSearchParams();
+  const [q, setQ] = useState(params.get("q") ?? "");
   const dq = useDebounced(q.trim());
   const res = useQuery({ queryKey: ["convert", dq], enabled: dq.length > 0, queryFn: () => api.get<ConvertResponse>(`/tools/convert${qs({ q: dq })}`) });
   const data = res.data;

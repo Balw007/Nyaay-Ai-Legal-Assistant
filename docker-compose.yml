@@ -11,7 +11,7 @@ services:
       POSTGRES_DB: nyaai
       POSTGRES_USER: nyaai
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
-    volumes: [pgdata:/var/lib/postgresql/data]
+    volumes: [pgdata:/var/lib/postgresql/data, ./deploy/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql:ro]
     healthcheck: {test: ["CMD-SHELL", "pg_isready -U nyaai"], interval: 10s, retries: 5}
 
   app:
@@ -51,6 +51,8 @@ services:
     environment:
       <<: *appenv
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # the nightly backup is test-restored into this scratch database (created by deploy/initdb.sql)
+      NYAAY_VERIFY_DATABASE_URL: postgresql+psycopg://nyaai:${POSTGRES_PASSWORD}@db:5432/nyaai_verify
     volumes: [corpus:/data]
     depends_on: {db: {condition: service_healthy}}
     command: ["sh", "/srv/deploy/jobs.sh"]

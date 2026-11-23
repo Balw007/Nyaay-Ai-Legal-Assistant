@@ -45,7 +45,7 @@ def wait_http(url: str, seconds: int, proc: subprocess.Popen = None) -> bool:
         if proc is not None and proc.poll() is not None:
             return False
         try:
-            with urllib.request.urlopen(url, timeout=2) as r:
+            with urllib.request.urlopen(url, timeout=20) as r:
                 if r.status < 500:
                     return True
         except Exception:
@@ -122,6 +122,39 @@ def ensure_web_built(rebuild: bool) -> bool:
     return True
 
 
+def start_ollama(env: dict):
+    """Start the local Ollama when it is not already running, so the AI works without a second window.
+
+    Returns the process only when Nyaay started it. That is the one Nyaay stops again when it exits.
+    An Ollama that was already running (the Ollama app, another window) is never touched.
+    Turn this off with NYAAY_MANAGE_OLLAMA=0 in .env.
+    """
+    from urllib.parse import urlparse
+
+    from .config import LLM_PROVIDER, OLLAMA_URL
+
+    if env.get("NYAAY_MANAGE_OLLAMA", "1").strip() == "0" or LLM_PROVIDER != "ollama":
+        return None
+    u = urlparse(OLLAMA_URL)
+    if (u.hostname or "") not in ("localhost", "127.0.0.1", "::1"):
+        return None  # the AI runs on another computer
+    port = u.port or 11434
+    if port_open(port):
+        say("  Ollama is already running. Nyaay will leave it on when it stops.")
+        return None
+    exe = shutil.which("ollama")
+    if not exe:
+        say("  Ollama was not found, so the AI is off. Install it from https://ollama.com/download")
+        return None
+    say("  Starting Ollama ...")
+    proc = spawn([exe, "serve"], ROOT, LOGS / "ollama.log", env)
+    if wait_http(f"http://127.0.0.1:{port}/api/tags", 40, proc):
+        say("  Ollama is ready.")
+    else:
+        say(f"  Ollama did not start. Details are in {LOGS / 'ollama.log'}")
+    return proc
+
+
 def daily_backup() -> None:
     """A copy of the firm database once a day, kept 14 days. The judgment library is not copied: it can be re-downloaded."""
     try:
@@ -178,6 +211,7 @@ def main(argv=None) -> int:
         use_web = False
 
     procs = []
+    ollama_proc = None
 
     def _stop(signum, frame):  # closing the window or `kill` should stop both parts too
         raise KeyboardInterrupt
@@ -189,11 +223,12 @@ def main(argv=None) -> int:
             except (ValueError, OSError):
                 pass
     try:
+        ollama_proc = start_ollama(env)
         say("  Starting the server ...")
         api = spawn([sys.executable, "-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", str(a.api_port)],
                     ROOT, LOGS / "server.log", env)
         procs.append(api)
-        if not wait_http(f"http://127.0.0.1:{a.api_port}/health", 60, api):
+        if not wait_http(f"http://127.0.0.1:{a.api_port}/health", 120, api):
             say(f"  The server did not start. Details are in {LOGS / 'server.log'}")
             tail = (LOGS / "server.log").read_text(errors="replace").splitlines()[-8:] if (LOGS / "server.log").exists() else []
             for line in tail:
@@ -228,6 +263,9 @@ def main(argv=None) -> int:
     finally:
         for p in procs:
             kill_tree(p)
+        if ollama_proc is not None:
+            kill_tree(ollama_proc)
+            say("  Ollama stopped.")
 
 
 if __name__ == "__main__":

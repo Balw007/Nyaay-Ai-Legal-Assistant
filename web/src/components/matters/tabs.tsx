@@ -374,7 +374,7 @@ export function AuthoritiesTab({ d }: { d: MatterDetail }) {
             <Panel as="article" key={b.id} className="group p-4">
               <div className="flex items-start gap-2">
                 <div className="min-w-0 flex-1">
-                  <Link href={`/judgments/${encodeURIComponent(b.jid)}${b.para_no !== null ? `#p${b.para_no}` : ""}`} className="font-medium hover:text-brass">{b.title}</Link>
+                  <Link href={`/judgments/${encodeURIComponent(b.jid)}${b.para_no !== null ? `?para=${b.para_no}` : ""}`} className="font-medium hover:text-brass">{b.title}</Link>
                   <p className="text-sm text-muted">{b.citation}{b.para_no !== null && ` · para ${b.para_no}`}</p>
                 </div>
                 <button onClick={() => del.mutate(b.id)} className="rounded p-1 text-faint opacity-0 group-hover:opacity-100 focus:opacity-100 hover:text-tape" aria-label="Remove"><Trash2 className="h-4 w-4" /></button>

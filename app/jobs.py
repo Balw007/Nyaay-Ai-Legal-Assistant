@@ -3,19 +3,20 @@
   python -m app.jobs brief     # 8 am: send each opted-in advocate their brief (Telegram, WhatsApp)
                                # (not needed while the app is running: it sends at 8 am IST by itself)
   python -m app.jobs sync      # nightly: pull every active matter with a CNR from eCourts
-  python -m app.jobs backup    # nightly: copy the databases to NYAAI_BACKUP_DIR (keeps the last 14)
+  python -m app.jobs backup    # nightly: back up both databases to NYAAI_BACKUP_DIR (keeps 14)
+                               # and test-restore the firm backup
 """
 from __future__ import annotations
 
 import argparse
-import shutil
+import os
 import sqlite3
 import sys
-from datetime import date, datetime
+from datetime import datetime
 from pathlib import Path
 
-from .config import BACKUP_DIR, CORPUS_DB, DATABASE_URL
-from .db import Base, SessionLocal, engine, migrate
+from .config import BACKUP_DIR, CORPUS_DB
+from .db import SessionLocal, upgrade_db
 
 
 def job_brief() -> int:
@@ -58,25 +59,25 @@ def _sqlite_copy(src: str, dst: Path) -> None:
 
 
 def job_backup() -> list:
+    """Firm database (SQLite copy or pg_dump) and the judgment library, 14 of each kept, then a test restore of the
+    firm backup so a broken backup is noticed the same night, not on the day it is needed."""
+    from .dbtool import backup, verify_backup
+
     out_dir = Path(BACKUP_DIR)
     out_dir.mkdir(parents=True, exist_ok=True)
     stamp = datetime.now().strftime("%Y%m%d-%H%M")
-    made = []
-    if DATABASE_URL.startswith("sqlite:///"):
-        src = DATABASE_URL.replace("sqlite:///", "", 1)
-        if Path(src).exists():
-            dst = out_dir / f"nyaai-{stamp}.db"
-            _sqlite_copy(src, dst)
-            made.append(str(dst))
-    else:
-        print("Postgres: use pg_dump (the docker 'backup' service does this).")
+    made = [str(backup(out_dir=str(out_dir)))]
     if Path(CORPUS_DB).exists():
         dst = out_dir / f"corpus-{stamp}.db"
         _sqlite_copy(CORPUS_DB, dst)
         made.append(str(dst))
-    for pattern in ("nyaai-*.db", "corpus-*.db"):
-        for old in sorted(out_dir.glob(pattern))[:-14]:
-            old.unlink()
+    for old in sorted(out_dir.glob("corpus-*.db"))[:-14]:
+        old.unlink()
+    if made[0].endswith(".db") or os.environ.get("NYAAY_VERIFY_DATABASE_URL"):
+        r = verify_backup(made[0])
+        print("verify:", "ok" if r["ok"] else f"FAILED {r}")
+        if not r["ok"]:
+            raise SystemExit(1)
     for m in made:
         print("backup:", m)
     return made
@@ -87,8 +88,7 @@ def main(argv=None) -> int:
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("job", choices=["brief", "sync", "backup"])
     a = ap.parse_args(argv)
-    Base.metadata.create_all(engine)
-    migrate()
+    upgrade_db()
     {"brief": job_brief, "sync": job_sync, "backup": job_backup}[a.job]()
     return 0
 

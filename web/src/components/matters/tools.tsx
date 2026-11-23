@@ -167,7 +167,7 @@ export function OpposingPanel({ d }: { d: MatterDetail }) {
               {r.contrary_sources.length ? r.contrary_sources.map((s) => (
                 <article key={s.sid} className="mb-2 rounded-md border border-rule p-3">
                   <div className="flex flex-wrap items-center gap-2">
-                    <Link href={`/judgments/${encodeURIComponent(s.jid)}#p${s.para_no}`} className="font-medium hover:text-brass">[S{s.sid}] {s.title}</Link>
+                    <Link href={`/judgments/${encodeURIComponent(s.jid)}?para=${s.para_no}`} className="font-medium hover:text-brass">[S{s.sid}] {s.title}</Link>
                     <TreatmentWord value={s.treatment} />
                     {s.why && <Badge tone="amber">{s.why}</Badge>}
                   </div>

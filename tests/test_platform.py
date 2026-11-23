@@ -343,4 +343,5 @@ def test_backup_job(tmp_path, monkeypatch):
 
     monkeypatch.setattr(jobs, "BACKUP_DIR", str(tmp_path / "b"))
     made = jobs.job_backup()
-    assert made and all(p.endswith(".db") for p in made)
+    assert made and all(p.endswith((".db", ".dump")) for p in made)
+    assert all(str(tmp_path / "b") in p for p in made)

@@ -6,9 +6,10 @@ export const metadata: Metadata = {
   title: { default: "Nyaay", template: "%s · Nyaay" },
   description: "Legal workspace for Indian advocates: research, matters, deadlines and drafting with verified citations.",
   manifest: "/manifest.webmanifest",
-  icons: { icon: "/icon.svg" },
+  icons: { icon: "/icon.svg", apple: "/icons/apple-touch-icon.png" },
+  appleWebApp: { capable: true, title: "Nyaay", statusBarStyle: "black-translucent" },
 };
-export const viewport: Viewport = { themeColor: "#060a13" };
+export const viewport: Viewport = { themeColor: "#05080f", width: "device-width", initialScale: 1, viewportFit: "cover" };
 
 // Dark is the default; set the light class before paint so it never flashes.
 const themeScript = `try{if(localStorage.getItem('nyaay-theme')==='light')document.documentElement.classList.add('light')}catch(e){}`;

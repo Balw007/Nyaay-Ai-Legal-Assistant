@@ -37,10 +37,10 @@ export function DayRail({ events, days = 14 }: { events: CalEvent[]; days?: numb
                 </motion.span>
                 <div className="mt-2 flex w-full flex-col gap-1 px-0.5">
                   {c.ev.slice(0, 3).map((e, k) => (
-                    <Link key={k} href={e.matter_id ? `/matters/${e.matter_id}` : "/calendar"} title={`${e.title}\n${e.detail}`}
+                    <Link key={k} href={e.matter_id ? `/matters/${e.matter_id}` : "/calendar"} title={`${e.type === "deadline" ? "Deadline" : "Hearing"}: ${e.title}\n${e.detail}`} aria-label={`${e.type === "deadline" ? "Deadline" : "Hearing"}: ${e.type === "deadline" ? `${e.title}, ${e.detail}` : e.title}`}
                       className={cn("truncate rounded-sm border px-1 py-0.5 text-left text-[11px] leading-tight transition-colors",
                         e.type === "deadline" ? "border-tape/30 bg-tape-soft text-tape hover:border-tape/60" : "border-cyan/30 bg-cyan-soft text-cyan hover:border-cyan/60")}>
-                      {e.type === "deadline" ? "Due" : "Hearing"}
+                      {shortName(e.type === "deadline" ? e.detail : e.title)}
                     </Link>
                   ))}
                   {c.ev.length > 3 && <span className="text-[11px] text-faint">+{c.ev.length - 3}</span>}
@@ -52,6 +52,12 @@ export function DayRail({ events, days = 14 }: { events: CalEvent[]; days?: numb
       </div>
     </div>
   );
+}
+
+// "Shreeji Agro Traders v. Malhotra Steel Works" -> "Shreeji Agro"; chips must say whose date it is.
+function shortName(s?: string) {
+  const first = (s ?? "").split(/\s+v(?:s)?\.?\s+/i)[0].replace(/\(.*?\)/g, "").trim();
+  return first.split(/\s+/).slice(0, 2).join(" ") || "Matter";
 }
 
 // Countdown ring for a deadline: fills as the day approaches (30-day window).

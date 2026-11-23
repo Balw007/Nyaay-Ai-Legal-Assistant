@@ -166,6 +166,30 @@ def check_ports() -> list:
     return out
 
 
+def _library_contents() -> list:
+    """Is there anything to search, and are the Acts the judgments cite loaded? Advice only: never a failure."""
+    out = []
+    p = Path(config.CORPUS_DB)
+    if not p.exists():
+        return [_r(WARN, "Judgment library", "no judgments loaded yet", "Open Library in the app and load a few years of judgments")]
+    try:
+        from .services import acts as actsvc
+        from .services.store import Store
+
+        st = Store(str(p))
+        n = st.stats()["real_judgments"]
+        out.append(_r(PASS if n else WARN, "Judgment library", f"{n:,} judgments" if n else "no real judgments loaded yet",
+                      "" if n else "Open Library in the app and load a few years of judgments"))
+        loaded = [a["code"] for a in actsvc.list_acts(st) if a["loaded"]]
+        if loaded:
+            out.append(_r(PASS, "Bare Acts", f"{len(loaded)} Acts loaded"))
+        else:
+            out.append(_r(WARN, "Bare Acts", "no Acts loaded", "Open Bare Acts in the app and press Download Acts"))
+    except Exception as exc:
+        out.append(_r(WARN, "Judgment library", f"could not read it: {exc}"))
+    return out
+
+
 def check_database() -> list:
     out = []
     try:
@@ -175,6 +199,17 @@ def check_database() -> list:
         with eng.connect() as c:
             c.execute(text("select 1"))
         out.append(_r(PASS, "Firm database", config.DATABASE_URL.split("@")[-1]))
+        from .db import head_version, schema_version
+
+        have, newest = schema_version(eng), head_version()
+        if have == newest:
+            out.append(_r(PASS, "Database version", f"up to date ({newest})"))
+        elif have is None and "firms" not in __import__("sqlalchemy").inspect(eng).get_table_names():
+            out.append(_r(PASS, "Database version", "new database: Nyaay sets it up on first start"))
+        else:
+            out.append(_r(WARN, "Database version", f"{have or 'not versioned'}; newest is {newest}",
+                          "Start Nyaay once (it upgrades by itself), or run: python -m app.dbtool upgrade"))
+        eng.dispose()
     except Exception as exc:
         out.append(_r(FAIL, "Firm database", f"cannot open {config.DATABASE_URL.split('@')[-1]}: {exc}",
                       "Check NYAAI_DATABASE_URL in .env, and that the folder is writable"))
@@ -187,6 +222,7 @@ def check_database() -> list:
         with tempfile.TemporaryDirectory() as td:
             Store(str(Path(td) / "t.db")).stats()
         out.append(_r(PASS, "Judgment library file", f"{Path(config.CORPUS_DB).resolve()} can be written"))
+        out.extend(_library_contents())
     except Exception as exc:
         out.append(_r(FAIL, "Judgment library file", f"cannot write next to {config.CORPUS_DB}: {exc}",
                       "Run Nyaay from a folder you own (not Program Files), or set NYAAI_CORPUS to a writable path"))

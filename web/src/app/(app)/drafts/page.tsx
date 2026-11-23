@@ -30,7 +30,7 @@ export default function DraftsPage() {
   return (
     <>
       <PageHeader title="Drafts" sub="Notices, complaints and applications filled from your matters. Missing facts stay as visible blanks." />
-      <div className="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
         <div className="space-y-3">
           <div className="relative">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />

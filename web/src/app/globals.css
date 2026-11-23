@@ -6,80 +6,146 @@
 @import "@fontsource/ibm-plex-sans-devanagari/500.css";
 @import "@fontsource-variable/literata/opsz.css";
 @import "@fontsource-variable/literata/opsz-italic.css";
-
 @import "@fontsource-variable/sora";
 
 @custom-variant light (&:where(.light, .light *));
 
-/* ------------------------------------------------------------------ tokens
-   Dark-first "night court": midnight glass, gold light for what is verified,
-   cyan for the AI, red tape only for deadlines and negative treatment.
-   paper   the page          surface  glass panels       vellum  subtle fills
-   ink     the sidebar       brass    verified / primary  tape    deadlines
-   leaf    approved / done   cyan     AI                  amber   caution        */
+/* ==========================================================================
+   NYAAY — LIQUID INTELLIGENCE
+   "Chambers at night": a lit desk in a dark room.
+   Colour is meaning, never decoration:
+     brass  the light of authority: sourced citations and the one primary action on a screen
+     leaf   verified, approved, done (citation VERIFIED is leaf, never brass)
+     cyan   anything the machine produced or is doing (AI answers, headnotes, running jobs)
+     amber  needs a person to check (test data, unconfirmed dates, partial results)
+     tape   deadlines and negative treatment only
+   Type is meaning too: the serif is the court's own words; machine and app text is always sans.
+
+   Material levels (see docs/redesign/DESIGN-SYSTEM.md)
+     L1 atmosphere   .atmosphere     fixed light fields, no interaction
+     L2 primary      .glass-2        rail, command bar, dock      (backdrop blur)
+     L3 secondary    .glass / .glass-3  panels, cards              (NO blur: tint only)
+     L4 floating     .glass-4        palette, dialogs, sheets     (backdrop blur)
+     L5 active       .glass-5        selected tools, active state
+   Blur is spent only where content scrolls underneath (L2, L4).
+   ========================================================================== */
+
 :root {
-  --ink: #080d19;
+  /* environment */
+  --paper: #05080f;
+  --night-2: #0a1222;
+  --ink: #070c18;
   --ink-2: rgba(255, 255, 255, 0.05);
-  --ink-3: rgba(227, 184, 101, 0.13);
-  --on-ink: #e6eaf2;
-  --on-ink-muted: #8c96ab;
-  --paper: #060a13;
-  --surface: rgba(16, 23, 38, 0.66);
-  --surface-solid: #0f1626;
+  --ink-3: rgba(227, 192, 122, 0.14);
+  --on-ink: #e7ebf3;
+  --on-ink-muted: #8f99ae;
+
+  /* glass tints */
+  --surface: rgba(17, 25, 42, 0.58);
+  --surface-solid: #0e1525;
+  --g2-fill: rgba(14, 21, 37, 0.62);
+  --g3-fill: rgba(18, 27, 46, 0.5);
+  --g3-sheen: rgba(255, 255, 255, 0.035);
+  --g4-fill: rgba(13, 19, 34, 0.86);
+  --g5-fill: rgba(227, 192, 122, 0.1);
+  --rim-hi: rgba(255, 255, 255, 0.14);
+  --rim-lo: rgba(255, 255, 255, 0.03);
+  --specular: rgba(255, 238, 205, 0.075);
+
   --vellum: rgba(255, 255, 255, 0.04);
-  --rule: rgba(148, 163, 184, 0.14);
-  --rule-strong: rgba(148, 163, 184, 0.28);
-  --text: #e6eaf2;
-  --muted: #9aa4b8;
-  --faint: #6b7489;
-  --brass: #e3b865;
-  --brass-soft: rgba(227, 184, 101, 0.12);
+  --rule: rgba(160, 176, 204, 0.13);
+  --rule-strong: rgba(160, 176, 204, 0.26);
+  --text: #e7ebf3;
+  --muted: #9ba6bb;
+  --faint: #808aa0;
+  --platinum: #c9d1de;
+
+  /* light sources */
+  --brass: #e3c07a;
+  --brass-deep: #b98f3f;
+  --brass-soft: rgba(227, 192, 122, 0.12);
   --tape: #ff7a6b;
   --tape-soft: rgba(255, 122, 107, 0.12);
   --leaf: #5fd3a0;
   --leaf-soft: rgba(95, 211, 160, 0.12);
   --amber: #f2c45a;
   --amber-soft: rgba(242, 196, 90, 0.12);
-  --cyan: #79d7f0;
-  --cyan-soft: rgba(121, 215, 240, 0.12);
-  --mark: rgba(227, 184, 101, 0.3);
-  --grid: rgba(148, 163, 184, 0.05);
-  --glow-a: rgba(121, 215, 240, 0.09);
-  --glow-b: rgba(227, 184, 101, 0.07);
-  --shadow: 0 16px 40px -18px rgba(0, 0, 0, 0.7);
+  --cyan: #6fd3ee;
+  --electric: #5b8cff;
+  --cyan-soft: rgba(111, 211, 238, 0.12);
+  --mark: rgba(227, 192, 122, 0.3);
+  --grid: rgba(148, 163, 184, 0.04);
+
+  --lamp: rgba(227, 192, 122, 0.11);
+  --lamp-2: rgba(111, 211, 238, 0.08);
+  --lamp-3: rgba(91, 140, 255, 0.06);
+
+  --shadow: 0 18px 44px -20px rgba(0, 0, 0, 0.75);
+  --shadow-float: 0 30px 80px -24px rgba(0, 0, 0, 0.85), 0 10px 24px -12px rgba(0, 0, 0, 0.6);
+  --on-brass: #0a0e18;
+
+  /* motion tokens (mirrored in src/lib/motion.ts) */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-instant: 120ms;
+  --dur-quick: 200ms;
+  --dur-base: 320ms;
+  --dur-slow: 520ms;
+
   color-scheme: dark;
 }
 
+/* Light: frosted ivory, warm white, silver, muted gold. Same light logic, daylight. */
 .light {
-  --ink: #0b1222;
-  --ink-2: rgba(255, 255, 255, 0.06);
-  --ink-3: rgba(227, 184, 101, 0.16);
-  --on-ink: #e6eaf2;
-  --on-ink-muted: #8c96ab;
-  --paper: #f3f5f9;
-  --surface: rgba(255, 255, 255, 0.78);
+  --paper: #f3f2ee;
+  --night-2: #e9e8e2;
+  --ink: #101828;
+  --ink-2: rgba(16, 24, 40, 0.05);
+  --ink-3: rgba(168, 124, 40, 0.13);
+  --on-ink: #172033;
+  --on-ink-muted: #5f6a80;
+
+  --surface: rgba(255, 255, 255, 0.72);
   --surface-solid: #ffffff;
-  --vellum: rgba(15, 23, 42, 0.04);
-  --rule: rgba(15, 23, 42, 0.1);
-  --rule-strong: rgba(15, 23, 42, 0.2);
-  --text: #0d1324;
-  --muted: #536079;
-  --faint: #7c879c;
-  --brass: #a8781f;
-  --brass-soft: rgba(168, 120, 31, 0.1);
-  --tape: #c23a2c;
-  --tape-soft: rgba(194, 58, 44, 0.09);
-  --leaf: #1f8456;
-  --leaf-soft: rgba(31, 132, 86, 0.1);
-  --amber: #a26b00;
-  --amber-soft: rgba(162, 107, 0, 0.1);
-  --cyan: #157e9e;
-  --cyan-soft: rgba(21, 126, 158, 0.1);
-  --mark: rgba(168, 120, 31, 0.22);
-  --grid: rgba(15, 23, 42, 0.045);
-  --glow-a: rgba(21, 126, 158, 0.07);
-  --glow-b: rgba(168, 120, 31, 0.06);
-  --shadow: 0 16px 40px -22px rgba(15, 23, 42, 0.35);
+  --g2-fill: rgba(252, 251, 248, 0.68);
+  --g3-fill: rgba(255, 255, 255, 0.62);
+  --g3-sheen: rgba(255, 255, 255, 0.5);
+  --g4-fill: rgba(252, 251, 248, 0.9);
+  --g5-fill: rgba(168, 124, 40, 0.09);
+  --rim-hi: rgba(255, 255, 255, 0.95);
+  --rim-lo: rgba(16, 24, 40, 0.07);
+  --specular: rgba(255, 255, 255, 0.55);
+
+  --vellum: rgba(16, 24, 40, 0.035);
+  --rule: rgba(16, 24, 40, 0.09);
+  --rule-strong: rgba(16, 24, 40, 0.18);
+  --text: #101828;
+  --muted: #4f5b72;
+  --faint: #5c667b;
+  --platinum: #6b7486;
+
+  --brass: #77530e;
+  --brass-deep: #7a5512;
+  --brass-soft: rgba(154, 111, 31, 0.1);
+  --tape: #bf3a2c;
+  --tape-soft: rgba(191, 58, 44, 0.09);
+  --leaf: #1a7349;
+  --leaf-soft: rgba(29, 127, 83, 0.1);
+  --amber: #8a5900;
+  --amber-soft: rgba(155, 101, 0, 0.1);
+  --cyan: #0e6178;
+  --electric: #2f5fd0;
+  --cyan-soft: rgba(18, 115, 143, 0.09);
+  --mark: rgba(168, 124, 40, 0.22);
+  --grid: rgba(16, 24, 40, 0.035);
+
+  --lamp: rgba(214, 178, 106, 0.22);
+  --lamp-2: rgba(150, 200, 220, 0.2);
+  --lamp-3: rgba(190, 196, 214, 0.3);
+
+  --shadow: 0 14px 36px -20px rgba(30, 36, 52, 0.28);
+  --shadow-float: 0 30px 70px -26px rgba(30, 36, 52, 0.35), 0 8px 20px -12px rgba(30, 36, 52, 0.18);
+  --on-brass: #fffdf8;
   color-scheme: light;
 }
 
@@ -97,6 +163,7 @@
   --color-text: var(--text);
   --color-muted: var(--muted);
   --color-faint: var(--faint);
+  --color-platinum: var(--platinum);
   --color-brass: var(--brass);
   --color-brass-soft: var(--brass-soft);
   --color-tape: var(--tape);
@@ -106,14 +173,16 @@
   --color-amber: var(--amber);
   --color-amber-soft: var(--amber-soft);
   --color-cyan: var(--cyan);
+  --color-electric: var(--electric);
   --color-cyan-soft: var(--cyan-soft);
   --color-surface-solid: var(--surface-solid);
-  --font-display: "Sora Variable", "IBM Plex Sans", system-ui, sans-serif;
+  --color-on-brass: var(--on-brass);
 
+  --font-display: "Sora Variable", "IBM Plex Sans", system-ui, sans-serif;
   --font-sans: "IBM Plex Sans", "IBM Plex Sans Devanagari", system-ui, sans-serif;
   --font-serif: "Literata Variable", "Noto Serif Devanagari", Georgia, serif;
 
-  /* type scale (1.2 minor third from 14px) */
+  /* type scale: 14px base, minor third, plus editorial display sizes */
   --text-xs: 0.75rem;
   --text-xs--line-height: 1.1rem;
   --text-sm: 0.8125rem;
@@ -128,10 +197,17 @@
   --text-xl--line-height: 2rem;
   --text-2xl: 1.875rem;
   --text-2xl--line-height: 2.35rem;
+  --text-3xl: 2.5rem;
+  --text-3xl--line-height: 2.85rem;
+  --text-4xl: 3.25rem;
+  --text-4xl--line-height: 3.5rem;
 
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 10px;
+  /* radius follows hierarchy: bigger surfaces are softer */
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 26px;
 }
 
 html,
@@ -145,46 +221,215 @@ body {
 }
 
 body {
-  background-image:
-    radial-gradient(1100px 560px at 85% -12%, var(--glow-a), transparent 62%),
-    radial-gradient(900px 520px at -10% 110%, var(--glow-b), transparent 60%);
-  background-attachment: fixed;
   min-height: 100vh;
 }
 
-/* A faint drafting grid behind everything, fading out toward the edges. */
-body::before {
-  content: "";
+/* In the base layer so a utility such as `fixed` on a body-level overlay (the welcome intro) still wins. */
+@layer base {
+  body > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* While the welcome intro plays, nothing else is drawn, so the video gets the whole frame budget. */
+html[data-intro] body > *:not([data-welcome]) {
+  visibility: hidden;
+}
+
+/* ---------------------------------------------------------------- L1 atmosphere */
+.atmosphere {
   position: fixed;
   inset: 0;
-  pointer-events: none;
   z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(1200px 700px at 12% -10%, var(--lamp), transparent 60%),
+    radial-gradient(1000px 640px at 100% 8%, var(--lamp-2), transparent 62%),
+    radial-gradient(900px 700px at 60% 120%, var(--lamp-3), transparent 60%),
+    linear-gradient(180deg, var(--paper), var(--night-2));
+}
+/* A slow-moving pool of light. Transform-only, one layer, paused for reduced motion. */
+.atmosphere::before {
+  content: "";
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  left: 40%;
+  top: -30%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--lamp-2), transparent 70%);
+  opacity: 0.7;
+  animation: drift 48s var(--ease-in-out) infinite alternate;
+  will-change: transform;
+}
+/* Fine drafting grid and grain, fading toward the edges. */
+.atmosphere::after {
+  content: "";
+  position: absolute;
+  inset: 0;
   background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 44px 44px;
-  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 30%, transparent 85%);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 75% 65% at 55% 25%, #000 25%, transparent 80%);
+}
+@keyframes drift {
+  from { transform: translate3d(-12%, 0, 0) scale(1); }
+  to { transform: translate3d(14%, 18%, 0) scale(1.15); }
 }
 
-body > * {
+@layer components {
+/* ---------------------------------------------------------------- glass material */
+/* The rim: a 1px gradient border, bright at the top edge where the lamp catches it. */
+.glass,
+.glass-2,
+.glass-3,
+.glass-4,
+.glass-5 {
   position: relative;
-  z-index: 1;
+  isolation: isolate;
+}
+.glass::before,
+.glass-2::before,
+.glass-3::before,
+.glass-4::before,
+.glass-5::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(170deg, var(--rim-hi), var(--rim-lo) 38%, var(--rim-lo) 70%, color-mix(in srgb, var(--rim-hi) 40%, transparent));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 2;
 }
 
-.glass {
-  background: var(--surface);
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  border: 1px solid var(--rule);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), var(--shadow);
+/* L2 primary: chrome that content scrolls under. Blurred. */
+.glass-2 {
+  background: var(--g2-fill);
+  backdrop-filter: blur(22px) saturate(165%);
+  -webkit-backdrop-filter: blur(22px) saturate(165%);
+  box-shadow: inset 0 1px 0 var(--rim-hi), var(--shadow);
+}
+
+/* L3 secondary: panels and cards. Tint and sheen only, no blur, so long pages stay fast. */
+.glass,
+.glass-3 {
+  background: linear-gradient(180deg, var(--g3-sheen), transparent 42%), var(--g3-fill);
+  box-shadow: var(--shadow);
+}
+
+/* L4 floating: palettes, dialogs, sheets, contextual toolbars. Blurred, raised. */
+.glass-4 {
+  background: var(--g4-fill);
+  backdrop-filter: blur(28px) saturate(170%);
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  box-shadow: inset 0 1px 0 var(--rim-hi), var(--shadow-float);
+}
+
+/* L5 active: the selected tool or item. Lit from within by brass. */
+.glass-5 {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--brass) 16%, transparent), var(--g5-fill));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brass) 38%, transparent), 0 0 24px -10px var(--brass);
+}
+
+/* Specular sheen that follows the pointer (set by components/shell/specular.tsx). */
+[data-specular]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1; /* inside the isolated surface: above its fill, beneath its content */
+  opacity: var(--spec-o, 0);
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), var(--specular), transparent 55%);
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+/* Glass that tilts towards the cursor (driven by components/shell/specular.tsx). */
+/* Cards that lean towards the cursor, moved by springs in components/shell/specular.tsx. Transformed only while
+   moving ([data-live]), so at rest a card is an ordinary box. */
+[data-tilt][data-live], [data-tilt][data-pl] {
+  transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translate3d(var(--ptx, 0px), var(--lift, 0px), 0)
+    scale(calc(var(--sc, 1) * var(--psx, 1)), calc(var(--sc, 1) * var(--psy, 1)));
+  will-change: transform;
+  backface-visibility: hidden;
+}
+/* Pressed buttons squash and boing back; boing() and shake() use the same springs. */
+[data-pl]:not([data-tilt]) { transform: translate3d(var(--ptx, 0px), 0, 0) scale(var(--psx, 1), var(--psy, 1)); will-change: transform; }
+/* Floating layers inside a leaning card: deeper layers slide further, so the card reads as a thick object. */
+[data-tilt] .depth-1, [data-tilt] .depth-2, [data-tilt] .depth-3 { transition: none; }
+[data-tilt][data-live] .depth-1 { transform: translate3d(calc(var(--px, 0) * 3px), calc(var(--py, 0) * -3px), 0); }
+[data-tilt][data-live] .depth-2 { transform: translate3d(calc(var(--px, 0) * 6px), calc(var(--py, 0) * -6px), 0); }
+[data-tilt][data-live] .depth-3 { transform: translate3d(calc(var(--px, 0) * 10px), calc(var(--py, 0) * -10px), 0); }
+[data-tilt], [data-ripple] { transition: box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1); }
+[data-tilt]:hover { box-shadow: 0 28px 60px -28px rgba(0, 0, 0, 0.8), 0 0 0 1px color-mix(in srgb, var(--cyan) 18%, transparent); }
+.light [data-tilt]:hover { box-shadow: 0 24px 50px -26px rgba(30, 36, 52, 0.4), 0 0 0 1px color-mix(in srgb, var(--brass) 25%, transparent); }
+/* Drum skin: while a panel ripples, its fill is drawn by the facets of the skin instead of by the panel itself. */
+[data-skin] { background: transparent !important; }
+@media (prefers-reduced-motion: reduce) { [data-tilt], [data-pl] { transform: none !important; } [data-skin-layer] { display: none; } }
+
+/* The welcome band on Home: a starfield and the rim of a planet catching a gold sunrise (CSS only, one layer each). */
+.horizon {
+  background:
+    radial-gradient(1px 1px at 12% 22%, rgba(255,255,255,.7), transparent 60%),
+    radial-gradient(1px 1px at 28% 12%, rgba(255,255,255,.5), transparent 60%),
+    radial-gradient(1.5px 1.5px at 44% 30%, rgba(255,255,255,.55), transparent 60%),
+    radial-gradient(1px 1px at 63% 16%, rgba(255,255,255,.6), transparent 60%),
+    radial-gradient(1px 1px at 78% 26%, rgba(255,255,255,.45), transparent 60%),
+    radial-gradient(1.5px 1.5px at 88% 10%, rgba(255,255,255,.6), transparent 60%),
+    radial-gradient(1px 1px at 6% 48%, rgba(255,255,255,.4), transparent 60%),
+    radial-gradient(1px 1px at 94% 44%, rgba(255,255,255,.4), transparent 60%),
+    radial-gradient(120% 90% at 50% 0%, #0d1838 0%, #070c1d 55%, #04060e 100%);
+}
+.horizon::before {
+  content: ""; position: absolute; z-index: 0; left: -35%; right: -35%; top: 70%; height: 140%; border-radius: 50%;
+  background: radial-gradient(60% 40% at 50% 0%, #0b1738 0%, #050912 70%);
+  box-shadow: 0 -1px 0 rgba(150, 205, 255, 0.75), 0 -6px 26px rgba(91, 140, 255, 0.55), 0 -30px 90px rgba(60, 120, 255, 0.32), 0 -80px 160px rgba(40, 90, 220, 0.18);
+}
+.horizon::after {
+  content: ""; position: absolute; z-index: 1; left: 50%; top: 70%; width: 70%; height: 140px; transform: translate(-50%, -50%);
+  background:
+    radial-gradient(closest-side, rgba(255, 236, 196, 0.95), rgba(227, 192, 122, 0.55) 18%, transparent 60%) center / 120px 120px no-repeat,
+    radial-gradient(50% 6% at 50% 50%, rgba(255, 226, 170, 0.75), transparent 100%),
+    radial-gradient(30% 50% at 50% 50%, rgba(227, 192, 122, 0.25), transparent 100%);
+  filter: blur(0.3px);
+  pointer-events: none;
+}
+.light .horizon {
+  background:
+    radial-gradient(120% 90% at 50% 0%, #e9eef8 0%, #dfe6f3 50%, #cfd9ec 100%);
+}
+.light .horizon::before {
+  background: radial-gradient(60% 40% at 50% 0%, #f7f5ef 0%, #ece9e0 70%);
+  box-shadow: 0 -1px 0 rgba(255,255,255,.95), 0 -8px 30px rgba(120, 160, 230, 0.45), 0 -40px 110px rgba(120, 160, 230, 0.25);
+}
+.hero-search {
+  background: color-mix(in srgb, var(--g4-fill) 85%, transparent);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--electric) 55%, transparent), 0 0 32px -6px color-mix(in srgb, var(--electric) 70%, transparent),
+    inset 0 1px 0 var(--rim-hi), 0 20px 50px -20px rgba(0, 0, 0, 0.8);
+  transition: box-shadow 300ms var(--ease-out);
+}
+.hero-search:focus-within {
+  box-shadow: 0 0 0 1px var(--cyan), 0 0 44px -4px color-mix(in srgb, var(--cyan) 75%, transparent), inset 0 1px 0 var(--rim-hi), 0 20px 50px -20px rgba(0, 0, 0, 0.8);
+}
+
+/* Legacy fallbacks some screens still reference. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-2, .glass-4 { background: var(--surface-solid); }
 }
 
 .glow-brass {
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--brass) 45%, transparent), 0 0 22px -6px var(--brass);
 }
-
 .glow-tape {
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--tape) 45%, transparent), 0 0 18px -6px var(--tape);
 }
-
 .text-gradient-brass {
   background: linear-gradient(120deg, var(--brass), color-mix(in srgb, var(--brass) 55%, white));
   -webkit-background-clip: text;
@@ -192,27 +437,83 @@ body > * {
   color: transparent;
 }
 
+}
+
+/* ---------------------------------------------------------------- type */
 .font-display {
   font-family: var(--font-display);
   letter-spacing: -0.02em;
 }
+/* Editorial headings: Literata at display optical size. */
+.font-editorial {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 72;
+  letter-spacing: -0.018em;
+  font-weight: 450;
+}
+.tnum {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
 
+/* Judgment text: the place the serif speaks at reading size. */
+.prose-judgment {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  line-height: 1.78;
+  hyphens: auto;
+  text-wrap: pretty;
+}
+
+/* ---------------------------------------------------------------- motion utilities */
 @keyframes pulse-ring {
   0% { box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 55%, transparent); }
   100% { box-shadow: 0 0 0 8px transparent; }
 }
-.pulse-dot {
-  animation: pulse-ring 1.8s ease-out infinite;
-}
+.pulse-dot { animation: pulse-ring 1.8s ease-out infinite; }
 
 @keyframes scan {
   from { transform: translateX(-100%); }
   to { transform: translateX(100%); }
 }
-
-::selection {
-  background: var(--mark);
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
 }
+.skeleton {
+  border-radius: var(--radius-md);
+  background: linear-gradient(90deg, var(--vellum) 25%, color-mix(in srgb, var(--platinum) 9%, transparent) 50%, var(--vellum) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.55; transform: scale(0.96); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+/* Shared-element morphs between workspaces (View Transitions API, progressive). */
+::view-transition-group(*) {
+  animation-duration: 420ms;
+  animation-timing-function: var(--ease-out);
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 260ms;
+}
+::view-transition-group(vt-hero) {
+  animation-duration: 520ms;
+}
+::view-transition-old(vt-hero),
+::view-transition-new(vt-hero) {
+  height: 100%;
+  object-fit: cover;
+  object-position: left top;
+}
+
+/* ---------------------------------------------------------------- base elements */
+::selection { background: var(--mark); }
 
 :focus-visible {
   outline: 2px solid var(--brass);
@@ -227,25 +528,60 @@ mark {
   padding: 0 1px;
 }
 
-/* Judgment text: the one place the serif speaks. */
-.prose-judgment {
-  font-family: var(--font-serif);
-  font-optical-sizing: auto;
-  line-height: 1.75;
-  hyphens: auto;
-  text-wrap: pretty;
-}
-
 .scrollbar-thin {
   scrollbar-width: thin;
   scrollbar-color: var(--rule-strong) transparent;
 }
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.7); }
+.light input[type="date"]::-webkit-calendar-picker-indicator { filter: none; }
 
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass-2, .glass-4 { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--surface-solid); }
+  .glass, .glass-3 { background: var(--surface-solid); }
+}
+
+@media (forced-colors: active) {
+  .glass::before, .glass-2::before, .glass-3::before, .glass-4::before, .glass-5::before, [data-specular]::after { display: none; }
+  .glass, .glass-2, .glass-3, .glass-4, .glass-5 { border: 1px solid CanvasText; }
+}
+
+@layer base {
+  /* Native selects keep their accessibility and pickers; only the closed control is restyled. */
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238f99ae' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+    padding-right: 2rem !important;
+  }
+  select option { background: var(--surface-solid); color: var(--text); }
+}
+
+/* The judgment on paper: the court's words sit on a warm page in both themes (the page carries the light tokens). */
+.paper-page {
+  color: var(--text);
+  background: linear-gradient(180deg, #fbf9f3, #f4f0e6);
+  border-radius: 20px;
+  padding: 44px clamp(20px, 4vw, 60px) 28px;
+  box-shadow: 0 50px 90px -50px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+html.light .paper-page { box-shadow: 0 30px 70px -40px rgba(30, 36, 52, 0.45), 0 0 0 1px rgba(16, 24, 40, 0.08); }

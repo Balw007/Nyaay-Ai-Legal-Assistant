@@ -4,7 +4,7 @@ from __future__ import annotations
 from datetime import date, datetime, timezone
 from typing import Optional
 
-from sqlalchemy import JSON, Boolean, Date, DateTime, Float, ForeignKey, Integer, String, Text
+from sqlalchemy import JSON, Boolean, Date, DateTime, Float, ForeignKey, Integer, String, Text, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .db import Base
@@ -289,3 +289,56 @@ class WhatsAppMessage(Base):
     kind: Mapped[str] = mapped_column(String(20))
     body: Mapped[str] = mapped_column(Text, default="")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+
+
+class GoldEntry(Base):
+    """A judgment an advocate in the firm has checked by hand: correct metadata, a headnote, the paragraphs that
+    matter. Verified entries are the firm's trusted core library and the benchmark for search quality."""
+
+    __tablename__ = "gold_entries"
+    __table_args__ = (UniqueConstraint("firm_id", "jid", name="uq_gold_firm_jid"),)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    firm_id: Mapped[int] = mapped_column(ForeignKey("firms.id"), index=True)
+    jid: Mapped[str] = mapped_column(String(200), index=True)
+    title: Mapped[str] = mapped_column(String(400))
+    citation: Mapped[str] = mapped_column(String(200), default="")
+    topic: Mapped[str] = mapped_column(String(200), default="")       # e.g. "NI Act s.139 presumption"
+    status: Mapped[str] = mapped_column(String(20), default="candidate")  # candidate | verified | rejected
+    headnote: Mapped[str] = mapped_column(Text, default="")
+    held: Mapped[str] = mapped_column(Text, default="")
+    issues: Mapped[list] = mapped_column(JSON, default=list)
+    key_paras: Mapped[list] = mapped_column(JSON, default=list)
+    notes: Mapped[str] = mapped_column(Text, default="")
+    added_by: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    reviewer_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    reviewer_name: Mapped[str] = mapped_column(String(200), default="")
+    reviewer_enrolment: Mapped[str] = mapped_column(String(60), default="")
+    verified_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+
+
+class AgentTask(Base):
+    """A unit of AI work run in the background (research, judgment analysis, citation verification, drafting).
+    Every step is recorded as it happens; nothing an agent produces is applied anywhere until a person acts on it."""
+
+    __tablename__ = "agent_tasks"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    firm_id: Mapped[int] = mapped_column(ForeignKey("firms.id"), index=True)
+    user_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    user_name: Mapped[str] = mapped_column(String(200), default="")
+    agent: Mapped[str] = mapped_column(String(30))               # research | judgment | citation | drafting
+    title: Mapped[str] = mapped_column(String(300), default="")
+    input: Mapped[dict] = mapped_column(JSON, default=dict)
+    matter_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    status: Mapped[str] = mapped_column(String(20), default="queued")  # queued | running | done | failed | cancelled
+    progress: Mapped[int] = mapped_column(Integer, default=0)          # 0-100, only when the work is countable
+    indeterminate: Mapped[bool] = mapped_column(Boolean, default=False)  # true while waiting on the model
+    step: Mapped[str] = mapped_column(String(300), default="")
+    steps: Mapped[list] = mapped_column(JSON, default=list)            # [{at, text}]
+    result: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    error: Mapped[str] = mapped_column(Text, default="")
+    cancel_requested: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+    started_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    finished_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)

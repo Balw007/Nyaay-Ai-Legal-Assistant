@@ -81,6 +81,13 @@ def _after_load(store) -> None:
             vectors.build(store, progress=_say)
 
 
+def _after_tag(store) -> None:
+    """Tag judgments that have not been tagged with the Acts and sections they discuss."""
+    if not _stop.is_set():
+        _say("Tagging judgments with the Acts and sections they discuss…")
+        store.retag(progress=_say)
+
+
 def _chunked(run_chunk) -> None:
     """Call run_chunk(limit) until nothing new is processed or the user stops the job."""
     while not _stop.is_set():

@@ -57,21 +57,39 @@ The free default is local Ollama. Nothing in Nyaay requires a paid service.
 
 ## Backups
 
-- Every night the `jobs` service saves the firm database and the judgment library to `/data/backups` inside the `corpus` volume (14 days kept).
+- Every night the `jobs` service makes a `pg_dump` of the firm database and a copy of the judgment library in `/data/backups` (inside the `corpus` volume, 14 of each kept). Straight after, it **restores the firm backup into a scratch database (`nyaai_verify`) and checks every table and the schema version**. If that test fails, the job log says `verify: FAILED`.
+  - The scratch database is created automatically on a new server. On a server set up before this version, create it once:
+    `docker compose exec db psql -U nyaai -c "CREATE DATABASE nyaai_verify" nyaai`
+- One backup now, or a check of the newest one:
+  ```
+  docker compose exec jobs python -m app.dbtool backup
+  docker compose exec jobs python -m app.dbtool verify-backup
+  ```
 - To copy them off the server (do this, a backup on the same disk is not a backup):
   ```
   docker compose cp jobs:/data/backups ./backups-copy
   ```
   then move that folder somewhere else (another computer, or an object store with `rclone`). A weekly copy is a good minimum.
-- **Restore** the firm database from a dump:
+- **Restore** the firm database:
   ```
-  docker compose stop app jobs web
-  gunzip -c backups-copy/pg-2026-01-31.sql.gz | docker compose exec -T db psql -U nyaai nyaai
-  docker compose start app jobs web
+  docker compose stop app web
+  docker compose exec jobs python -m app.dbtool restore /data/backups/pg-20260131-013000.dump --force --yes
+  docker compose start app web
   ```
-  Restoring into a database that already has data can fail on duplicates. If so, empty it first:
-  `docker compose exec db psql -U nyaai -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;" nyaai`
-- Test a restore once on a spare machine before you need it.
+  It restores in a single transaction: if anything goes wrong, the database is left as it was.
+
+## Database versions
+
+- Nyaay upgrades its own database on start-up (`app/migrations`). Nothing to run by hand when you update.
+- Check: `docker compose exec app python -m app.dbtool status` (schema version and rows per table). `check-nyaay.bat` / `python -m app.doctor` warns if the database is behind.
+
+## Moving from the office PC (SQLite) to the server (PostgreSQL)
+
+1. On the PC, stop Nyaay and make a backup: `python -m app.dbtool backup`.
+2. See what will be copied: `python -m app.dbtool move --to postgresql+psycopg://nyaai:PASSWORD@SERVER:5432/nyaai --dry-run`
+3. Copy it: the same command without `--dry-run`. It refuses to write into a database that already has data, copies every
+   table, and then compares every table row for row with the original. Your SQLite file is not changed.
+4. Copy `corpus.db` (the judgment library) into the server's `corpus` volume, set `NYAAI_DATABASE_URL`, start Nyaay.
 
 ## Updating
 

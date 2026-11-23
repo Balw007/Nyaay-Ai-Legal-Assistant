@@ -264,9 +264,13 @@ def judge_support(llm: LLM, proposition: str, paras: list[dict]) -> dict:
         return {"verdict": "unchecked", "method": "none", "reason": f"Support check failed ({type(exc).__name__})."}
 
 
-def check_text(text: str, index: JudgmentIndex, llm: LLM) -> list[dict]:
+def check_text(text: str, index: JudgmentIndex, llm: LLM, on_item=None) -> list[dict]:
+    """on_item(i, total, raw) is called before each citation is checked (progress reporting only)."""
     items: list[dict] = []
-    for i, cit in enumerate(find_citations(text)):
+    found = find_citations(text)
+    for i, cit in enumerate(found):
+        if on_item is not None:
+            on_item(i, len(found), cit.raw)
         item = {
             "index": i, "citation": cit.raw, "normalized": cit.normalized, "kind": cit.kind,
             "case_name": cit.case_name, "proposition": cit.proposition, "status": NOT_FOUND,

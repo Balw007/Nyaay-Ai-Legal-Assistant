@@ -27,7 +27,7 @@ export function StageRail({ stages, progress }: { stages: Stage[]; progress?: nu
                   s.state === "done" && "border-brass bg-brass shadow-[0_0_14px_-3px_var(--brass)]",
                   s.state === "current" && "border-cyan bg-paper shadow-[0_0_18px_-2px_var(--cyan)]",
                   s.state === "upcoming" && "border-rule-strong bg-paper")}>
-                {s.state === "done" && <svg viewBox="0 0 12 12" className="h-3 w-3" aria-hidden><path d="M2.5 6.2l2.2 2.2 4.8-4.8" fill="none" stroke="#0a0e18" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>}
+                {s.state === "done" && <svg viewBox="0 0 12 12" className="h-3 w-3" aria-hidden><path d="M2.5 6.2l2.2 2.2 4.8-4.8" fill="none" stroke="var(--on-brass)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>}
                 {s.state === "current" && <><span className="h-2 w-2 rounded-full bg-cyan" /><span className="absolute inset-0 rounded-full pulse-dot text-cyan" /></>}
               </motion.span>
               <span className={cn("mt-2 px-1 text-xs leading-tight",
