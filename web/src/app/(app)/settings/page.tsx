@@ -117,6 +117,8 @@ function Chambers() {
   );
 }
 
+type JoinRequest = { id: number; email: string; name: string; enrolment_no: string | null; message: string; created_at: string };
+
 function Team() {
   const qc = useQueryClient();
   const { data: me } = useMe();
@@ -130,8 +132,47 @@ function Team() {
   });
   const patch = useMutation({ mutationFn: ({ id, b }: { id: number; b: Record<string, unknown> }) => api.patch(`/team/${id}`, b), onSuccess: () => qc.invalidateQueries({ queryKey: ["team"] }), onError: toastErr });
   const revoke = useMutation({ mutationFn: (id: number) => api.del(`/team/invites/${id}`), onSuccess: () => qc.invalidateQueries({ queryKey: ["team"] }) });
+  const requests = useQuery({ queryKey: ["join-requests"], enabled: admin, queryFn: () => api.get<{ requests: JoinRequest[] }>("/team/requests") });
+  const [roles, setRoles] = useState<Record<number, string>>({});
+  const decide = useMutation({
+    mutationFn: ({ id, ok }: { id: number; ok: boolean }) => ok ? api.post(`/team/requests/${id}/approve`, { role: roles[id] ?? "advocate" }) : api.post(`/team/requests/${id}/reject`),
+    onSuccess: (_r, v) => { toast.success(v.ok ? "Approved. They can sign in now." : "Request rejected"); qc.invalidateQueries({ queryKey: ["join-requests"] }); qc.invalidateQueries({ queryKey: ["team"] }); },
+    onError: toastErr,
+  });
+  const [resetFor, setResetFor] = useState<number | null>(null);
+  const [temp, setTemp] = useState("");
+  const reset = useMutation({
+    mutationFn: (id: number) => api.post(`/team/${id}/password`, { password: temp }),
+    onSuccess: () => { toast.success("Temporary password set. Tell them privately, and ask them to change it in Settings → Profile."); setResetFor(null); setTemp(""); },
+    onError: toastErr,
+  });
+  const localOnly = !!link && /\/\/(localhost|127\.0\.0\.1)[:/]/.test(link);
+  const pending = requests.data?.requests ?? [];
 
   return (
+    <div className="space-y-6">
+    {admin && pending.length > 0 && (
+      <Panel>
+        <PanelHeader title="Requests to join" sub="People who asked to join from the sign-in page. Nobody gets in until you approve." />
+        <ul className="divide-y divide-rule">
+          {pending.map((r) => (
+            <li key={r.id} className="flex flex-wrap items-center gap-3 px-4 py-3">
+              <span className="grid h-8 w-8 place-items-center rounded-full bg-amber-soft text-sm font-medium text-amber">{r.name[0]?.toUpperCase()}</span>
+              <div className="min-w-0 flex-1">
+                <p className="truncate">{r.name} <span className="text-sm text-faint">asked {timeAgo(r.created_at)}</span></p>
+                <p className="truncate text-sm text-faint">{r.email}{r.enrolment_no ? ` · ${r.enrolment_no}` : " · no enrolment number"}</p>
+                {r.message && <p className="mt-1 text-sm text-muted">“{r.message}”</p>}
+              </div>
+              <Select className="h-8 w-32" aria-label={`Role for ${r.name}`} value={roles[r.id] ?? "advocate"} onChange={(e) => setRoles({ ...roles, [r.id]: e.target.value })}>
+                <option value="advocate">Advocate</option><option value="clerk">Clerk</option><option value="admin">Admin</option>
+              </Select>
+              <Button size="sm" variant="primary" loading={decide.isPending && decide.variables?.id === r.id && decide.variables?.ok} onClick={() => decide.mutate({ id: r.id, ok: true })}>Approve</Button>
+              <Button size="sm" variant="ghost" onClick={() => decide.mutate({ id: r.id, ok: false })}>Reject</Button>
+            </li>
+          ))}
+        </ul>
+      </Panel>
+    )}
     <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
       <Panel>
         <PanelHeader title="People" sub="Clerks prepare work. Only advocates and above approve." />
@@ -150,6 +191,15 @@ function Team() {
                       <option value="admin">Admin</option><option value="advocate">Advocate</option><option value="clerk">Clerk</option>
                     </Select>
                     <Button size="sm" variant="ghost" onClick={() => patch.mutate({ id: u.id, b: { active: !u.active } })}>{u.active ? "Disable" : "Enable"}</Button>
+                    <Button size="sm" variant="ghost" aria-expanded={resetFor === u.id} onClick={() => { setResetFor(resetFor === u.id ? null : u.id); setTemp(""); }}>Reset password</Button>
+                    {resetFor === u.id && (
+                      <form className="flex w-full flex-wrap items-end gap-2 pt-1" onSubmit={(e) => { e.preventDefault(); reset.mutate(u.id); }}>
+                        <Field label={`Temporary password for ${u.name}`} hint="At least 10 characters. Tell them privately." className="min-w-[220px] flex-1">
+                          <Input type="text" autoComplete="off" value={temp} onChange={(e) => setTemp(e.target.value)} minLength={10} required />
+                        </Field>
+                        <Button size="sm" variant="primary" loading={reset.isPending}>Set password</Button>
+                      </form>
+                    )}
                   </>
                 ) : <Badge tone={u.role === "owner" ? "brass" : "neutral"}>{u.role}</Badge>}
               </li>
@@ -168,6 +218,7 @@ function Team() {
           {link && (
             <div className="space-y-2 rounded-md border border-brass/30 bg-brass-soft p-3">
               <p className="text-sm">Share this link privately. It works once and expires in 7 days.</p>
+              {localOnly && <p className="text-sm text-amber">This link opens only on this computer, because Nyaay is running here. A colleague on another computer needs Nyaay on your office network or a server. Until then, they can use it on this computer.</p>}
               <button type="button" onClick={() => { navigator.clipboard?.writeText(link); toast.success("Link copied"); }}
                 className="flex w-full items-center gap-2 truncate rounded border border-rule bg-vellum px-2 py-1.5 text-left text-sm"><Copy className="h-3.5 w-3.5 shrink-0" /><span className="truncate">{link}</span></button>
             </div>
@@ -182,6 +233,7 @@ function Team() {
           )}
         </form>
       </Panel>
+    </div>
     </div>
   );
 }
@@ -393,8 +445,10 @@ function Data() {
 export default function SettingsPage() {
   const [tab, setTab] = useState<Tab>("profile");
   useEffect(() => {
-    const h = location.hash.slice(1) as Tab;
-    if (TABS.some((t) => t.value === h)) setTab(h);
+    const read = () => { const h = location.hash.slice(1) as Tab; if (TABS.some((t) => t.value === h)) setTab(h); };
+    read();
+    window.addEventListener("hashchange", read);
+    return () => window.removeEventListener("hashchange", read);
   }, []);
   const change = (t: Tab) => { setTab(t); history.replaceState(null, "", `#${t}`); };
   return (

@@ -1,5 +1,5 @@
 // One navigation model for the rail, the mobile dock, the command palette and keyboard shortcuts.
-import { ArrowLeftRight, BadgeCheck, BookOpen, Bot, CalendarDays, CheckCheck, FileSignature, FolderOpen, Home, Library, Network, Search, Settings, ShieldCheck, Users } from "lucide-react";
+import { ArrowLeftRight, BadgeCheck, BookOpen, Bot, CalendarDays, CheckCheck, FileSignature, FolderOpen, Home, Library, Network, Search, Settings, ShieldCheck, UserCog, Users } from "lucide-react";
 
 export type NavItem = { href: string; label: string; icon: React.ComponentType<{ className?: string }>; key?: string; hint?: string };
 export type NavGroup = { label: string; items: NavItem[] };
@@ -26,6 +26,7 @@ export const NAV: NavGroup[] = [
     { href: "/tools/convert", label: "IPC to BNS", icon: ArrowLeftRight, key: "b" },
   ] },
   { label: "System", items: [
+    { href: "/settings/team", label: "Team", icon: UserCog, hint: "Add colleagues, approve requests to join, set roles" },
     { href: "/settings", label: "Settings", icon: Settings, key: "s" },
   ] },
 ];

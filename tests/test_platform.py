@@ -345,3 +345,49 @@ def test_backup_job(tmp_path, monkeypatch):
     made = jobs.job_backup()
     assert made and all(p.endswith((".db", ".dump")) for p in made)
     assert all(str(tmp_path / "b") in p for p in made)
+
+
+def test_request_access_needs_admin_approval(client, anon):
+    body = {"name": "New Advocate", "email": "new@firm.test", "password": "new passphrase 1", "enrolment_no": "MAH/9/2024"}
+    assert anon.post("/auth/request-access", json={**body, "password": "short"}).status_code == 422
+    r = anon.post("/auth/request-access", json=body)
+    assert r.status_code == 202 and r.json()["ok"]
+    # Cannot sign in before approval, and is told why.
+    r = anon.post("/auth/login", json={"email": "new@firm.test", "password": "new passphrase 1"})
+    assert r.status_code == 403 and "waiting" in r.json()["detail"]
+    # The same reply for an email that already has an account, so the form reveals nothing.
+    assert anon.post("/auth/request-access", json={**body, "email": "owner@firm.test"}).json() == r_ok(anon, body)
+    reqs = client.get("/team/requests").json()["requests"]
+    assert [x["email"] for x in reqs] == ["new@firm.test"] and "password_hash" not in reqs[0]
+    # Only admins see and decide requests.
+    assert anon.get("/team/requests").status_code == 401
+    rid = reqs[0]["id"]
+    assert client.post(f"/team/requests/{rid}/approve", json={"role": "owner"}).status_code == 422
+    assert client.post(f"/team/requests/{rid}/approve", json={"role": "clerk"}).status_code == 200
+    assert client.post(f"/team/requests/{rid}/approve", json={"role": "clerk"}).status_code == 404
+    r = anon.post("/auth/login", json={"email": "new@firm.test", "password": "new passphrase 1"})
+    assert r.status_code == 200 and r.json()["user"]["role"] == "clerk"
+
+
+def test_reject_access_request(client, anon):
+    anon.post("/auth/request-access", json={"name": "Stranger", "email": "stranger@x.test", "password": "stranger pass 12"})
+    rid = client.get("/team/requests").json()["requests"][0]["id"]
+    assert client.post(f"/team/requests/{rid}/reject").status_code == 200
+    assert client.get("/team/requests").json()["requests"] == []
+    assert anon.post("/auth/login", json={"email": "stranger@x.test", "password": "stranger pass 12"}).status_code == 401
+
+
+def r_ok(anon, body):
+    return anon.post("/auth/request-access", json=body).json()
+
+
+def test_admin_resets_member_password(client, anon):
+    token = client.post("/team/invites", json={"email": "reset@firm.test", "role": "advocate"}).json()["link"].split("invite=")[1]
+    anon.post("/auth/accept", json={"token": token, "name": "Forgetful", "password": "first passphrase 1"})
+    uid = next(u["id"] for u in client.get("/team").json()["users"] if u["email"] == "reset@firm.test")
+    assert client.post(f"/team/{uid}/password", json={"password": "short"}).status_code == 422
+    assert client.post(f"/team/{uid}/password", json={"password": "temporary pass 99"}).status_code == 200
+    assert anon.get("/auth/me").status_code == 401  # their session ended
+    assert anon.post("/auth/login", json={"email": "reset@firm.test", "password": "temporary pass 99"}).status_code == 200
+    owner = next(u["id"] for u in client.get("/team").json()["users"] if u["role"] == "owner")
+    assert anon.post(f"/team/{owner}/password", json={"password": "hijack passphrase"}).status_code == 403

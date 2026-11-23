@@ -3,10 +3,11 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "motion/react";
-import { Bell, Bot, CheckCheck, Clapperboard, Keyboard, Library, LogOut, Moon, Settings, Sun } from "lucide-react";
+import { Bell, Bot, CheckCheck, Clapperboard, Keyboard, Library, LogOut, Moon, Settings, Sun, UserPlus } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { timeAgo } from "@/lib/format";
-import { useMe, usePendingApprovals } from "@/lib/hooks";
+import { isAdmin, useMe, usePendingApprovals } from "@/lib/hooks";
 import { isActive, useTasks } from "@/lib/agents";
 import { floatIn } from "@/lib/motion";
 import { useTheme } from "@/components/providers";
@@ -34,12 +35,16 @@ export function NotificationsBell() {
   const { open, setOpen, ref } = usePopover();
   const { data: pending } = usePendingApprovals();
   const { data: tasks } = useTasks(20);
+  const { data: me } = useMe();
+  const admin = isAdmin(me?.user.role);
+  const joins = useQuery({ queryKey: ["join-requests"], enabled: admin, refetchInterval: 60_000, queryFn: () => api.get<{ requests: { id: number }[] }>("/team/requests") });
+  const joinCount = joins.data?.requests.length ?? 0;
   const [seen, setSeen] = useState(0);
   useEffect(() => { try { setSeen(Number(localStorage.getItem(SEEN) ?? 0)); } catch {} }, []);
   const finished = (tasks ?? []).filter((t) => (t.status === "done" || t.status === "failed") && t.finished_at).slice(0, 5);
   const running = (tasks ?? []).filter(isActive);
   const fresh = finished.filter((t) => new Date(t.finished_at! + "Z").getTime() > seen).length;
-  const count = (pending?.length ?? 0) + fresh;
+  const count = (pending?.length ?? 0) + fresh + joinCount;
   const markSeen = () => { const now = Date.now(); setSeen(now); try { localStorage.setItem(SEEN, String(now)); } catch {} };
   // Something new arrived: one boing of the bell, never a loop.
   const bell = useRef<HTMLButtonElement>(null);
@@ -63,6 +68,12 @@ export function NotificationsBell() {
             <div className="relative z-[3]">
               <p className="border-b border-rule px-4 py-3 text-sm font-medium">Notifications</p>
               <ul className="max-h-[60vh] divide-y divide-rule overflow-y-auto scrollbar-thin">
+                {joinCount > 0 && (
+                  <li><Link href="/settings/team" onClick={() => setOpen(false)} className="flex items-start gap-3 px-4 py-3 hover:bg-vellum">
+                    <UserPlus className="mt-0.5 h-4 w-4 text-amber" />
+                    <span className="text-sm"><span className="font-medium">{joinCount} {joinCount === 1 ? "person has" : "people have"}</span> asked to join your chambers</span>
+                  </Link></li>
+                )}
                 {!!pending?.length && (
                   <li><Link href="/approvals" onClick={() => setOpen(false)} className="flex items-start gap-3 px-4 py-3 hover:bg-vellum">
                     <CheckCheck className="mt-0.5 h-4 w-4 text-brass" />
@@ -85,7 +96,7 @@ export function NotificationsBell() {
                     </span>
                   </Link></li>
                 ))}
-                {!pending?.length && !running.length && !finished.length && <li className="px-4 py-8 text-center text-sm text-muted">Nothing new. Agent results and approvals appear here.</li>}
+                {!pending?.length && !joinCount && !running.length && !finished.length && <li className="px-4 py-8 text-center text-sm text-muted">Nothing new. Agent results and approvals appear here.</li>}
               </ul>
             </div>
           </motion.div>
@@ -128,6 +139,7 @@ export function UserMenu({ onShortcuts }: { onShortcuts: () => void }) {
               </div>
               <div className="my-1 h-px bg-rule" />
               <Link href="/settings" role="menuitem" onClick={() => setOpen(false)} className={item}><Settings className="h-4 w-4" />Settings</Link>
+              <Link href="/settings/team" role="menuitem" onClick={() => setOpen(false)} className={item}><UserPlus className="h-4 w-4" />Team and invites</Link>
               <Link href="/library" role="menuitem" onClick={() => setOpen(false)} className={item}><Library className="h-4 w-4" />Library</Link>
               <button role="menuitem" onClick={toggle} className={item}>{theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}{theme === "dark" ? "Light mode" : "Dark mode"}</button>
               <button role="menuitem" onClick={() => { setOpen(false); onShortcuts(); }} className={item}><Keyboard className="h-4 w-4" />Keyboard shortcuts</button>

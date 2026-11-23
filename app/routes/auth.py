@@ -1,4 +1,4 @@
-"""Sign-up (first owner), sign-in, sessions, invites and team management."""
+"""Sign-up (first owner), sign-in, sessions, invites, requests to join, and team management."""
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
@@ -11,8 +11,8 @@ from sqlalchemy.orm import Session
 from ..config import COOKIE_SECURE, PUBLIC_URL, SESSION_DAYS, WEB_URL
 from ..db import get_db
 from ..deps import COOKIE, ROLE_RANK, audit, get_user, require_role
-from ..models import ROLES, AuthSession, Firm, Invite, Matter, User
-from ..services.security import (hash_password, login_throttle, new_token, password_problem, token_hash,
+from ..models import ROLES, AccessRequest, AuthSession, Firm, Invite, Matter, User
+from ..services.security import (Throttle, hash_password, login_throttle, new_token, password_problem, token_hash,
                                  verify_password)
 
 router = APIRouter(tags=["auth"])
@@ -58,6 +58,22 @@ class SetupIn(BaseModel):
 class LoginIn(BaseModel):
     email: str
     password: str
+
+
+class AccessIn(BaseModel):
+    name: str
+    email: str
+    password: str
+    enrolment_no: Optional[str] = None
+    message: Optional[str] = None
+
+
+class ResetIn(BaseModel):
+    password: str
+
+
+class DecideIn(BaseModel):
+    role: str = "advocate"
 
 
 class InviteIn(BaseModel):
@@ -124,6 +140,98 @@ def setup(body: SetupIn, request: Request, response: Response, db: Session = Dep
     return {"user": user_dict(u), "firm": {"id": firm.id, "name": firm.name}}
 
 
+# Requests to join. Anyone who can reach this Nyaay can ask; nobody gets in until an owner or admin approves.
+# Requests are rate-limited per address and capped, and they never say whether an email already has an account.
+request_throttle = Throttle(limit=5, window=3600)
+MAX_PENDING = 50
+REQUEST_DAYS = 14
+
+
+def _request_dict(r: AccessRequest) -> dict:
+    return {"id": r.id, "email": r.email, "name": r.name, "enrolment_no": r.enrolment_no, "message": r.message,
+            "status": r.status, "created_at": r.created_at.isoformat() + "Z"}
+
+
+@router.post("/auth/request-access", status_code=202)
+def request_access(body: AccessIn, request: Request, db: Session = Depends(get_db)):
+    key = f"req|{request.client.host if request.client else ''}"
+    if request_throttle.blocked(key):
+        raise HTTPException(429, "Too many requests from this computer. Try again in an hour.")
+    request_throttle.fail(key)
+    firm = db.query(Firm).order_by(Firm.id).first()
+    if not firm or not db.query(User).count():
+        raise HTTPException(409, "Nyaay is not set up yet. Reload the page to create the chambers.")
+    if not body.name.strip():
+        raise HTTPException(422, "Enter your name")
+    email = _norm_email(body.email)
+    if (p := password_problem(body.password)):
+        raise HTTPException(422, p)
+    reply = {"ok": True, "message": "Request sent. An admin of the chambers will review it. Once approved, sign in with this email and password."}
+    cutoff = _now() - timedelta(days=REQUEST_DAYS)
+    # Same reply whether or not the email is known, so the form cannot be used to find out who has an account.
+    if db.query(User).filter(User.email == email).first():
+        return reply
+    open_req = db.query(AccessRequest).filter(AccessRequest.email == email, AccessRequest.status == "pending",
+                                              AccessRequest.created_at > cutoff).first()
+    if open_req:
+        open_req.name, open_req.enrolment_no = body.name.strip()[:200], (body.enrolment_no or "").strip()[:60] or None
+        open_req.password_hash, open_req.message = hash_password(body.password), (body.message or "").strip()[:500]
+        db.commit()
+        return reply
+    if db.query(AccessRequest).filter(AccessRequest.status == "pending", AccessRequest.created_at > cutoff).count() >= MAX_PENDING:
+        raise HTTPException(429, "Too many requests are waiting. Ask the chambers admin directly.")
+    db.add(AccessRequest(firm_id=firm.id, email=email, name=body.name.strip()[:200],
+                         enrolment_no=(body.enrolment_no or "").strip()[:60] or None, message=(body.message or "").strip()[:500],
+                         password_hash=hash_password(body.password), status="pending", created_at=_now()))
+    audit(db, firm.id, email, "request_access", "user", None, {"name": body.name.strip()[:200]})
+    db.commit()
+    return reply
+
+
+@router.get("/team/requests")
+def list_requests(user: User = Depends(require_role("admin")), db: Session = Depends(get_db)):
+    cutoff = _now() - timedelta(days=REQUEST_DAYS)
+    rows = (db.query(AccessRequest).filter(AccessRequest.firm_id == user.firm_id, AccessRequest.status == "pending",
+                                           AccessRequest.created_at > cutoff).order_by(AccessRequest.created_at.desc()).all())
+    return {"requests": [_request_dict(r) for r in rows]}
+
+
+def _pending(db: Session, rid: int, user: User) -> AccessRequest:
+    r = db.get(AccessRequest, rid)
+    if not r or r.firm_id != user.firm_id or r.status != "pending":
+        raise HTTPException(404, "This request is no longer waiting")
+    return r
+
+
+@router.post("/team/requests/{rid}/approve")
+def approve_request(rid: int, body: DecideIn, user: User = Depends(require_role("admin")), db: Session = Depends(get_db)):
+    r = _pending(db, rid, user)
+    if body.role not in ROLES or body.role == "owner" or ROLE_RANK[body.role] > ROLE_RANK[user.role]:
+        raise HTTPException(422, "Role must be admin, advocate or clerk, and not higher than yours")
+    if db.query(User).filter(User.email == r.email).first():
+        r.status, r.decided_at, r.decided_by = "rejected", _now(), user.id
+        db.commit()
+        raise HTTPException(409, "This email already has an account")
+    u = User(firm_id=r.firm_id, email=r.email, name=r.name, role=body.role, password_hash=r.password_hash,
+             enrolment_no=r.enrolment_no)
+    db.add(u)
+    r.status, r.decided_at, r.decided_by = "approved", _now(), user.id
+    r.password_hash = ""
+    db.flush()
+    audit(db, user.firm_id, user.email, "approve_access", "user", u.id, {"email": r.email, "role": body.role})
+    db.commit()
+    return {"user": user_dict(u)}
+
+
+@router.post("/team/requests/{rid}/reject")
+def reject_request(rid: int, user: User = Depends(require_role("admin")), db: Session = Depends(get_db)):
+    r = _pending(db, rid, user)
+    r.status, r.decided_at, r.decided_by, r.password_hash = "rejected", _now(), user.id, ""
+    audit(db, user.firm_id, user.email, "reject_access", "user", None, {"email": r.email})
+    db.commit()
+    return {"ok": True}
+
+
 @router.post("/auth/login")
 def login(body: LoginIn, request: Request, response: Response, db: Session = Depends(get_db)):
     email = (body.email or "").strip().lower()
@@ -131,6 +239,11 @@ def login(body: LoginIn, request: Request, response: Response, db: Session = Dep
     if login_throttle.blocked(key):
         raise HTTPException(429, "Too many attempts. Wait ten minutes and try again.")
     u = db.query(User).filter(User.email == email).first()
+    if not u:
+        # Someone who asked to join and typed the same password learns their request is still waiting.
+        pend = db.query(AccessRequest).filter(AccessRequest.email == email, AccessRequest.status == "pending").first()
+        if pend and pend.password_hash and verify_password(body.password, pend.password_hash):
+            raise HTTPException(403, "Your request to join is waiting for an admin of the chambers to approve it.")
     if not u or not u.active or not verify_password(body.password, u.password_hash):
         login_throttle.fail(key)
         raise HTTPException(401, "Email or password is incorrect")
@@ -295,3 +408,22 @@ def update_member(uid: int, body: TeamPatch, user: User = Depends(require_role("
     audit(db, user.firm_id, user.email, "update_member", "user", u.id, body.model_dump(exclude_unset=True))
     db.commit()
     return user_dict(u)
+
+
+@router.post("/team/{uid}/password")
+def reset_member_password(uid: int, body: ResetIn, user: User = Depends(require_role("admin")), db: Session = Depends(get_db)):
+    """An admin sets a temporary password for a colleague who forgot theirs. Their other sessions end."""
+    u = db.get(User, uid)
+    if not u or u.firm_id != user.firm_id:
+        raise HTTPException(404, "User not found")
+    if u.id == user.id:
+        raise HTTPException(409, "Change your own password in Settings > Profile")
+    if u.role == "owner" or ROLE_RANK[u.role] > ROLE_RANK[user.role]:
+        raise HTTPException(403, "You cannot reset the password of someone with a higher role")
+    if (p := password_problem(body.password)):
+        raise HTTPException(422, p)
+    u.password_hash = hash_password(body.password)
+    db.query(AuthSession).filter(AuthSession.user_id == u.id).delete()
+    audit(db, user.firm_id, user.email, "reset_password", "user", u.id)
+    db.commit()
+    return {"ok": True}

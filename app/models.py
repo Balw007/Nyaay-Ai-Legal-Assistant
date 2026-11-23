@@ -67,6 +67,22 @@ class Invite(Base):
     created_by: Mapped[int] = mapped_column(Integer)
 
 
+class AccessRequest(Base):
+    """Someone asked, from the sign-in page, to join the chambers. Nothing is created until an admin approves it."""
+    __tablename__ = "access_requests"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    firm_id: Mapped[int] = mapped_column(ForeignKey("firms.id"), index=True)
+    email: Mapped[str] = mapped_column(String(254), index=True)
+    name: Mapped[str] = mapped_column(String(200))
+    enrolment_no: Mapped[Optional[str]] = mapped_column(String(60), nullable=True)
+    message: Mapped[str] = mapped_column(String(500), default="")
+    password_hash: Mapped[str] = mapped_column(String(300))
+    status: Mapped[str] = mapped_column(String(20), default="pending")  # pending | approved | rejected
+    created_at: Mapped[datetime] = mapped_column(DateTime)
+    decided_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    decided_by: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+
+
 class Matter(Base):
     __tablename__ = "matters"
     id: Mapped[int] = mapped_column(primary_key=True)

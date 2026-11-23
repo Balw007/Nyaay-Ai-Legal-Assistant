@@ -282,7 +282,14 @@ export const HELP: Record<string, Help> = {
     what: "Everyone in your chambers and their role.",
     note: "Clerks prepare work. Only advocates and above approve.",
   },
-  "Invite a colleague": { what: "Send a link that lets a colleague join your chambers with a chosen role." },
+  "Invite a colleague": {
+    what: "Create a one-time link that lets a colleague join your chambers with the role you choose. It expires in 7 days.",
+    note: "While Nyaay runs only on this computer, the link opens only here. Colleagues on other computers need Nyaay on your office network or a server.",
+  },
+  "Requests to join": {
+    what: "People who asked to join from the sign-in page. Their account is not created until you approve it.",
+    how: "Choose a role, then Approve, or Reject. Approved people sign in with the email and password they chose.",
+  },
   "Local AI with Ollama": {
     what: "Set up the free AI that runs on this computer.",
     note: "Models run here and nothing is sent to an AI company.",
