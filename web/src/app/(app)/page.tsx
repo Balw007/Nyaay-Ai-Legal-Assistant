@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Countdown, DayRail } from "@/components/visuals/timeline";
 import { ActiveAgents, AiInsights, Hero, RecentMatters, TodaysIntelligence } from "@/components/home/hero";
 import { Titled } from "@/components/ui/info";
+import { CountUp, Rise, useSmoothScroll } from "@/components/fx/motion-bits";
 import { cn } from "@/lib/utils";
 
 function greeting() {
@@ -64,13 +65,14 @@ export default function CommandCentre() {
   const cal = useQuery({ queryKey: ["calendar", todayISO(), endISO], queryFn: () => api.get<{ events: CalEvent[] }>(`/calendar${qs({ start: todayISO(), end: endISO })}`) });
   const [layout, setLayout] = useLayout();
   const [arranging, setArranging] = useState(false);
+  useSmoothScroll();
 
   if (dash.isError) return <ErrorNote error={dash.error} />;
   const d = dash.data;
   const firstName = me?.user.name.split(" ")[0] ?? "";
 
   return (
-    <div className="space-y-7">
+    <div className="home space-y-7">
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
         <Hero name={firstName} />
         <div className="min-w-0 space-y-6"><TodaysIntelligence d={d} /><ActiveAgents /></div>
@@ -100,7 +102,8 @@ export default function CommandCentre() {
         {arranging && <p className="text-sm text-faint">Drag panels, or use the arrows, to arrange your workspace. Hidden panels can be shown again here.</p>}
 
         {!arranging && (
-          <Panel className="overflow-hidden" aria-label="Next two weeks">
+          <Rise>
+          <Panel className="glow-card overflow-hidden" aria-label="Next two weeks">
             <PanelHeader title="The next two weeks"
               action={
                 <div className="flex items-center gap-4 text-sm">
@@ -111,6 +114,7 @@ export default function CommandCentre() {
               } />
             <div className="relative z-[3] px-3 pb-4 pt-2">{cal.data ? <DayRail events={cal.data.events} /> : <Skeleton className="m-2 h-28" />}</div>
           </Panel>
+          </Rise>
         )}
 
       <AnimatePresence mode="wait" initial={false}>
@@ -120,11 +124,13 @@ export default function CommandCentre() {
           </motion.div>
         ) : (
           <motion.div key="grid" layout className="grid grid-cols-1 gap-6 lg:grid-cols-3 [grid-auto-flow:dense]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            {layout.order.filter((id) => !layout.hidden.includes(id)).map((id) => {
+            {layout.order.filter((id) => !layout.hidden.includes(id)).map((id, i) => {
               const p = PANELS.find((x) => x.id === id)!;
               return (
-                <motion.div key={id} layout transition={spring.gentle} className={cn("min-w-0 [&>*]:h-full", p.span)}>
+                <motion.div key={id} layout transition={spring.gentle} className={cn("min-w-0", p.span)}>
+                  <Rise delay={(i % 3) * 0.08} className="h-full [&>*]:h-full">
                   {d ? <PanelFor id={id} d={d} /> : <Panel className="p-5"><Skeleton className="h-5 w-40" /><Skeleton className="mt-4 h-24" /></Panel>}
+                  </Rise>
                 </motion.div>
               );
             })}
@@ -142,7 +148,7 @@ function Situation({ d }: { d: Dashboard }) {
   const A = ({ href, n, word, tone }: { href: string; n: number; word: string; tone: string }) => (
     <Link href={href} className={cn("rounded-md px-0.5 font-medium underline decoration-1 underline-offset-4 transition-colors hover:bg-vellum",
       n ? tone : "text-muted decoration-rule-strong")}>
-      <span className="tnum">{n.toLocaleString("en-IN")}</span> {word}
+      <span className="tnum"><CountUp value={n} /></span> {word}
     </Link>
   );
   return (
@@ -288,7 +294,7 @@ function LibraryPanel({ d }: { d: Dashboard }) {
       <PanelHeader title="Library" action={<Link href="/library" className="text-sm text-brass hover:underline">Manage</Link>} />
       <dl className="relative z-[3] grid grid-cols-3 divide-x divide-rule">
         {([["Judgments", d.corpus.real_judgments], ["Paragraphs", d.corpus.paragraphs], ["Courts", d.corpus.courts.length]] as const).map(([k, v]) => (
-          <div key={k} className="px-4 py-4"><dt className="text-sm text-muted">{k}</dt><dd className="tnum text-xl font-semibold">{Number(v).toLocaleString("en-IN")}</dd></div>
+          <div key={k} className="px-4 py-4"><dt className="text-sm text-muted">{k}</dt><dd className="tnum text-xl font-semibold"><CountUp value={Number(v)} /></dd></div>
         ))}
       </dl>
       {d.recent_searches.length > 0 && (

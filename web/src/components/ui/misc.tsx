@@ -99,7 +99,7 @@ export function PageHeader({ title, sub, actions, hero, className, info }: { tit
   return (
     <div className={cn("mb-7 flex flex-wrap items-end justify-between gap-4", className)}>
       <div className={cn("min-w-0", hero && "vt-hero")}>
-        <h1 className="flex items-center gap-2.5 font-editorial text-[2.15rem] leading-[1.12] text-text md:text-3xl">{title}{h && <InfoTip help={h} title={name} className="h-6 w-6 [&>svg]:h-4.5 [&>svg]:w-4.5" />}</h1>
+        <h1 className="title-in flex items-center gap-2.5 font-editorial text-[2.15rem] leading-[1.12] text-text md:text-3xl">{title}{h && <InfoTip help={h} title={name} className="h-6 w-6 [&>svg]:h-4.5 [&>svg]:w-4.5" />}</h1>
         {sub && <p className="mt-2 max-w-[70ch] text-base text-muted">{sub}</p>}
       </div>
       {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}

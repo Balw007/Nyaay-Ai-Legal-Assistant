@@ -10,6 +10,8 @@ import { ShortcutsDialog, useShortcuts } from "@/components/shell/shortcuts";
 import { BootSeal } from "@/components/shell/wordmark";
 import { useMe } from "@/lib/hooks";
 import { spring } from "@/lib/motion";
+import { hasRibbon, PageRibbon } from "@/components/fx/page-ribbon";
+import { cn } from "@/lib/utils";
 
 function usePinned() {
   // The full navigation bar is open by default; the pin button collapses it to icons and remembers that.
@@ -44,7 +46,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const gutter = (pinned ? RAIL_EXPANDED : RAIL_COLLAPSED) + 12;
 
   return (
-    <div className="min-h-screen" style={{ ["--rail-space" as string]: `${gutter}px` }}>
+    <div className={cn("min-h-screen", hasRibbon(path) && "over-ribbon")} style={{ ["--rail-space" as string]: `${gutter}px` }}>
+      <PageRibbon path={path} />
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[60] focus:rounded-lg focus:bg-brass focus:px-3 focus:py-1.5 focus:text-on-brass">Skip to content</a>
 
       <aside className="fixed bottom-3 left-3 top-3 z-40 hidden md:block"><Rail pinned={pinned} setPinned={setPinned} /></aside>

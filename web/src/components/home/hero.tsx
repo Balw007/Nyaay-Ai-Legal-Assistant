@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { motion } from "motion/react";
 import { ArrowRight, CalendarClock, Clock, CheckCheck, FilePlus2, FolderOpen, Gavel, Library, MoreHorizontal, Search, ShieldCheck, Sparkles, Activity, Cpu } from "lucide-react";
 import { api } from "@/lib/api";
 import type { Dashboard, Matter } from "@/lib/types";
@@ -13,7 +12,7 @@ import { useHealth } from "@/lib/hooks";
 import { isActive, useStartAgent, useTasks, type AgentTask, type ResearchResult } from "@/lib/agents";
 import { readRecent, type Recent } from "@/lib/recent";
 import { MorphLink } from "@/lib/transition";
-import { ease } from "@/lib/motion";
+import { CountUp, Sharpen } from "@/components/fx/motion-bits";
 import { Badge, Empty, Kbd, Panel, PanelHeader, Segmented, Skeleton } from "@/components/ui/misc";
 import { AgentRow } from "@/components/agents/agent-row";
 import { cn } from "@/lib/utils";
@@ -24,7 +23,7 @@ function greeting() {
   return h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
 }
 
-/** The cinematic welcome band: a planet's rim of light under the greeting, and one search for everything. */
+/** The welcome area: the greeting and one search for everything, open to the ribbon in the page background. */
 export function Hero({ name }: { name: string }) {
   const router = useRouter();
   const [q, setQ] = useState("");
@@ -49,10 +48,11 @@ export function Hero({ name }: { name: string }) {
   ];
 
   return (
-    <section aria-label="Welcome" data-ripple="hero" className="horizon relative isolate overflow-hidden rounded-[28px] border border-rule xl:min-h-[495px]">
+    <section aria-label="Welcome" className="relative xl:min-h-[495px]">
       <div className="relative z-[2] flex min-h-[400px] flex-col items-center justify-center px-6 pb-24 pt-14 text-center">
-        <motion.h1 initial={{ opacity: 0.4, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: ease.out }}
-          className="font-editorial text-[2.3rem] leading-tight text-text md:text-[2.9rem]">{greeting()}, {name}</motion.h1>
+        <h1 className="font-editorial text-[2.4rem] leading-tight text-text md:text-[3.2rem]">
+          <Sharpen key={name} text={name ? `${greeting()}, ${name}` : greeting()} />
+        </h1>
         <p className="mt-2 inline-flex items-center gap-1.5 text-md text-muted">What would you like to do today?<InfoTip k="Home" title="Home" /></p>
         <form onSubmit={(e) => { e.preventDefault(); if (text.length >= 2) router.push(`/research?q=${encodeURIComponent(text)}`); }}
           className="hero-search mt-8 flex w-full max-w-2xl items-center gap-3 rounded-full px-5" role="search">
@@ -74,6 +74,10 @@ export function Hero({ name }: { name: string }) {
   );
 }
 
+function Count({ n, word }: { n: number; word?: string }) {
+  return <><span className="tnum text-md font-semibold"><CountUp value={n} /></span>{word ? ` ${n === 1 ? word : `${word}s`}` : null}</>;
+}
+
 /** Real counts only, each a link to the work behind it. */
 export function TodaysIntelligence({ d }: { d?: Dashboard }) {
   const { data: h, isError } = useHealth();
@@ -81,10 +85,10 @@ export function TodaysIntelligence({ d }: { d?: Dashboard }) {
   const c = d.counts;
   const ai = h?.ai;
   const rows: { icon: React.ComponentType<{ className?: string }>; text: React.ReactNode; tone: string; href: string }[] = [
-    { icon: Gavel, text: <>{plural(c.hearings_today, "hearing")} today</>, tone: "text-cyan", href: "/calendar" },
-    { icon: CalendarClock, text: <>{plural(c.deadlines_week, "deadline")} this week{c.overdue ? <span className="text-tape">, {c.overdue} overdue</span> : null}</>, tone: "text-tape", href: "/calendar" },
-    { icon: CheckCheck, text: <>{plural(c.pending_approvals, "approval")} pending</>, tone: "text-brass", href: "/approvals" },
-    { icon: Library, text: <>{d.corpus.real_judgments.toLocaleString("en-IN")} judgments in your library</>, tone: "text-platinum", href: "/library" },
+    { icon: Gavel, text: <><Count n={c.hearings_today} word="hearing" /> today</>, tone: "text-cyan", href: "/calendar" },
+    { icon: CalendarClock, text: <><Count n={c.deadlines_week} word="deadline" /> this week{c.overdue ? <span className="text-tape">, {c.overdue} overdue</span> : null}</>, tone: "text-tape", href: "/calendar" },
+    { icon: CheckCheck, text: <><Count n={c.pending_approvals} word="approval" /> pending</>, tone: "text-brass", href: "/approvals" },
+    { icon: Library, text: <><Count n={d.corpus.real_judgments} /> judgments in your library</>, tone: "text-platinum", href: "/library" },
     {
       icon: isError ? Activity : Cpu,
       text: isError ? "Server offline" : !ai ? "Checking the system…" : ai.ready ? <>System running normally <span className="text-faint">({ai.model})</span></> : <>Local AI offline. <span className="text-faint">{ai.message}</span></>,
@@ -92,7 +96,7 @@ export function TodaysIntelligence({ d }: { d?: Dashboard }) {
     },
   ];
   return (
-    <Panel lit ripple="today">
+    <Panel lit tilt={2} className="glow-card">
       <PanelHeader title="Today's intelligence" />
       <ul className="relative z-[3] p-1.5">
         {rows.map((r, i) => (
@@ -116,7 +120,7 @@ export function ActiveAgents() {
   }, [data]);
   const running = (data ?? []).filter(isActive).length;
   return (
-    <Panel ripple="agents">
+    <Panel tilt={2} className="glow-card">
       <PanelHeader title="Active agents" sub={<span className={running ? "text-cyan" : undefined}>{running ? `${running} working now` : "None working now"}</span>}
         action={<Link href="/intelligence" className="inline-flex items-center gap-1 text-sm text-brass hover:underline">All agents <ArrowRight className="h-3 w-3" /></Link>} />
       <div className="relative z-[3] space-y-1.5 p-1.5">
@@ -191,7 +195,7 @@ export function AiInsights() {
   const t = (data ?? []).find((x) => x.agent === "research" && x.status === "done") as AgentTask | undefined;
   const r = t?.result as ResearchResult | undefined;
   return (
-    <Panel lit ripple="insights" className="h-full">
+    <Panel lit className="h-full">
       <PanelHeader title="AI insights" sub="Latest answer from the Research Agent"
         action={r?.mode === "answer" ? <Badge tone="cyan">AI, not verified</Badge> : undefined} />
       <div className="relative z-[3] px-4 py-3">

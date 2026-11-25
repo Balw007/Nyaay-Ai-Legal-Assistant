@@ -11,6 +11,9 @@ import { CheckCircle2, KeyRound, Link2 } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { spring } from "@/lib/motion";
 import { shake } from "@/components/shell/specular";
+import { Ribbon } from "@/components/fx/ribbon";
+import { Sharpen } from "@/components/fx/motion-bits";
+import { DeadlineCard } from "@/components/fx/deadline-card";
 
 type Mode = "login" | "request" | "setup" | "invite";
 
@@ -76,32 +79,23 @@ function LoginInner() {
     : mode === "request" ? "New to these chambers? Ask to join. An admin approves every new account." : "Welcome back.";
 
   return (
-    <div className="grid min-h-screen lg:grid-cols-[1.1fr_1fr]">
-      <section className="relative hidden flex-col justify-between overflow-hidden p-12 lg:flex">
+    <div className="relative isolate grid min-h-screen overflow-hidden lg:grid-cols-[1.15fr_1fr]">
+      <div aria-hidden className="absolute inset-0 z-0"><Ribbon shape="login" /></div>
+      <section className="relative z-[1] hidden flex-col justify-between gap-8 p-12 lg:flex">
         <Logo className="h-9" />
-        {/* The one orchestrated moment: the seal is lit, then the light settles into rings. */}
-        <div aria-hidden className="pointer-events-none absolute left-1/2 top-[46%] grid -translate-x-1/2 -translate-y-1/2 place-items-center">
-          {[520, 400, 290, 190].map((d, i) => (
-            <motion.span key={d} className="absolute rounded-full border border-brass/20"
-              style={{ width: d, height: d, boxShadow: i === 3 ? "0 0 80px -20px var(--brass), inset 0 0 60px -30px var(--brass)" : undefined }}
-              initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1 - i * 0.05 - 0.45 + i * 0.15, scale: 1 }}
-              transition={{ ...spring.gentle, delay: 0.35 + (3 - i) * 0.12 }} />
-          ))}
-          <motion.span className="absolute h-[340px] w-[340px] rounded-full bg-brass/10 blur-3xl"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.4, delay: 0.2 }} />
-          <motion.div initial={{ opacity: 0, scale: 0.85, filter: "blur(8px)" }} animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }} transition={{ ...spring.gentle, delay: 0.1 }}>
-            <Logo variant="full" alt="" className="h-[150px]" />
-          </motion.div>
+        <div className="max-w-xl">
+          <p className="login-headline font-editorial text-text"><Sharpen text="Every authority, checked." delay={0.15} /></p>
+          <motion.p className="short-hide mt-5 max-w-lg text-md text-muted" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ ...spring.gentle, delay: 0.6 }}>
+            Research Supreme Court and High Court judgments to the paragraph, track every matter and deadline, and file drafts only after each citation is verified. Everything runs on your computer.
+          </motion.p>
+          <div className="mt-9"><DeadlineCard /></div>
         </div>
-        <motion.div className="relative max-w-md" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ ...spring.gentle, delay: 1.1 }}>
-          <p className="font-editorial text-[2.6rem] leading-[1.08] text-text">Every authority, checked.</p>
-          <p className="mt-4 text-md text-muted">Research Supreme Court and High Court judgments to the paragraph, track every matter and deadline, and file drafts only after each citation is verified. Everything runs on your computer.</p>
-        </motion.div>
+        <p className="short-hide text-sm text-faint">AI proposes, an advocate decides.</p>
       </section>
-      <section className="flex items-center justify-center p-6">
+      <section className="relative z-[1] flex items-center justify-center p-6">
         <div ref={card} className="w-full max-w-[420px]">
         <motion.form onSubmit={submit} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
-          className="glass-4 w-full max-w-[420px] space-y-5 rounded-2xl p-8 [&>*]:relative [&>*]:z-[3]">
+          className="glass-4 login-card w-full max-w-[420px] space-y-5 rounded-2xl p-8 [&>*]:relative [&>*]:z-[3]">
           <div className="lg:hidden"><Logo className="h-9" /></div>
           {(mode === "login" || mode === "request") && (
             <Segmented label="Sign in or request access" value={tab} onChange={setTab} className="w-full [&>button]:flex-1 [&>button]:justify-center"

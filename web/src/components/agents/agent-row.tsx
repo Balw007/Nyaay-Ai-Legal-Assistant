@@ -27,11 +27,11 @@ export function AgentProgress({ t, className }: { t: AgentTask; className?: stri
   const active = isActive(t);
   const tone = t.status === "failed" ? "bg-tape" : t.status === "cancelled" ? "bg-faint" : t.status === "done" ? "bg-leaf" : "bg-gradient-to-r from-electric to-cyan";
   return (
-    <div className={cn("relative h-1 overflow-hidden rounded-full bg-vellum", className)} role="progressbar"
+    <div className={cn("relative h-1.5 overflow-hidden rounded-full bg-vellum", className)} role="progressbar"
       aria-valuemin={0} aria-valuemax={100} aria-valuenow={t.indeterminate || t.status === "queued" ? undefined : t.progress} aria-label={`${t.agent_name}: ${t.step}`}>
       {active && (t.indeterminate || t.status === "queued")
         ? <div className={cn("absolute inset-y-0 w-1/3 animate-[scan_1.6s_linear_infinite]", t.status === "queued" ? "bg-gradient-to-r from-transparent via-faint to-transparent" : "bg-gradient-to-r from-transparent via-cyan to-transparent")} />
-        : <div className={cn("h-full rounded-full transition-[width] duration-500", tone)} style={{ width: `${t.status === "done" ? 100 : t.progress}%` }} />}
+        : <div className={cn("relative h-full overflow-hidden rounded-full transition-[width] duration-700", tone, t.status === "running" && "progress-live")} style={{ width: `${t.status === "done" ? 100 : t.progress}%` }} />}
     </div>
   );
 }
@@ -54,7 +54,7 @@ export function AgentRow({ t, compact }: { t: AgentTask; compact?: boolean }) {
     <Link ref={row} href={`/intelligence?task=${t.id}`} data-specular=""
       className="glass-3 group relative block rounded-xl px-3 py-2.5 transition-colors hover:border-cyan/30">
       <div className="relative z-[3] flex items-start gap-3">
-        <AgentIcon agent={t.agent} className={compact ? "h-8 w-8" : undefined} />
+        <AgentIcon agent={t.agent} className={cn(compact && "h-8 w-8", t.status === "running" && "agent-working")} />
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline justify-between gap-2">
             <p className="truncate text-sm font-medium">{t.agent_name}</p>

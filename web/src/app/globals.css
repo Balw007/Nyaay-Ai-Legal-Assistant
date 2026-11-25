@@ -53,11 +53,11 @@
   --specular: rgba(255, 238, 205, 0.075);
 
   --vellum: rgba(255, 255, 255, 0.04);
-  --rule: rgba(160, 176, 204, 0.13);
-  --rule-strong: rgba(160, 176, 204, 0.26);
-  --text: #e7ebf3;
-  --muted: #9ba6bb;
-  --faint: #808aa0;
+  --rule: rgba(160, 176, 204, 0.16);
+  --rule-strong: rgba(160, 176, 204, 0.3);
+  --text: #eef1f8;
+  --muted: #b3bdd0;
+  --faint: #949eb4;
   --platinum: #c9d1de;
 
   /* light sources */
@@ -372,41 +372,6 @@ html[data-intro] body > *:not([data-welcome]) {
 [data-skin] { background: transparent !important; }
 @media (prefers-reduced-motion: reduce) { [data-tilt], [data-pl] { transform: none !important; } [data-skin-layer] { display: none; } }
 
-/* The welcome band on Home: a starfield and the rim of a planet catching a gold sunrise (CSS only, one layer each). */
-.horizon {
-  background:
-    radial-gradient(1px 1px at 12% 22%, rgba(255,255,255,.7), transparent 60%),
-    radial-gradient(1px 1px at 28% 12%, rgba(255,255,255,.5), transparent 60%),
-    radial-gradient(1.5px 1.5px at 44% 30%, rgba(255,255,255,.55), transparent 60%),
-    radial-gradient(1px 1px at 63% 16%, rgba(255,255,255,.6), transparent 60%),
-    radial-gradient(1px 1px at 78% 26%, rgba(255,255,255,.45), transparent 60%),
-    radial-gradient(1.5px 1.5px at 88% 10%, rgba(255,255,255,.6), transparent 60%),
-    radial-gradient(1px 1px at 6% 48%, rgba(255,255,255,.4), transparent 60%),
-    radial-gradient(1px 1px at 94% 44%, rgba(255,255,255,.4), transparent 60%),
-    radial-gradient(120% 90% at 50% 0%, #0d1838 0%, #070c1d 55%, #04060e 100%);
-}
-.horizon::before {
-  content: ""; position: absolute; z-index: 0; left: -35%; right: -35%; top: 70%; height: 140%; border-radius: 50%;
-  background: radial-gradient(60% 40% at 50% 0%, #0b1738 0%, #050912 70%);
-  box-shadow: 0 -1px 0 rgba(150, 205, 255, 0.75), 0 -6px 26px rgba(91, 140, 255, 0.55), 0 -30px 90px rgba(60, 120, 255, 0.32), 0 -80px 160px rgba(40, 90, 220, 0.18);
-}
-.horizon::after {
-  content: ""; position: absolute; z-index: 1; left: 50%; top: 70%; width: 70%; height: 140px; transform: translate(-50%, -50%);
-  background:
-    radial-gradient(closest-side, rgba(255, 236, 196, 0.95), rgba(227, 192, 122, 0.55) 18%, transparent 60%) center / 120px 120px no-repeat,
-    radial-gradient(50% 6% at 50% 50%, rgba(255, 226, 170, 0.75), transparent 100%),
-    radial-gradient(30% 50% at 50% 50%, rgba(227, 192, 122, 0.25), transparent 100%);
-  filter: blur(0.3px);
-  pointer-events: none;
-}
-.light .horizon {
-  background:
-    radial-gradient(120% 90% at 50% 0%, #e9eef8 0%, #dfe6f3 50%, #cfd9ec 100%);
-}
-.light .horizon::before {
-  background: radial-gradient(60% 40% at 50% 0%, #f7f5ef 0%, #ece9e0 70%);
-  box-shadow: 0 -1px 0 rgba(255,255,255,.95), 0 -8px 30px rgba(120, 160, 230, 0.45), 0 -40px 110px rgba(120, 160, 230, 0.25);
-}
 .hero-search {
   background: color-mix(in srgb, var(--g4-fill) 85%, transparent);
   backdrop-filter: blur(18px) saturate(160%);
@@ -417,6 +382,53 @@ html[data-intro] body > *:not([data-welcome]) {
 }
 .hero-search:focus-within {
   box-shadow: 0 0 0 1px var(--cyan), 0 0 44px -4px color-mix(in srgb, var(--cyan) 75%, transparent), inset 0 1px 0 var(--rim-hi), 0 20px 50px -20px rgba(0, 0, 0, 0.8);
+}
+
+/* Sign-in screen: solid enough to read over the moving ribbon, and no backdrop blur to recompute each frame. */
+.login-card {
+  background: var(--surface-solid);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.deadline-card {
+  background: var(--surface-solid);
+  border: 1px solid color-mix(in srgb, var(--brass) 26%, transparent);
+  box-shadow: var(--shadow-float);
+}
+@media (max-height: 760px) {
+  .short-hide { display: none; }
+}
+.login-headline { font-size: clamp(2.6rem, 4.4vw, 4.2rem); line-height: 1.04; text-wrap: balance; }
+
+/* The ribbon is a background only: surfaces over it are solid, so it never shows through them, and nothing is
+   re-blurred while it moves. */
+.over-ribbon .glass-2, .over-ribbon .hero-search {
+  background: var(--surface-solid);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.over-ribbon .glass, .over-ribbon .glass-3 {
+  background: linear-gradient(180deg, var(--g3-sheen), transparent 42%), var(--surface-solid);
+}
+
+/* Home cards: a gold edge of light that comes up under the pointer. */
+.glow-card { transition: box-shadow 300ms var(--ease-out); }
+.home .glass-3:hover {
+  box-shadow: 0 24px 54px -28px rgba(0, 0, 0, 0.8), 0 0 0 1px color-mix(in srgb, var(--brass) 34%, transparent), 0 0 38px -14px color-mix(in srgb, var(--brass) 55%, transparent);
+}
+.light .home .glass-3:hover { box-shadow: 0 20px 44px -24px rgba(30, 36, 52, 0.35), 0 0 0 1px color-mix(in srgb, var(--brass) 34%, transparent); }
+.home .glass-3 { transition: box-shadow 300ms var(--ease-out); }
+
+/* An agent that is really running: a ring around its icon and light travelling along its progress. */
+.agent-working { position: relative; }
+.agent-working::after {
+  content: ""; position: absolute; inset: -3px; border-radius: 14px; border: 1px solid currentColor;
+  animation: working 1.8s ease-out infinite;
+}
+.progress-live::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.65), transparent);
+  animation: scan 1.5s linear infinite;
 }
 
 /* Legacy fallbacks some screens still reference. */
@@ -468,6 +480,17 @@ html[data-intro] body > *:not([data-welcome]) {
 }
 
 /* ---------------------------------------------------------------- motion utilities */
+.sharpen-word { display: inline-block; animation: sharpen 0.8s var(--ease-out) backwards; }
+@keyframes sharpen {
+  from { opacity: 0; filter: blur(12px); transform: translateY(0.35em); }
+  to { opacity: 1; filter: blur(0); transform: none; }
+}
+/* Page titles come into focus once as a screen opens. */
+.title-in { animation: sharpen 0.6s var(--ease-out) backwards; }
+@keyframes working {
+  from { opacity: 0.8; transform: scale(0.92); }
+  to { opacity: 0; transform: scale(1.18); }
+}
 @keyframes pulse-ring {
   0% { box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 55%, transparent); }
   100% { box-shadow: 0 0 0 8px transparent; }
@@ -542,6 +565,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.7); }
   *,
   *::before,
   *::after {
+    animation-delay: 0s !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
